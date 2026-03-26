@@ -1,2 +1,4 @@
 .vscode
 storage/*.csv
+experiment.ipynb
+__pycache__

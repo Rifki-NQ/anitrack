@@ -3,8 +3,8 @@ from core.models.anime_model import AnimeDataModel, DATA_SOURCES, VALID_DATA_SOU
 from core.exceptions import InvalidDataSource
 
 class ResponseNormalizer:
-    def __init__(self, fetcher: type[FetchData]) -> None:
-        self.anilist_fetcher = fetcher.create_fetcher("anilist")
+    def __init__(self, anilist_fetcher: FetchData) -> None:
+        self.anilist_fetcher = anilist_fetcher
         
     def get_anime_data_by_title(self, source: DATA_SOURCES, anime_title: str) -> AnimeDataModel:
         if source == "anilist":

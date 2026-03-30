@@ -6,7 +6,8 @@ from core.normalizer import ResponseNormalizer
 
 class Main:
     def __init__(self) -> None:
-        self.response_normalizer = ResponseNormalizer(FetchData)
+        self.anilist_fetcher = FetchData.create_fetcher("anilist")
+        self.response_normalizer = ResponseNormalizer(self.anilist_fetcher)
         self.fetch_cli = FetchCLI(self.response_normalizer)
     
     def main_parser(self):

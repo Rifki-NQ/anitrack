@@ -1,8 +1,10 @@
+import socket
 import requests
+from requests import ConnectionError
 from abc import ABC, abstractmethod
 from typing import Any
 from core.models.anime_model import DATA_SOURCES, VALID_DATA_SOURCES
-from core.exceptions import InvalidDataSource
+from core.exceptions import InvalidDataSource, AppConnectionError
 
 class FetchData(ABC):
     
@@ -22,8 +24,21 @@ class FetchData(ABC):
         pass
     
     def _request(self, url: str, query: str, variables: dict[str, str | int]) -> requests.Response:
-        response = requests.post(url, json={"query": query, "variables": variables})
+        if not self._has_internet():
+            raise AppConnectionError(f"Failed to send requests because no internet available")
+        
+        try:
+            response = requests.post(url, json={"query": query, "variables": variables})
+        except ConnectionError as e:
+            raise AppConnectionError(f"Connection error occured: {e}")
         return response
+    
+    def _has_internet(self) -> bool:
+        try:
+            socket.create_connection(("8.8.8.8", 53), timeout=3.0)
+            return True
+        except OSError:
+            return False
     
 class FetchAnilist(FetchData):
     BASE_URL = "https://graphql.anilist.co"

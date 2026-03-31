@@ -30,15 +30,16 @@ anitrack/
 ├── main.py                                 # Entry point; argparser and subcommands
 ├── core/
 │   ├── models
-│   │    └── anime_data_model.py            # Dataclasses: AnimeDataModel
+│   │    └── anime_model.py                 # Dataclasses: AnimeDataModel
 │   ├── cli
-│   │    └── fetch_cli.py                   # Query handler for fetch subcommand
+│   │    └── fetch_cli.py                   # Query handler for fetch subcommands
 │   ├── exceptions.py                       # Custom exception hierarchy
 │   ├── fetcher.py                          # API fetcher: FetchAnilist
 │   ├── normalizer.py                       # API Data normalizer
 │   └── file_handler.py                     # File handler for DataIO
-└── storage
-    └── *.csv                               # Saved data outputs
+├── storage
+│   └── *.csv                               # Saved data outputs
+└── requirements.txt                        # Dependencies: requests, jikanpy
 ```
 
 ---

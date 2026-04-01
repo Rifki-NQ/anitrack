@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Literal, get_args
 
-DATA_SOURCES = Literal["anilist"]
+DATA_SOURCES = Literal["anilist", "jikan"]
 VALID_DATA_SOURCES = get_args(DATA_SOURCES)
 
 @dataclass

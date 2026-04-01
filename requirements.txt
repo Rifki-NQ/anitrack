@@ -1,2 +1,2 @@
 requests
-jikanpy
+jikanpy-v4

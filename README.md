@@ -51,10 +51,10 @@ anitrack/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Rifki-NQ/RandomDatasetGenerator
+git clone https://github.com/Rifki-NQ/anitrack
 
 # 2. Navigate into the project directory
-cd RandomDatasetGenerator
+cd anitrack
 
 # 3. Install dependencies
 pip install -r requirements.txt

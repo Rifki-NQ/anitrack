@@ -17,3 +17,19 @@ class AppConnectionError(FetcherError):
 class AnimeNotFoundError(FetcherError):
     """Raised when the requested anime is not found"""
     pass
+
+class AppFilepathError(AppError):
+    """Raised when there is filepath related error"""
+    pass
+
+class InvalidFilepathError(AppFilepathError):
+    """Raised when the filepath is invalid"""
+    pass
+
+class AppDataError(AppError):
+    """Raised when there is data related error"""
+    pass
+
+class AppEmptyDataError(AppDataError):
+    """Raised when file contains empty data"""
+    pass

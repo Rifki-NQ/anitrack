@@ -33,7 +33,7 @@ class FetchData(ABC):
             raise InvalidDataSource(f"Invalid data source provided ({data_source}), expected ({VALID_DATA_SOURCES})")
         
     @abstractmethod
-    def fetch_data_by_title(self, anime_title: str) -> dict[Any, Any]:
+    def fetch_data_by_title(self, anime_title: str, entry_number: int) -> dict[Any, Any]:
         pass
     
     @abstractmethod
@@ -44,15 +44,17 @@ class FetchAnilist(FetchData):
     BASE_URL = "https://graphql.anilist.co"
     QUERY_BY_TITLE = """
     query ($search: String) {
-        Media (search: $search, type: ANIME) {
-            id
-            title {
-                english
-                romaji
+        Page (page: 1, perPage: 10) {
+            media (search: $search, type: ANIME) {
+                id
+                title {
+                    english
+                    romaji
+                }
+                averageScore
+                episodes
+                genres
             }
-            averageScore
-            episodes
-            genres
         }
     }
     """
@@ -71,9 +73,9 @@ class FetchAnilist(FetchData):
     }
     """
     
-    def fetch_data_by_title(self, anime_title: str) -> dict[Any, Any]:
+    def fetch_data_by_title(self, anime_title: str, entry_number: int) -> dict[Any, Any]:
         data = self._request(url=self.BASE_URL, query=self.QUERY_BY_TITLE, variables={"search": anime_title})
-        media_data = data.json()["data"]["Media"]
+        media_data = data.json()["data"]["Page"]["media"][entry_number]
         if media_data is None:
             raise AnimeNotFoundError("Error: requested anime not found!")
         return media_data
@@ -97,20 +99,20 @@ class FetchJikan(FetchData):
     def __init__(self) -> None:
         self.jikan = Jikan()
         
-    def fetch_data_by_title(self, anime_title: str) -> dict[Any, Any]:
+    def fetch_data_by_title(self, anime_title: str, entry_number: int) -> dict[str, Any]:
         anime_data = self._search_anime(anime_title)
-        return anime_data
+        return anime_data[entry_number]
     
     @check_internet
-    def fetch_data_by_id(self, anime_id: int) -> dict[Any, Any]:
+    def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
         try:
             return self.jikan.anime(anime_id)["data"]
         except APIException as e:
             raise AnimeNotFoundError(f"Error: requested anime not found! status code: {e.status_code}")
     
     @check_internet
-    def _search_anime(self, anime_title: str) -> dict[str, Any]:
+    def _search_anime(self, anime_title: str) -> list[dict[str, Any]]:
         data = self.jikan.search(search_type="anime", query=anime_title)["data"]
         if not data:
             raise AnimeNotFoundError("Error: requested anime not found!")
-        return data[0] #return the first anime entry that shows up in search
+        return data

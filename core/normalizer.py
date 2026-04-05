@@ -7,11 +7,11 @@ class ResponseNormalizer:
         self.anilist_fetcher = anilist_fetcher
         self.jikan_fetcher = jikan_fetcher
         
-    def get_anime_data_by_title(self, source: DATA_SOURCES, anime_title: str) -> AnimeDataModel:
+    def get_anime_data_by_title(self, source: DATA_SOURCES, anime_title: str, entry_number: int) -> AnimeDataModel:
         if source == "anilist":
-            return self._get_anilist_data_by_title(anime_title)
+            return self._get_anilist_data_by_title(anime_title, entry_number)
         elif source == "jikan":
-            return self._get_jikan_data_by_title(anime_title)
+            return self._get_jikan_data_by_title(anime_title, entry_number)
         else:
             raise InvalidDataSource(f"Invalid data source provided ({source}), expected ({VALID_DATA_SOURCES})")
     
@@ -23,8 +23,8 @@ class ResponseNormalizer:
         else:
             raise InvalidDataSource(f"Invalid data source provided ({source}), expected ({VALID_DATA_SOURCES})")
     
-    def _get_anilist_data_by_title(self, anime_title: str) -> AnimeDataModel:
-        data = self.anilist_fetcher.fetch_data_by_title(anime_title)
+    def _get_anilist_data_by_title(self, anime_title: str, entry_number: int) -> AnimeDataModel:
+        data = self.anilist_fetcher.fetch_data_by_title(anime_title, entry_number)
         return AnimeDataModel(
             source="anilist", id=data["id"],
             english_title=data["title"]["english"], romaji_title=data["title"]["romaji"],
@@ -38,8 +38,8 @@ class ResponseNormalizer:
             english_title=data["title"]["english"], romaji_title=data["title"]["romaji"],
             average_score=data["averageScore"], episodes=data["episodes"], genres=data["genres"])
 
-    def _get_jikan_data_by_title(self, anime_title: str) -> AnimeDataModel:
-        data = self.jikan_fetcher.fetch_data_by_title(anime_title)
+    def _get_jikan_data_by_title(self, anime_title: str, entry_number: int) -> AnimeDataModel:
+        data = self.jikan_fetcher.fetch_data_by_title(anime_title, entry_number)
         return AnimeDataModel(
             source="jikan", id=data["mal_id"],
             english_title=data["title_english"], romaji_title=data["title"],

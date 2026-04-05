@@ -12,13 +12,13 @@ class FetchCLI:
         if args.title: #search by title
             try:
                 if args.source == "all":
-                    data1 = asdict(self.normalizer.get_anime_data_by_title(source="anilist", anime_title=args.title))
-                    data2 = asdict(self.normalizer.get_anime_data_by_title(source="jikan", anime_title=args.title))
+                    data1 = asdict(self.normalizer.get_anime_data_by_title(source="anilist", anime_title=args.title, entry_number=args.entry))
+                    data2 = asdict(self.normalizer.get_anime_data_by_title(source="jikan", anime_title=args.title, entry_number=args.entry))
                     for f in fields(AnimeDataModel):
                         print(f"{f.name}: {data1[f.name]} | {data2[f.name]}")
                     return
                 
-                data = asdict(self.normalizer.get_anime_data_by_title(source=args.source, anime_title=args.title))
+                data = asdict(self.normalizer.get_anime_data_by_title(source=args.source, anime_title=args.title, entry_number=args.entry))
             except FetcherError as e:
                 print(e)
                 return

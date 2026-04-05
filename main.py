@@ -24,18 +24,19 @@ class Main:
         #subcommand fetch
         fetch_parser = subparsers.add_parser("fetch", description="fetch anime data")
         fetch_parser.add_argument("--source", choices={"anilist", "jikan", "all"}, required=True)
+        fetch_parser.add_argument("--entry", type=int, default=0)
         
-        group = fetch_parser.add_mutually_exclusive_group(required=True)
-        group.add_argument("--title", type=str)
-        group.add_argument("--id", type=int)
+        fetch_group = fetch_parser.add_mutually_exclusive_group(required=True)
+        fetch_group.add_argument("--title", type=str)
+        fetch_group.add_argument("--id", type=int)
         
         #subcommand export
         export_parser =subparsers.add_parser("export", description="fetch then save anime data")
         export_parser.add_argument("--source", choices={"anilist", "jikan"}, required=True)
 
-        group = export_parser.add_mutually_exclusive_group(required=True)
-        group.add_argument("--title", type=str)
-        group.add_argument("--id", type=int)
+        export_group = export_parser.add_mutually_exclusive_group(required=True)
+        export_group.add_argument("--title", type=str)
+        export_group.add_argument("--id", type=int)
 
         export_parser.add_argument("--path", type=valid_filepath, required=True)
         export_parser.add_argument("--overwrite", action="store_true", default=False)

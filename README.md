@@ -82,8 +82,10 @@ fetch --source <source> (--title <title> | --id <id>)
 | `--source` | string | ✅ Yes | Data source to fetch from. Choices: `anilist`, `jikan`, `all` |
 | `--title` | string | ✅ One of | Search anime by title |
 | `--id` | int | ✅ One of | Fetch anime by ID |
+| `--entry` | int | ❌ No | Entry number for search result |
 
-> `--title` and `--id` are mutually exclusive — you must provide exactly one.
+> - `--title` and `--id` are mutually exclusive — you must provide exactly one.
+> - `--entry` default value is 0 and only works for fetch by `--title`
 
 **Examples:**
 

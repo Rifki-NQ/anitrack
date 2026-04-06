@@ -1,6 +1,9 @@
 # anitrack
 
-CLI-based tool used for getting anime data from sources like MAL or Anilist
+anitrack is a command line tool that lets you fetch anime data
+from public APIs like [MyAnimeList](https://myanimelist.net/) (via Jikan) and [Anilist](https://anilist.co/).
+
+You can search anime by title or ID and export the data to a CSV file.
 
 ## Table of Contents
 
@@ -17,7 +20,7 @@ CLI-based tool used for getting anime data from sources like MAL or Anilist
 
 ### Search by Title or ID
 
-Query anime data from the API using either a title string or a numeric ID. Each result includes:
+Retrieve anime data from the API using either a title string or a numeric ID. Each result includes:
 
 - `id` — unique anime identifier
 - `english_title` / `romaji_title` — localized title variants
@@ -25,7 +28,7 @@ Query anime data from the API using either a title string or a numeric ID. Each 
 - `episodes` — total episode count
 - `genres` — list of genre tags
 
-### Export Anime data
+### Export Anime Data
 
 Save fetched anime data to a CSV file.
 

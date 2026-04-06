@@ -8,6 +8,7 @@ CLI-based tool used for getting anime data from sources like MAL or Anilist
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Result Examples](#result-examples)
 - [Running Tests](#running-tests)
 
 ---
@@ -64,6 +65,8 @@ cd anitrack
 # 3. Install dependencies
 pip install -r requirements.txt
 ```
+
+---
 
 ## Usage
 
@@ -140,6 +143,84 @@ python main.py export --source anilist --title "Steins;Gate" --path storage/data
 # Show export subcommand help
 python main.py export --help
 ```
+
+---
+
+## Result Examples
+
+**Command:**
+
+```bash
+python main.py fetch --source jikan --title "one piece" --entry 1
+```
+
+**Result:**
+
+```bash
+source: jikan
+id: 21
+english_title: One Piece
+romaji_title: One Piece
+average_score: 8.73
+episodes: None
+genres: ['Action', 'Adventure', 'Fantasy']
+```
+
+---
+
+**Command:**
+
+```bash
+python main.py fetch --source all --title "mushoku tensei"
+```
+
+**Result:**
+
+```bash
+source: anilist | jikan
+id: 108465 | 39535
+english_title: Mushoku Tensei: Jobless Reincarnation | Mushoku Tensei: Jobless Reincarnation
+romaji_title: Mushoku Tensei: Isekai Ittara Honki Dasu | Mushoku Tensei: Isekai Ittara Honki Dasu
+average_score: 82 | 8.33
+episodes: 11 | 11
+genres: ['Adventure', 'Drama', 'Ecchi', 'Fantasy'] | ['Adventure', 'Drama', 'Fantasy', 'Ecchi']
+```
+
+---
+
+**Command:**
+
+```bash
+python main.py export --source anilist --title "steins gate" --path storage/data.csv --overwrite
+```
+
+**Result:**
+
+```bash
+source,id,english_title,romaji_title,average_score,episodes,genres
+anilist,9253,Steins;Gate,Steins;Gate,89,24,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']"
+```
+
+> The exported data is saved to `storage/data.csv`.
+
+---
+
+**Command:**
+
+```bash
+python main.py export --source anilist --title "steins gate" --path storage/data.csv --entry 1
+```
+
+**Result:**
+
+```bash
+source,id,english_title,romaji_title,average_score,episodes,genres
+anilist,9253,Steins;Gate,Steins;Gate,89,24,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']"
+anilist,21127,Steins;Gate 0,Steins;Gate 0,84,23,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']"
+```
+
+> - The exported data is saved to `storage/data.csv`.
+> - If the `--overwrite` flag is not provided, new data will be appended to the       existing file instead of overwriting it.
 
 ---
 

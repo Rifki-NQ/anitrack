@@ -120,7 +120,7 @@ export --source <source> (--title <title> | --id <id>) --path <path> [--entry <e
 
 | Flag | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
-| `--source` | string | ✅ Yes | Data source to fetch from. Choices: `anilist` and `jikan` |
+| `--source` | string | ✅ Yes | Data source to fetch from. Choices: `anilist`, `jikan`, `all` |
 | `--title` | string | ✅ One of | Search anime by title |
 | `--id` | int | ✅ One of | Fetch anime by ID |
 | `--path` | string | ✅ Yes | Destination file path to save the exported data |
@@ -141,7 +141,7 @@ python main.py export --source anilist --title "Steins;Gate" --path storage/data
 python main.py export --source jikan --id 9253 --path storage/data.csv
 
 # Export and overwrite the data
-python main.py export --source anilist --title "Steins;Gate" --path storage/data.csv --overwrite
+python main.py export --source all --title "Steins;Gate" --path storage/data.csv --overwrite
 
 # Show export subcommand help
 python main.py export --help

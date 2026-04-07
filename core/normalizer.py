@@ -1,4 +1,4 @@
-from core.fetcher import FetchData
+from core.fetchers.base_fetcher import FetchData
 from core.models.anime_model import AnimeDataModel, DATA_SOURCES, VALID_DATA_SOURCES
 from core.exceptions import InvalidDataSource
 

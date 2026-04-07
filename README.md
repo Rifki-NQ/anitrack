@@ -45,8 +45,12 @@ anitrack/
 │   ├── cli
 │   │    ├── fetch_cli.py                   # Query handler for fetch subcommands
 │   │    └── export_cli.py                  # Query handler for export subcommands
+│   ├── fetchers
+│   │    ├── base_fetcher.py                # Abstract base class for fetchers
+│   │    ├── fetcher_factory.py             # Fetchers factory
+│   │    ├── anilist_fetcher.py             # Fetcher for anilist API
+│   │    └── jikan_fetcher.py               # Fetcher for jikan API
 │   ├── exceptions.py                       # Custom exception hierarchy
-│   ├── fetcher.py                          # API fetcher: FetchAnilist, FetchJikan
 │   ├── normalizer.py                       # API Data normalizer
 │   └── file_handler.py                     # File handler for DataIO
 ├── storage

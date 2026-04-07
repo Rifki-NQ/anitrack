@@ -1,8 +1,8 @@
 import pytest
 from typing import Any
-from core.fetcher import FetchData
+from core.fetchers.fetcher_factory import create_fetcher
 
-anilist_fetcher = FetchData.create_fetcher("anilist")
+anilist_fetcher = create_fetcher("anilist")
 anime_title = "Attack on Titan"
 
 @pytest.fixture(scope="module")

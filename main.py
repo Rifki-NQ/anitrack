@@ -1,15 +1,15 @@
 import argparse
 from core.cli.fetch_cli import FetchCLI
 from core.cli.export_cli import ExportCLI
-from core.fetcher import FetchData
+from core.fetchers.fetcher_factory import create_fetcher
 from core.normalizer import ResponseNormalizer
 from core.file_handler import valid_filepath
 from core.file_handler import DataIO
 
 class Main:
     def __init__(self) -> None:
-        self.anilist_fetcher = FetchData.create_fetcher("anilist")
-        self.jikan_fetcher = FetchData.create_fetcher("jikan")
+        self.anilist_fetcher = create_fetcher("anilist")
+        self.jikan_fetcher = create_fetcher("jikan")
         
         self.response_normalizer = ResponseNormalizer(self.anilist_fetcher, self.jikan_fetcher)
         self.file_handler = DataIO()

@@ -22,7 +22,7 @@ def test_response_normalizer_anilist_value(anime_data_model_anilist: AnimeDataMo
     assert anime_data_model_anilist.romaji_title == "Shingeki no Kyojin"
     assert anime_data_model_anilist.average_score == 85
     assert anime_data_model_anilist.episodes == 25
-    assert anime_data_model_anilist.genres == {'Action', 'Drama', 'Fantasy', 'Mystery'}
+    assert anime_data_model_anilist.genres == ['Action', 'Drama', 'Fantasy', 'Mystery']
 
 def test_response_normalizer_jikan_value(anime_data_model_jikan: AnimeDataModel):
     assert anime_data_model_jikan.id == 16498
@@ -31,4 +31,4 @@ def test_response_normalizer_jikan_value(anime_data_model_jikan: AnimeDataModel)
     assert anime_data_model_jikan.romaji_title == "Shingeki no Kyojin"
     assert anime_data_model_jikan.average_score == 8.57
     assert anime_data_model_jikan.episodes == 25
-    assert anime_data_model_jikan.genres == {'Action', 'Award Winning', 'Drama', 'Suspense'}
+    assert anime_data_model_jikan.genres == ['Action', 'Award Winning', 'Drama', 'Suspense']

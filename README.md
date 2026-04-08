@@ -41,7 +41,8 @@ anitrack/
 ├── main.py                                 # Entry point; argparser and subcommands
 ├── core/
 │   ├── models/
-│   │    └── anime_model.py                 # Dataclasses: AnimeDataModel
+│   │    ├── anime_model.py                 # Dataclasses: AnimeDataModel
+│   │    └── protocols.py                   # Protocols: FetchersProtocol
 │   ├── cli/
 │   │    ├── fetch_cli.py                   # Query handler for fetch subcommands
 │   │    └── export_cli.py                  # Query handler for export subcommands
@@ -55,6 +56,11 @@ anitrack/
 │   └── file_handler.py                     # File handler for DataIO
 ├── storage/
 │   └── *.csv                               # Saved data outputs
+├── tests/
+│   ├── fetchers_mock_data.py               # Fetcher mock classes: MockAnilistFetcher, MockJikanFetcher
+│   ├── test_fetcher_anilist.py
+│   ├── test_fetcher_jikan.py
+│   └── test_normalizer.py
 └── requirements.txt                        # Dependencies: requests, jikanpy-v4, pandas
 ```
 
@@ -240,5 +246,7 @@ pytest tests/
 The test suite covers:
 
 - `test_fetcher_anilist.py` - verifies that the `FetchAnilist` return expected data values and type from the `API`
+- `test_fetcher_jikan.py` - verifies that the `FetchJikan` return expected data values and type from the `API`
+- `test_normalizer.py` - verifies the normalization flow using mocked fetcher data
 
 ---

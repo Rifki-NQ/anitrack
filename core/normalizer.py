@@ -1,9 +1,9 @@
-from core.fetchers.base_fetcher import FetchData
 from core.models.anime_model import AnimeDataModel, DATA_SOURCES, VALID_DATA_SOURCES
+from core.models.protocols import FetchersProtocol
 from core.exceptions import InvalidDataSource
 
 class ResponseNormalizer:
-    def __init__(self, anilist_fetcher: FetchData, jikan_fetcher: FetchData) -> None:
+    def __init__(self, anilist_fetcher: FetchersProtocol, jikan_fetcher: FetchersProtocol) -> None:
         self.anilist_fetcher = anilist_fetcher
         self.jikan_fetcher = jikan_fetcher
         

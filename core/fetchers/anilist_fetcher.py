@@ -36,14 +36,14 @@ class FetchAnilist(FetchData):
     }
     """
     
-    def fetch_data_by_title(self, anime_title: str, entry_number: int) -> dict[Any, Any]:
+    def fetch_data_by_title(self, anime_title: str, entry_number: int) -> dict[str, Any]:
         data = self._request(url=self.BASE_URL, query=self.QUERY_BY_TITLE, variables={"search": anime_title})
         media_data = data.json()["data"]["Page"]["media"][entry_number]
         if media_data is None:
             raise AnimeNotFoundError("Error: requested anime not found!")
         return media_data
     
-    def fetch_data_by_id(self, anime_id: int) -> dict[Any, Any]:
+    def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
         data = self._request(url=self.BASE_URL, query=self.QUERY_BY_ID, variables={"id": anime_id})
         media_data = data.json()["data"]["Media"]
         if media_data is None:

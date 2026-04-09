@@ -16,7 +16,25 @@ class ResponseNormalizer:
             raise InvalidDataSource(f"Invalid data source provided ({source}), expected ({VALID_DATA_SOURCES})")
     
     def get_all_anime_data_by_title(self, source: DATA_SOURCES, anime_title: str, max_entry: int | None = None) -> list[AnimeDataModel]:
-        pass #wip
+        data_mapping = {
+            "anilist": self.anilist_fetcher.fetch_data_by_title,
+            "jikan": self.jikan_fetcher.fetch_data_by_title
+        }
+        data_collection = data_mapping[source](anime_title)
+        data_model_list: list[AnimeDataModel] = []
+        for entry_num, data in enumerate(data_collection, 1):
+            #inclusive for max_entry value
+            if max_entry is not None and entry_num > max_entry: 
+                break
+            if source == "anilist":
+                data_model_list.append(AnimeDataModel(source="anilist", id=data["id"],
+                                                      english_title=data["title"]["english"], romaji_title=data["title"]["romaji"],
+                                                      average_score=data["averageScore"], episodes=data["episodes"], genres=data["genres"]))
+            elif source == "jikan":
+                data_model_list.append(AnimeDataModel(source="jikan", id=data["mal_id"],
+                                                      english_title=data["title_english"], romaji_title=data["title"],
+                                                      average_score=data["score"], episodes=data["episodes"], genres=[g["name"] for g in data["genres"]]))
+        return data_model_list
     
     def get_anime_data_by_id(self, source: DATA_SOURCES, anime_id: int) -> AnimeDataModel:
         if source == "anilist":

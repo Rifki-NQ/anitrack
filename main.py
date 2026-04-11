@@ -26,18 +26,21 @@ class Main:
         fetch_parser.add_argument("--source", choices={"anilist", "jikan", "all"}, required=True)
         fetch_parser.add_argument("--entry", type=int, default=0)
         
-        fetch_group = fetch_parser.add_mutually_exclusive_group(required=True)
-        fetch_group.add_argument("--title", type=str)
-        fetch_group.add_argument("--id", type=int)
+        search_by_group = fetch_parser.add_mutually_exclusive_group(required=True)
+        search_by_group.add_argument("--title", type=str)
+        search_by_group.add_argument("--id", type=int)
         
         #subcommand export
         export_parser =subparsers.add_parser("export", description="fetch then save anime data")
         export_parser.add_argument("--source", choices={"anilist", "jikan", "all"}, required=True)
-        export_parser.add_argument("--entry", type=int, default=0)
+        
+        export_entry_group = export_parser.add_mutually_exclusive_group(required=False)
+        export_entry_group.add_argument("--entry", type=int, default=0)
+        export_entry_group.add_argument("--save-all", action="store_true", default=False)
 
-        export_group = export_parser.add_mutually_exclusive_group(required=True)
-        export_group.add_argument("--title", type=str)
-        export_group.add_argument("--id", type=int)
+        search_by_group = export_parser.add_mutually_exclusive_group(required=True)
+        search_by_group.add_argument("--title", type=str)
+        search_by_group.add_argument("--id", type=int)
 
         export_parser.add_argument("--path", type=valid_filepath, required=True)
         export_parser.add_argument("--overwrite", action="store_true", default=False)

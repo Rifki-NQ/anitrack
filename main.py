@@ -33,19 +33,23 @@ class Main:
         #subcommand export
         export_parser =subparsers.add_parser("export", description="fetch then save anime data")
         export_parser.add_argument("--source", choices={"anilist", "jikan", "all"}, required=True)
-        
-        export_entry_group = export_parser.add_mutually_exclusive_group(required=False)
-        export_entry_group.add_argument("--entry", type=int, default=0)
-        export_entry_group.add_argument("--save-all", action="store_true", default=False)
 
         search_by_group = export_parser.add_mutually_exclusive_group(required=True)
         search_by_group.add_argument("--title", type=str)
         search_by_group.add_argument("--id", type=int)
 
+        export_entry_group = export_parser.add_mutually_exclusive_group(required=False)
+        export_entry_group.add_argument("--entry", type=int, default=0)
+        export_entry_group.add_argument("--save-all", action="store_true", default=False)
+
         export_parser.add_argument("--path", type=valid_filepath, required=True)
         export_parser.add_argument("--overwrite", action="store_true", default=False)
 
         args = parser.parse_args()
+
+        if args.title is None:
+            if args.entry != 0 or args.save_all:
+                parser.error("--entry and --save-all can only be used with --title")
 
         if args.command == "fetch":
             self.fetch_cli.handle_fetch(args)

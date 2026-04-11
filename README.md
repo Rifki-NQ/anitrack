@@ -136,11 +136,13 @@ export --source <source> (--title <title> | --id <id>) --path <path> [--entry <e
 | `--id` | int | ✅ One of | Fetch anime by ID |
 | `--path` | string | ✅ Yes | Destination file path to save the exported data |
 | `--entry` | int | ❌ No | Entry number for search result (default: `0`) |
+| `--save-all` | flag | ❌ No | Save all entries from search result (default: `false`) |
 | `--overwrite` | flag | ❌ No | Overwrite the data if it's not empty (default: `false`) |
 
 > - `--path` must be inside the `storage/` folder
 > - `--title` and `--id` are mutually exclusive — you must provide exactly one.
-> - `--entry` only works for search by `--title`
+> - `--entry`and `--save-all` only works for search by `--title`
+> - `--entry`and `--save-all` are mutually exclusive — you must provide exactly one.
 
 **Examples:**
 

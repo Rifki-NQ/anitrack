@@ -7,7 +7,7 @@ anime_title = "Attack on titan"
 
 @pytest.fixture(scope="module")
 def jikan_data() -> dict[str, Any]:
-    data = jikan_fetcher.fetch_data_by_title(anime_title, entry_number=0)
+    data = jikan_fetcher.fetch_data_by_title(anime_title)[0]
     return {
         "english_title": data["title_english"],
         "romaji_title": data["title"],

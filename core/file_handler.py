@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
-from typing import Any
-from dataclasses import fields
+from typing import Sequence
+from dataclasses import fields, asdict
 from argparse import ArgumentTypeError
 from core.models.anime_model import AnimeDataModel
 
@@ -16,9 +16,22 @@ def valid_filepath(filepath: str) -> Path:
     return Path(filepath)
 
 class DataIO:
-    def add_new_data(self, new_data: dict[str, Any], filepath: Path, overwrite: bool = False) -> None:
-        self._save_file(new_data, filepath, overwrite)
-    
+    def save_data(self, new_data: AnimeDataModel, filepath: Path, overwrite: bool = False) -> None:
+        df_new_data = pd.DataFrame([asdict(new_data)])
+        
+        if overwrite:
+            df_new_data.to_csv(filepath, index=False)
+            return
+        
+        df_previous_data = self._read_file(filepath)
+        df_merged_data = pd.concat([df_previous_data, df_new_data], ignore_index=True)
+        df_merged_data.to_csv(filepath, index=False)
+        
+    def save_all_data(self, new_data_list: Sequence[AnimeDataModel], filepath: Path, overwrite: bool = False) -> None:
+        for data in new_data_list:
+            self.save_data(data, filepath, overwrite)
+            overwrite = False
+        
     def _read_file(self, filepath: Path) -> pd.DataFrame:
         try:
             return pd.read_csv(filepath)
@@ -28,17 +41,6 @@ class DataIO:
             #cli guarantee the file is in storage/
             self._get_empty_dataframe_model(AnimeDataModel).to_csv(filepath, index=False)
             return pd.read_csv(filepath)
-    
-    def _save_file(self, new_data: dict[str, Any], filepath: Path, overwrite: bool = False) -> None:
-        df_new_data = pd.DataFrame([new_data])
-        
-        if overwrite:
-            df_new_data.to_csv(filepath, index=False)
-            return
-        
-        df_previous_data = self._read_file(filepath)
-        df_merged_data = pd.concat([df_previous_data, df_new_data], ignore_index=True)
-        df_merged_data.to_csv(filepath, index=False)
         
     def _get_empty_dataframe_model(self, model: type[AnimeDataModel]) -> pd.DataFrame:
         return pd.DataFrame(columns=[f.name for f in fields(model)])

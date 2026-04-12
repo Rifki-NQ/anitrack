@@ -23,7 +23,8 @@ class FetchCLI:
                         print(f"{key}: {value}")
             except FetcherError as e:
                 print(e)
-                return
+            except IndexError:
+                print(f"Error: --entry index out of range for title: {args.title}")
                 
         elif args.id: #search by id
             try:

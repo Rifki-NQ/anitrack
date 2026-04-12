@@ -28,7 +28,8 @@ class ExportCLI:
                 self.file_handler.save_data(data, args.path, args.overwrite)
         except FetcherError as e:
             print(e)
-            return
+        except IndexError:
+            print(f"Error: --entry index out of range for title: {args.title}")
         
     def _handle_args_id(self, args: Namespace) -> None:
         try:

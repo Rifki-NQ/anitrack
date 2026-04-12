@@ -46,14 +46,14 @@ class Main:
         export_parser.add_argument("--overwrite", action="store_true", default=False)
 
         args = parser.parse_args()
-
-        if args.title is None:
-            if args.entry != 0 or args.save_all:
-                parser.error("--entry and --save-all can only be used with --title")
-
+        
         if args.command == "fetch":
+            if args.title is None and args.entry != 0:
+                fetch_parser.error("--entry can only be used with --title")
             self.fetch_cli.handle_fetch(args)
         elif args.command == "export":
+            if args.title is None and (args.entry != 0 or args.save_all):
+                export_parser.error("--entry and --save-all can only be used with --title")
             self.export_cli.handle_export(args)
         else:
             parser.print_help()

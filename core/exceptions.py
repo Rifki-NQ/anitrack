@@ -14,6 +14,10 @@ class AppConnectionError(FetcherError):
     """Raised when there is connection related error"""
     pass
 
-class AnimeNotFoundError(FetcherError):
-    """Raised when the requested anime is not found"""
+class AnilistError(FetcherError):
+    """Raised when Anilist error occured"""
+    pass
+
+class JikanError(FetcherError):
+    """Raised when Jikan error occured"""
     pass

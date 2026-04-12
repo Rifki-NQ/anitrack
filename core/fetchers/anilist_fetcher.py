@@ -1,7 +1,7 @@
 import requests
 from typing import Any
 from core.fetchers.base_fetcher import FetchData, check_internet
-from core.exceptions import AnimeNotFoundError, AppConnectionError
+from core.exceptions import AnilistError, AppConnectionError
 
 class FetchAnilist(FetchData):
     BASE_URL = "https://graphql.anilist.co"
@@ -40,14 +40,14 @@ class FetchAnilist(FetchData):
         data = self._request(url=self.BASE_URL, query=self.QUERY_BY_TITLE, variables={"search": anime_title})
         media_data = data.json()["data"]["Page"]["media"]
         if media_data is None:
-            raise AnimeNotFoundError("Error: requested anime not found!")
+            raise AnilistError("Error: requested anime not found!")
         return media_data
     
     def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
         data = self._request(url=self.BASE_URL, query=self.QUERY_BY_ID, variables={"id": anime_id})
         media_data = data.json()["data"]["Media"]
         if media_data is None:
-            raise AnimeNotFoundError("Error: requested anime not found!")
+            raise AnilistError("Error: requested anime not found!")
         return media_data
     
     @check_internet

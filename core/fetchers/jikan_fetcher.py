@@ -1,7 +1,7 @@
 from jikanpy import Jikan, APIException
 from typing import Any
 from core.fetchers.base_fetcher import FetchData, check_internet
-from core.exceptions import AnimeNotFoundError
+from core.exceptions import JikanError
 
 class FetchJikan(FetchData):
     def __init__(self) -> None:
@@ -16,11 +16,15 @@ class FetchJikan(FetchData):
         try:
             return self.jikan.anime(anime_id)["data"]
         except APIException as e:
-            raise AnimeNotFoundError(f"Error: requested anime not found! status code: {e.status_code}")
+            raise JikanError(f"Error: requested anime not found! status code: {e.status_code}")
     
     @check_internet
     def _search_anime(self, anime_title: str) -> list[dict[str, Any]]:
-        data = self.jikan.search(search_type="anime", query=anime_title)["data"]
+        try:
+            data = self.jikan.search(search_type="anime", query=anime_title)["data"]
+        except APIException as e:
+            message = e.error_json["message"] if e.error_json is not None else None
+            raise JikanError(f"Error: {message}, status code: {e.status_code}")
         if not data:
-            raise AnimeNotFoundError("Error: requested anime not found!")
+            raise JikanError("Error: requested anime not found!")
         return data

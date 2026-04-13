@@ -26,7 +26,7 @@ class Main:
         fetch_parser.add_argument("--source", choices={"anilist", "jikan", "all"}, required=True)
 
         fetch_entry_group = fetch_parser.add_mutually_exclusive_group(required=False)
-        fetch_entry_group.add_argument("--entry", type=int, default=0)
+        fetch_entry_group.add_argument("--entry", type=int, default=None)
         fetch_entry_group.add_argument("--show-title", action="store_true", default=False)
         
         search_by_group = fetch_parser.add_mutually_exclusive_group(required=True)
@@ -52,11 +52,11 @@ class Main:
         args = parser.parse_args()
         
         if args.command == "fetch":
-            if args.title is None and (args.entry != 0 or args.show_title):
+            if args.title is None and (args.entry is not None or args.show_title):
                 fetch_parser.error("--entry and --show-title can only be used with --title")
             self.fetch_cli.handle_fetch(args)
         elif args.command == "export":
-            if args.title is None and (args.entry != 0 or args.save_all):
+            if args.title is None and (args.entry is not None or args.save_all):
                 export_parser.error("--entry and --save-all can only be used with --title")
             elif args.max_entry is not None and not args.save_all:
                 export_parser.error("--max-entry can only be used with --save-all")

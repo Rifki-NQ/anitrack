@@ -8,13 +8,13 @@ class ResponseNormalizer:
         self.anilist_fetcher = anilist_fetcher
         self.jikan_fetcher = jikan_fetcher
         
-    def get_anime_data_by_title(self, source: DATA_SOURCES, anime_title: str, entry_number: int) -> AnimeDataModel:
+    def get_anime_data_by_title(self, source: DATA_SOURCES, anime_title: str, entry_number: int  | None = None) -> AnimeDataModel:
         self._validate_data_source(source)
         get_by_title_map = {
             "anilist": self._get_anilist_data_by_title,
             "jikan": self._get_jikan_data_by_title
         }
-        return get_by_title_map[source](anime_title, entry_number)
+        return get_by_title_map[source](anime_title, 0 if entry_number is None else entry_number)
     
     def get_anime_data_by_id(self, source: DATA_SOURCES, anime_id: int) -> AnimeDataModel:
         self._validate_data_source(source)

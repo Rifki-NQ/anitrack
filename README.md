@@ -137,7 +137,7 @@ export --source <source> (--title <title> | --id <id>) --path <path> [--entry <e
 | `--title` | string | ✅ One of | Search anime by title |
 | `--id` | int | ✅ One of | Fetch anime by ID |
 | `--path` | string | ✅ Yes | Destination file path to save the exported data |
-| `--entry` | int | ❌ No | Entry number for search result (default: `0`) |
+| `--entry` | int | ❌ No | Entry number for search result (default: `none`) |
 | `--save-all` | flag | ❌ No | Save all entries from search result (default: `false`) |
 | `--max-entry` | int | ❌ No | Max anime entries to save (default: `none`) |
 | `--overwrite` | flag | ❌ No | Overwrite the data if it's not empty (default: `false`) |

@@ -7,7 +7,7 @@ class FetchAnilist(FetchData):
     BASE_URL = "https://graphql.anilist.co"
     QUERY_BY_TITLE = """
     query ($search: String) {
-        Page (page: 1, perPage: 10) {
+        Page (page: 1, perPage: 50) {
             media (search: $search, type: ANIME) {
                 id
                 title {

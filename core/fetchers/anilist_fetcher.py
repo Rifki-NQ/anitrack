@@ -11,12 +11,36 @@ class FetchAnilist(FetchData):
             media (search: $search, type: ANIME) {
                 id
                 title {
-                    english
                     romaji
+                    english
                 }
-                averageScore
+                format
+                status
+                startDate {
+                    year
+                    month
+                    day
+                }
+                endDate {
+                    year
+                    month
+                    day
+                }
                 episodes
+                duration
                 genres
+                source
+                averageScore
+                studios {
+                    nodes {
+                        name
+                    }
+                }
+                rankings {
+                    rank
+                    type
+                    allTime
+                }
             }
         }
     }
@@ -26,12 +50,36 @@ class FetchAnilist(FetchData):
         Media (id: $id, type: ANIME) {
             id
             title {
-                english
                 romaji
+                english
             }
-            averageScore
+            format
+            status
+            startDate {
+                year
+                month
+                day
+            }
+            endDate {
+                year
+                month
+                day
+            }
             episodes
+            duration
             genres
+            source
+            averageScore
+            studios {
+                nodes {
+                    name
+                }
+            }
+            rankings {
+                rank
+                type
+                allTime
+            }
         }
     }
     """

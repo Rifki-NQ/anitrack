@@ -3,7 +3,7 @@ from core.models.anime_model import AnimeDataModel
 
 class BaseNormalizer(ABC):
     @abstractmethod
-    def get_anime_by_title(self, anime_title: str, entry_number: int  | None = None) -> AnimeDataModel:
+    def get_anime_by_title(self, anime_title: str, entry_number: int  = 0) -> AnimeDataModel:
         pass
     
     @abstractmethod

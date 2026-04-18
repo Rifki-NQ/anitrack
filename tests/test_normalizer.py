@@ -1,6 +1,6 @@
 import pytest
 from tests.fetchers_mock_data import MockAnilistFetcher, MockJikanFetcher
-from core.normalizer import ResponseNormalizer
+from core.normalizers.normalizer import ResponseNormalizer
 from core.models.anime_model import AnimeDataModel
 
 @pytest.fixture

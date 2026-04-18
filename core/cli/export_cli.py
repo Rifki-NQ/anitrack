@@ -1,5 +1,5 @@
 from argparse import Namespace
-from core.normalizers.normalizer import ResponseNormalizer
+from core.normalizer import ResponseNormalizer
 from core.file_handler import DataIO
 from core.cli.cli_utils import get_all_data_by_title, get_all_data_by_id
 from core.exceptions import FetcherError

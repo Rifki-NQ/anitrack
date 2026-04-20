@@ -1,6 +1,6 @@
 import pandas as pd
 from pathlib import Path
-from typing import Sequence
+from typing import Iterable
 from dataclasses import fields, asdict
 from argparse import ArgumentTypeError
 from core.models.anime_model import AnimeDataModel
@@ -18,16 +18,14 @@ def valid_filepath(filepath: str) -> Path:
 class DataIO:
     def save_data(self, new_data: AnimeDataModel, filepath: Path, overwrite: bool = False) -> None:
         df_new_data = pd.DataFrame([asdict(new_data)])
-        
         if overwrite:
             df_new_data.to_csv(filepath, index=False)
             return
-        
         df_previous_data = self._read_file(filepath)
         df_merged_data = pd.concat([df_previous_data, df_new_data], ignore_index=True)
         df_merged_data.to_csv(filepath, index=False)
         
-    def save_all_data(self, new_data_list: Sequence[AnimeDataModel], filepath: Path, overwrite: bool = False) -> None:
+    def save_all_data(self, new_data_list: Iterable[AnimeDataModel], filepath: Path, overwrite: bool = False) -> None:
         for data in new_data_list:
             self.save_data(data, filepath, overwrite)
             overwrite = False

@@ -47,9 +47,11 @@ def _show_entry(entry_data: AnimeDataModel) -> None:
     for f in fields(entry_data):
         value = getattr(entry_data, f.name)
         print(f"{f.name}: {value}")
+    print("")
 
 def _show_title(all_data: list[AnimeDataModel]) -> None:
-    for entry_data in all_data:
-        print(f"Source: {entry_data.source}")
-        print("Romaji title | English title")
-        print(f"{entry_data.romaji_title} | {entry_data.english_title}")
+    print(f"Source: {all_data[0].source}")
+    print("Romaji title | English title")
+    for i, entry_data in enumerate(all_data):
+        print(f"{i}. {entry_data.romaji_title} | {entry_data.english_title}")
+    print("")

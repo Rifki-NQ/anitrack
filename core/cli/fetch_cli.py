@@ -1,6 +1,6 @@
 from argparse import Namespace
 from dataclasses import fields
-from typing import Iterable
+from typing import Iterable, Sequence
 from core.cli.cli_utils import get_all_data_by_title, get_all_data_by_id
 from core.models.anime_model import AnimeDataModel
 from core.models.protocols import NormalizerProtocol
@@ -8,7 +8,7 @@ from core.exceptions import FetcherError
 
 DEFAULT_ENTRY_INDEX = 0
 
-def fetch_cli(args: Namespace, multiple_source: bool, *normalizers: NormalizerProtocol) -> None:
+def fetch_cli(args: Namespace, multiple_source: bool, normalizers: Sequence[NormalizerProtocol]) -> None:
     try:
         if not multiple_source:
             _handle_fetch_single(args, normalizers[0])

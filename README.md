@@ -66,7 +66,8 @@ anitrack/
 │   ├── test_fetcher_anilist.py
 │   ├── test_fetcher_jikan.py
 │   └── test_normalizer.py
-└── requirements.txt                        # Dependencies: requests, jikanpy-v4, pandas
+├── requirements.txt                        # Dependencies: requests, jikanpy-v4, pandas
+└── requirements-dev.txt                    # Optional dependencies: pytest, mypy, pandas-stubs, types-requests
 ```
 
 ---
@@ -98,6 +99,9 @@ source .venv/bin/activate
 
 # 5. Install dependencies
 pip install -r requirements.txt
+
+# (Optional) Install dev dependencies
+pip install -r requirements-dev.txt
 ```
 
 ---

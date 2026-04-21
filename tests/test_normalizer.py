@@ -1,19 +1,24 @@
 import pytest
 from tests.fetchers_mock_data import MockAnilistFetcher, MockJikanFetcher
-from core.normalizer import ResponseNormalizer
+from core.normalizers.normalizer_factory import create_normalizer
 from core.models.anime_model import AnimeDataModel
+from core.models.protocols import NormalizerProtocol
 
 @pytest.fixture
-def response_normalizer() -> ResponseNormalizer:
-    return ResponseNormalizer(MockAnilistFetcher(), MockJikanFetcher())
+def anilist_normalizer() -> NormalizerProtocol:
+    return create_normalizer("anilist", MockAnilistFetcher())
 
 @pytest.fixture
-def anime_data_model_anilist(response_normalizer: ResponseNormalizer) -> AnimeDataModel:
-    return response_normalizer.get_anime_data_by_title("anilist", "Attack on titan", 0)
+def jikan_normalizer() -> NormalizerProtocol:
+    return create_normalizer("jikan", MockJikanFetcher())
 
 @pytest.fixture
-def anime_data_model_jikan(response_normalizer: ResponseNormalizer) -> AnimeDataModel:
-    return response_normalizer.get_anime_data_by_title("jikan", "Attack on titan", 0)
+def anime_data_model_anilist(anilist_normalizer: NormalizerProtocol) -> AnimeDataModel:
+    return anilist_normalizer.get_anime_by_title("Attack on titan")
+
+@pytest.fixture
+def anime_data_model_jikan(jikan_normalizer: NormalizerProtocol) -> AnimeDataModel:
+    return jikan_normalizer.get_anime_by_title("Attack on titan")
 
 def test_response_normalizer_anilist_value(anime_data_model_anilist: AnimeDataModel):
     assert anime_data_model_anilist.id == 16498

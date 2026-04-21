@@ -42,7 +42,7 @@ anitrack/
 ├── core/
 │   ├── models/
 │   │    ├── anime_model.py                 # Dataclasses: AnimeDataModel
-│   │    └── protocols.py                   # Protocols: FetchersProtocol
+│   │    └── protocols.py                   # Protocols: FetchersProtocol, NormalizerProtocol
 │   ├── cli/
 │   │    ├── fetch_cli.py                   # Fetch data then print
 │   │    ├── export_cli.py                  # Fetch data then save
@@ -52,8 +52,12 @@ anitrack/
 │   │    ├── fetcher_factory.py             # Fetchers factory
 │   │    ├── anilist_fetcher.py             # Fetcher for anilist API
 │   │    └── jikan_fetcher.py               # Fetcher for jikan API
+│   ├── normalizers/
+│   │    ├── base_normalizer.py             # Abstract base class for normalizers
+│   │    ├── normalizer_factory.py          # Normalizers factory
+│   │    ├── anilist_normalizer.py          # Normalizer for Anilist API data
+│   │    └── jikan_normalizer.py            # Normalizer for Jikan API data
 │   ├── exceptions.py                       # Custom exception hierarchy
-│   ├── normalizer.py                       # API Data normalizer
 │   └── file_handler.py                     # File handler for DataIO
 ├── storage/
 │   └── *.csv                               # Saved data outputs
@@ -76,7 +80,23 @@ git clone https://github.com/Rifki-NQ/anitrack
 # 2. Navigate into the project directory
 cd anitrack
 
-# 3. Install dependencies
+# 3. Create a virtual environment
+
+# Linux / macOS
+python3 -m venv .venv
+
+# Windows
+python -m venv .venv
+
+# 4. Activate the virtual environment
+
+# Linux / macOS
+source .venv/bin/activate
+
+# Windows
+.venv\Scripts\activate
+
+# 5. Install dependencies
 pip install -r requirements.txt
 ```
 

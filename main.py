@@ -1,6 +1,6 @@
 import argparse
 from core.models.anime_model import VALID_DATA_SOURCES
-from core.cli.fetch_cli import fetch_cli
+from core.cli.fetch_cli import FetchCLI
 from core.cli.export_cli import ExportCLI
 from core.fetchers.fetcher_factory import create_fetcher
 from core.normalizers.normalizer_factory import create_normalizer
@@ -44,14 +44,15 @@ def main_parser():
         elif args.max_entry is not None and not args.show_title:
             fetch_parser.error("--max-entry can only be used with --show-title")
 
+        fetch_cli = FetchCLI()
         if args.source == "all":
-            fetch_cli(
+            fetch_cli.handle_fetch_cli(
                 args,
                 True,
                 [create_normalizer(source, create_fetcher(source)) for source in VALID_DATA_SOURCES]
                 )
             return
-        fetch_cli(
+        fetch_cli.handle_fetch_cli(
             args,
             False,
             [create_normalizer(args.source, create_fetcher(args.source))]

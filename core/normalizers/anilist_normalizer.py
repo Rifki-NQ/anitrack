@@ -47,10 +47,18 @@ class AnilistNormalizer(BaseNormalizer):
             end_date=self._get_date(data["endDate"]),
             studio=self._get_animation_studio(data["studios"]["nodes"]),
             source=data["source"],
-            genres=data["genres"],
+            genres=self._get_genres(data["genres"]),
             all_time_rank=self._get_ranking("RATED", data["rankings"]),
             all_time_popularity=self._get_ranking("POPULAR", data["rankings"])
         )
+        
+    def _get_date(self, dates: dict[str, int]) -> str | None:
+        try:
+            return f"{dates['year']}-{dates['month']:02d}-{dates['day']:02d}"
+        except KeyError:
+            return None
+        except TypeError:
+            return None
         
     def _get_animation_studio(
         self,
@@ -60,15 +68,9 @@ class AnilistNormalizer(BaseNormalizer):
             if node["isAnimationStudio"]:
                 return str(node["name"])
         return None
-    
-    def _get_date(self, dates: dict[str, int]) -> str | None:
-        try:
-            return f"{dates['year']}-{dates['month']:02d}-{dates['day']:02d}"
-        except KeyError:
-            return None
-        except TypeError:
-            return None
         
+    def _get_genres(self, genres: list[str]) -> str:
+        return "|".join(genres)
         
     def _get_ranking(
         self,

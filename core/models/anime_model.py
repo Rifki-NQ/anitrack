@@ -16,6 +16,6 @@ class AnimeDataModel:
     end_date: str | None
     studio: str | None
     source: str | None
-    genres: list[str]
+    genres: str | None
     all_time_rank: int | None
     all_time_popularity: int | None

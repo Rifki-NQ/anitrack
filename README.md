@@ -1,6 +1,6 @@
-# anitrack
+# joho
 
-anitrack is a command line tool that lets you fetch anime data
+joho is a command line tool that lets you fetch anime data
 from public APIs like [MyAnimeList](https://myanimelist.net/) (via Jikan) and [Anilist](https://anilist.co/).
 
 You can search anime by title or ID and export the data to a CSV file.
@@ -37,7 +37,7 @@ Save fetched anime data to a CSV file.
 ## Project Structure
 
 ```bash
-anitrack/
+joho/
 ├── main.py                                 # Entry point; argparser and subcommands
 ├── core/
 │   ├── models/
@@ -77,10 +77,10 @@ anitrack/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Rifki-NQ/anitrack
+git clone https://github.com/Rifki-NQ/joho
 
 # 2. Navigate into the project directory
-cd anitrack
+cd joho
 
 # 3. Create a virtual environment
 

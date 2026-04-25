@@ -7,6 +7,7 @@ from joho.core.models.protocols import NormalizerProtocol
 from joho.core.constants import DEFAULT_ENTRY_INDEX
 from joho.core.exceptions import FetcherError, EntryIndexError
 
+
 class ExportCLI:
     def __init__(self, file_handler: DataIO) -> None:
         self.file_handler = file_handler
@@ -16,7 +17,7 @@ class ExportCLI:
         args: Namespace,
         multiple_source: bool,
         normalizers: Sequence[NormalizerProtocol],
-        ) -> None:
+    ) -> None:
         try:
             if not multiple_source:
                 self._handle_export_single(args, normalizers[0])
@@ -25,13 +26,15 @@ class ExportCLI:
         except FetcherError as e:
             print(e)
         except EntryIndexError:
-            print(f"Error: out of bound entry index: {args.entry}, for title: {args.title}")
+            print(
+                f"Error: out of bound entry index: {args.entry}, for title: {args.title}"
+            )
 
     def _handle_export_single(
         self,
         args: Namespace,
         normalizer: NormalizerProtocol,
-        ) -> None:
+    ) -> None:
         if args.title:
             if args.save_all:
                 all_data = normalizer.get_all_anime_by_title(args.title, args.max_entry)
@@ -47,7 +50,7 @@ class ExportCLI:
         self,
         args: Namespace,
         normalizers: Iterable[NormalizerProtocol],
-        ) -> None:
+    ) -> None:
         if args.title:
             data_collection = get_all_data_by_title(args, *normalizers)
             if args.save_all:
@@ -57,8 +60,10 @@ class ExportCLI:
                 try:
                     self._save_entry(
                         args,
-                        all_data[DEFAULT_ENTRY_INDEX if args.entry is None else args.entry]
-                        )
+                        all_data[
+                            DEFAULT_ENTRY_INDEX if args.entry is None else args.entry
+                        ],
+                    )
                 except IndexError as e:
                     raise EntryIndexError from e
         elif args.id:
@@ -69,26 +74,18 @@ class ExportCLI:
         self,
         args: Namespace,
         entry_data: AnimeDataModel,
-        ) -> None:
+    ) -> None:
         self.file_handler.save_data(entry_data, args.path, args.overwrite)
 
     def _save_data_list(
-        self,
-        args: Namespace,
-        data_list: Iterable[AnimeDataModel]
-        ) -> None:
+        self, args: Namespace, data_list: Iterable[AnimeDataModel]
+    ) -> None:
         self.file_handler.save_all_data(data_list, args.path, args.overwrite)
 
     def _save_data_collection(
-        self,
-        args: Namespace,
-        data_collection: Iterable[Iterable[AnimeDataModel]]
-        ) -> None:
+        self, args: Namespace, data_collection: Iterable[Iterable[AnimeDataModel]]
+    ) -> None:
         overwrite: bool = args.overwrite
         for data_list in data_collection:
-            self.file_handler.save_all_data(
-                data_list,
-                args.path,
-                overwrite
-            )
+            self.file_handler.save_all_data(data_list, args.path, overwrite)
             overwrite = False

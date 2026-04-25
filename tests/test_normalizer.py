@@ -4,21 +4,26 @@ from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.models.anime_model import AnimeDataModel
 from joho.core.models.protocols import NormalizerProtocol
 
+
 @pytest.fixture
 def anilist_normalizer() -> NormalizerProtocol:
     return create_normalizer("anilist", MockAnilistFetcher())
+
 
 @pytest.fixture
 def jikan_normalizer() -> NormalizerProtocol:
     return create_normalizer("jikan", MockJikanFetcher())
 
+
 @pytest.fixture
 def anime_data_model_anilist(anilist_normalizer: NormalizerProtocol) -> AnimeDataModel:
     return anilist_normalizer.get_anime_by_title("Attack on titan")
 
+
 @pytest.fixture
 def anime_data_model_jikan(jikan_normalizer: NormalizerProtocol) -> AnimeDataModel:
     return jikan_normalizer.get_anime_by_title("Attack on titan")
+
 
 def test_response_normalizer_anilist_value(anime_data_model_anilist: AnimeDataModel):
     assert anime_data_model_anilist.data_source == "anilist"
@@ -37,7 +42,8 @@ def test_response_normalizer_anilist_value(anime_data_model_anilist: AnimeDataMo
     assert anime_data_model_anilist.genres == "Action|Drama|Fantasy|Mystery"
     assert anime_data_model_anilist.all_time_rank == 73
     assert anime_data_model_anilist.all_time_popularity == 1
-    
+
+
 def test_response_normalizer_jikan_value(anime_data_model_jikan: AnimeDataModel):
     assert anime_data_model_jikan.data_source == "jikan"
     assert anime_data_model_jikan.id == 16498

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from joho.core.constants import DATA_SOURCES
 
+
 @dataclass
 class AnimeDataModel:
     data_source: DATA_SOURCES

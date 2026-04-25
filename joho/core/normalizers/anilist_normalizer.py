@@ -5,11 +5,14 @@ from joho.core.models.protocols import FetchersProtocol
 from joho.core.constants import DEFAULT_ENTRY_INDEX
 from joho.core.exceptions import EntryIndexError
 
+
 class AnilistNormalizer(BaseNormalizer):
     def __init__(self, anilist_fetcher: FetchersProtocol) -> None:
         self.anilist_fetcher = anilist_fetcher
-    
-    def get_anime_by_title(self, anime_title: str, entry_index: int | None = None) -> AnimeDataModel:
+
+    def get_anime_by_title(
+        self, anime_title: str, entry_index: int | None = None
+    ) -> AnimeDataModel:
         if entry_index is None:
             entry_index = DEFAULT_ENTRY_INDEX
         raw_data_list = self.anilist_fetcher.fetch_data_by_title(anime_title)
@@ -17,21 +20,23 @@ class AnilistNormalizer(BaseNormalizer):
             return self._anilist_to_anime_model(raw_data_list[entry_index])
         except IndexError as e:
             raise EntryIndexError from e
-    
+
     def get_anime_by_id(self, anime_id: int) -> AnimeDataModel:
         raw_data = self.anilist_fetcher.fetch_data_by_id(anime_id)
         return self._anilist_to_anime_model(raw_data)
-    
-    def get_all_anime_by_title(self, anime_title: str, max_entry: int | None = None) -> list[AnimeDataModel]:
+
+    def get_all_anime_by_title(
+        self, anime_title: str, max_entry: int | None = None
+    ) -> list[AnimeDataModel]:
         raw_data_list = self.anilist_fetcher.fetch_data_by_title(anime_title)
         data_model_list: list[AnimeDataModel] = []
         for entry_num, data in enumerate(raw_data_list, 1):
-            #inclusive for max_entry value
-            if max_entry is not None and entry_num > max_entry: 
+            # inclusive for max_entry value
+            if max_entry is not None and entry_num > max_entry:
                 break
             data_model_list.append(self._anilist_to_anime_model(data))
         return data_model_list
-    
+
     def _anilist_to_anime_model(self, data: dict[str, Any]) -> AnimeDataModel:
         return AnimeDataModel(
             data_source="anilist",
@@ -49,9 +54,9 @@ class AnilistNormalizer(BaseNormalizer):
             source=data["source"],
             genres=self._get_genres(data["genres"]),
             all_time_rank=self._get_ranking("RATED", data["rankings"]),
-            all_time_popularity=self._get_ranking("POPULAR", data["rankings"])
+            all_time_popularity=self._get_ranking("POPULAR", data["rankings"]),
         )
-        
+
     def _get_date(self, dates: dict[str, int]) -> str | None:
         try:
             return f"{dates['year']}-{dates['month']:02d}-{dates['day']:02d}"
@@ -59,24 +64,23 @@ class AnilistNormalizer(BaseNormalizer):
             return None
         except TypeError:
             return None
-        
+
     def _get_animation_studio(
-        self,
-        studio_nodes: list[dict[str, bool | str]]
-        ) -> str | None:
+        self, studio_nodes: list[dict[str, bool | str]]
+    ) -> str | None:
         for node in studio_nodes:
             if node["isAnimationStudio"]:
                 return str(node["name"])
         return None
-        
+
     def _get_genres(self, genres: list[str]) -> str:
         return "|".join(genres)
-        
+
     def _get_ranking(
         self,
         rank_type: Literal["RATED", "POPULAR"],
-        rankings: list[dict[str, bool | str]]
-        ) -> int | None:
+        rankings: list[dict[str, bool | str]],
+    ) -> int | None:
         for rank in rankings:
             if rank["type"] == rank_type and rank["allTime"]:
                 return int(rank["rank"])

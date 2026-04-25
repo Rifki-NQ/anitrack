@@ -5,10 +5,15 @@ from joho.core.models.protocols import FetchersProtocol
 from joho.core.constants import DATA_SOURCES, VALID_DATA_SOURCES
 from joho.core.exceptions import InvalidDataSource
 
-def create_normalizer(source: DATA_SOURCES, fetcher: FetchersProtocol) -> BaseNormalizer:
+
+def create_normalizer(
+    source: DATA_SOURCES, fetcher: FetchersProtocol
+) -> BaseNormalizer:
     if source == "anilist":
         return AnilistNormalizer(fetcher)
     elif source == "jikan":
         return JikanNormalizer(fetcher)
     else:
-        raise InvalidDataSource(f"Invalid data source provided ({source}), expected ({VALID_DATA_SOURCES})")
+        raise InvalidDataSource(
+            f"Invalid data source provided ({source}), expected ({VALID_DATA_SOURCES})"
+        )

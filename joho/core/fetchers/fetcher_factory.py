@@ -4,10 +4,13 @@ from joho.core.fetchers.jikan_fetcher import FetchJikan
 from joho.core.constants import DATA_SOURCES, VALID_DATA_SOURCES
 from joho.core.exceptions import InvalidDataSource
 
+
 def create_fetcher(data_source: DATA_SOURCES) -> FetchData:
     if data_source == "anilist":
         return FetchAnilist()
     elif data_source == "jikan":
         return FetchJikan()
     else:
-        raise InvalidDataSource(f"Invalid data source provided ({data_source}), expected ({VALID_DATA_SOURCES})")
+        raise InvalidDataSource(
+            f"Invalid data source provided ({data_source}), expected ({VALID_DATA_SOURCES})"
+        )

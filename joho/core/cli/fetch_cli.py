@@ -7,13 +7,14 @@ from joho.core.models.protocols import NormalizerProtocol
 from joho.core.constants import DEFAULT_ENTRY_INDEX
 from joho.core.exceptions import FetcherError, EntryIndexError
 
+
 class FetchCLI:
     def handle_fetch_cli(
         self,
         args: Namespace,
         multiple_source: bool,
-        normalizers: Sequence[NormalizerProtocol]
-        ) -> None:
+        normalizers: Sequence[NormalizerProtocol],
+    ) -> None:
         try:
             if not multiple_source:
                 self._handle_fetch_single(args, normalizers[0])
@@ -22,13 +23,13 @@ class FetchCLI:
         except FetcherError as e:
             print(e)
         except EntryIndexError:
-            print(f"Error: out of bound entry index: {args.entry}, for title: {args.title}")
+            print(
+                f"Error: out of bound entry index: {args.entry}, for title: {args.title}"
+            )
 
     def _handle_fetch_single(
-        self,
-        args: Namespace,
-        normalizer: NormalizerProtocol
-        ) -> None:
+        self, args: Namespace, normalizer: NormalizerProtocol
+    ) -> None:
         if args.title:
             if args.show_title:
                 all_data = normalizer.get_all_anime_by_title(args.title, args.max_entry)
@@ -41,10 +42,8 @@ class FetchCLI:
             self._show_entry(data)
 
     def _handle_fetch_multiple(
-        self,
-        args: Namespace,
-        normalizers: Iterable[NormalizerProtocol]
-        ) -> None:
+        self, args: Namespace, normalizers: Iterable[NormalizerProtocol]
+    ) -> None:
         if args.title:
             data_collection = get_all_data_by_title(args, *normalizers)
             if args.show_title:
@@ -53,7 +52,11 @@ class FetchCLI:
                 return
             for all_data in data_collection:
                 try:
-                    self._show_entry(all_data[DEFAULT_ENTRY_INDEX if args.entry is None else args.entry])
+                    self._show_entry(
+                        all_data[
+                            DEFAULT_ENTRY_INDEX if args.entry is None else args.entry
+                        ]
+                    )
                 except IndexError as e:
                     raise EntryIndexError from e
         elif args.id:

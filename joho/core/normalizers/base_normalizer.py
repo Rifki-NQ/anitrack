@@ -1,16 +1,23 @@
 from abc import ABC, abstractmethod
 from joho.core.models.anime_model import AnimeDataModel
 
+
 class BaseNormalizer(ABC):
     @abstractmethod
-    def get_anime_by_title(self, anime_title: str, entry_index: int | None = None) -> AnimeDataModel:
+    def get_anime_by_title(
+        self, anime_title: str, entry_index: int | None = None
+    ) -> AnimeDataModel:
         pass
-    
+
     @abstractmethod
-    def get_anime_by_id(self, anime_id: int, ) -> AnimeDataModel:
+    def get_anime_by_id(
+        self,
+        anime_id: int,
+    ) -> AnimeDataModel:
         pass
-    
+
     @abstractmethod
-    def get_all_anime_by_title(self, anime_title: str,
-                               max_entry: int | None = None) -> list[AnimeDataModel]:
+    def get_all_anime_by_title(
+        self, anime_title: str, max_entry: int | None = None
+    ) -> list[AnimeDataModel]:
         pass

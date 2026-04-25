@@ -1,5 +1,5 @@
 from typing import Protocol, Any
-from core.models.anime_model import AnimeDataModel
+from joho.core.models.anime_model import AnimeDataModel
 
 class FetchersProtocol(Protocol):
     def fetch_data_by_title(self, anime_title: str) -> list[dict[str, Any]]:

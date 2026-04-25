@@ -1,7 +1,7 @@
 import requests
 from typing import Any
-from core.fetchers.base_fetcher import FetchData, check_internet
-from core.exceptions import AnilistError, AppConnectionError
+from joho.core.fetchers.base_fetcher import FetchData, check_internet
+from joho.core.exceptions import AnilistError, AppConnectionError
 
 class FetchAnilist(FetchData):
     BASE_URL = "https://graphql.anilist.co"

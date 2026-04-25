@@ -1,7 +1,7 @@
 from jikanpy import Jikan, APIException
 from typing import Any
-from core.fetchers.base_fetcher import FetchData, check_internet
-from core.exceptions import JikanError
+from joho.core.fetchers.base_fetcher import FetchData, check_internet
+from joho.core.exceptions import JikanError
 
 class FetchJikan(FetchData):
     def __init__(self) -> None:

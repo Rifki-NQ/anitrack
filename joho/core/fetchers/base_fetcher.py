@@ -2,7 +2,7 @@ import socket
 from abc import ABC, abstractmethod
 from typing import Any, Callable, TypeVar, ParamSpec
 from functools import wraps
-from core.exceptions import AppConnectionError
+from joho.core.exceptions import AppConnectionError
 
 P = ParamSpec("P")
 R = TypeVar("R")

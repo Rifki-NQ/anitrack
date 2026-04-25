@@ -1,6 +1,6 @@
 import pytest
 from typing import Any
-from core.fetchers.fetcher_factory import create_fetcher
+from joho.core.fetchers.fetcher_factory import create_fetcher
 
 jikan_fetcher = create_fetcher("jikan")
 anime_title = "Attack on titan"

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from core.models.anime_model import AnimeDataModel
+from joho.core.models.anime_model import AnimeDataModel
 
 class BaseNormalizer(ABC):
     @abstractmethod

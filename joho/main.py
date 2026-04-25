@@ -1,11 +1,11 @@
 import argparse
-from core.cli.fetch_cli import FetchCLI
-from core.cli.export_cli import ExportCLI
-from core.fetchers.fetcher_factory import create_fetcher
-from core.normalizers.normalizer_factory import create_normalizer
-from core.file_handler import valid_filepath
-from core.file_handler import DataIO
-from core.constants import VALID_DATA_SOURCES
+from joho.core.cli.fetch_cli import FetchCLI
+from joho.core.cli.export_cli import ExportCLI
+from joho.core.fetchers.fetcher_factory import create_fetcher
+from joho.core.normalizers.normalizer_factory import create_normalizer
+from joho.core.file_handler import valid_filepath
+from joho.core.file_handler import DataIO
+from joho.core.constants import VALID_DATA_SOURCES
 
 def main_parser():
     VALID_SOURCES = {"anilist", "jikan", "all"}

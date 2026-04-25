@@ -1,7 +1,7 @@
 from argparse import Namespace
 import asyncio
-from core.models.anime_model import AnimeDataModel
-from core.models.protocols import NormalizerProtocol
+from joho.core.models.anime_model import AnimeDataModel
+from joho.core.models.protocols import NormalizerProtocol
 
 def get_all_data_by_title(args: Namespace, *normalizers: NormalizerProtocol) -> list[list[AnimeDataModel]]:
     return asyncio.run(_get_all_by_title(args, *normalizers))

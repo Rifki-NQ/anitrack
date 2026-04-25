@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Iterable
 from dataclasses import fields, asdict
 from argparse import ArgumentTypeError
-from core.models.anime_model import AnimeDataModel
+from joho.core.models.anime_model import AnimeDataModel
 
 #filepath validation for argparse --path
 def valid_filepath(filepath: str) -> Path:

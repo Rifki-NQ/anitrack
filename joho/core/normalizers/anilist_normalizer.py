@@ -1,9 +1,9 @@
 from typing import Any, Literal
-from core.models.anime_model import AnimeDataModel
-from core.normalizers.base_normalizer import BaseNormalizer
-from core.models.protocols import FetchersProtocol
-from core.constants import DEFAULT_ENTRY_INDEX
-from core.exceptions import EntryIndexError
+from joho.core.models.anime_model import AnimeDataModel
+from joho.core.normalizers.base_normalizer import BaseNormalizer
+from joho.core.models.protocols import FetchersProtocol
+from joho.core.constants import DEFAULT_ENTRY_INDEX
+from joho.core.exceptions import EntryIndexError
 
 class AnilistNormalizer(BaseNormalizer):
     def __init__(self, anilist_fetcher: FetchersProtocol) -> None:

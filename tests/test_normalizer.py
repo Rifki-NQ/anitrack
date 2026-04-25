@@ -1,8 +1,8 @@
 import pytest
 from tests.fetchers_mock_data import MockAnilistFetcher, MockJikanFetcher
-from core.normalizers.normalizer_factory import create_normalizer
-from core.models.anime_model import AnimeDataModel
-from core.models.protocols import NormalizerProtocol
+from joho.core.normalizers.normalizer_factory import create_normalizer
+from joho.core.models.anime_model import AnimeDataModel
+from joho.core.models.protocols import NormalizerProtocol
 
 @pytest.fixture
 def anilist_normalizer() -> NormalizerProtocol:

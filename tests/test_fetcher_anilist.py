@@ -1,6 +1,6 @@
 import pytest
 from typing import Any
-from core.fetchers.fetcher_factory import create_fetcher
+from joho.core.fetchers.fetcher_factory import create_fetcher
 
 anilist_fetcher = create_fetcher("anilist")
 anime_title = "Attack on Titan"

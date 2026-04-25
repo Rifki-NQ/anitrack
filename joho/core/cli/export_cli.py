@@ -1,11 +1,11 @@
 from argparse import Namespace
 from typing import Iterable, Sequence
-from core.file_handler import DataIO
-from core.cli.cli_utils import get_all_data_by_title, get_all_data_by_id
-from core.models.anime_model import AnimeDataModel
-from core.models.protocols import NormalizerProtocol
-from core.constants import DEFAULT_ENTRY_INDEX
-from core.exceptions import FetcherError, EntryIndexError
+from joho.core.file_handler import DataIO
+from joho.core.cli.cli_utils import get_all_data_by_title, get_all_data_by_id
+from joho.core.models.anime_model import AnimeDataModel
+from joho.core.models.protocols import NormalizerProtocol
+from joho.core.constants import DEFAULT_ENTRY_INDEX
+from joho.core.exceptions import FetcherError, EntryIndexError
 
 class ExportCLI:
     def __init__(self, file_handler: DataIO) -> None:

@@ -114,7 +114,7 @@ pip install -e ".[dev]"
 ## Usage
 
 ``` bash
-<command> [options]
+joho <command> [options]
 ```
 
 ### Commands
@@ -145,16 +145,16 @@ fetch --source <source> (--title <title> | --id <id>) [--entry <entry> | --show-
 
 ```bash
 # Fetch by title
-python main.py fetch --source anilist --title "Steins;Gate"
+joho fetch --source anilist --title "Steins;Gate"
 
 # Fetch by ID
-python main.py fetch --source jikan --id 9253
+joho fetch --source jikan --id 9253
 
 # Fetch anime titles
-python main.py fetch --source all --title "mushoku tensei" --show-title
+joho fetch --source all --title "mushoku tensei" --show-title
 
 # Show fetch subcommand help
-python main.py fetch --help
+joho fetch --help
 ```
 
 #### `export` — Fetch and save anime data to a file
@@ -186,19 +186,19 @@ export --source <source> (--title <title> | --id <id>) --path <path> [--entry <e
 
 ```bash
 # Export by title
-python main.py export --source anilist --title "Steins;Gate" --path storage/data.csv
+joho export --source anilist --title "Steins;Gate" --path storage/data.csv
 
 # Export by ID
-python main.py export --source jikan --id 9253 --path storage/data.csv
+joho export --source jikan --id 9253 --path storage/data.csv
 
 # Export and overwrite the data
-python main.py export --source all --title "Steins;Gate" --path storage/data.csv --overwrite
+joho export --source all --title "Steins;Gate" --path storage/data.csv --overwrite
 
 # Export all entries
-python main.py export --source anilist --title "mushoku tensei" --path storage/data.csv --save-all
+joho export --source anilist --title "mushoku tensei" --path storage/data.csv --save-all
 
 # Show export subcommand help
-python main.py export --help
+joho export --help
 ```
 
 ---
@@ -208,7 +208,7 @@ python main.py export --help
 **Command:**
 
 ```bash
-python main.py fetch --source jikan --title "one piece" --entry 1
+joho fetch --source jikan --title "one piece" --entry 1
 ```
 
 **Result:**
@@ -228,7 +228,7 @@ genres: ['Action', 'Adventure', 'Fantasy']
 **Command:**
 
 ```bash
-python main.py fetch --source all --title "mushoku tensei"
+joho fetch --source all --title "mushoku tensei"
 ```
 
 **Result:**
@@ -256,7 +256,7 @@ genres: ['Adventure', 'Drama', 'Fantasy', 'Ecchi']
 **Command:**
 
 ```bash
-python main.py fetch --source jikan --title "mushoku tensei" --show-title --max-entry 10
+joho fetch --source jikan --title "mushoku tensei" --show-title --max-entry 10
 ```
 
 **Result:**
@@ -281,7 +281,7 @@ Romaji title | English title
 **Command:**
 
 ```bash
-python main.py export --source anilist --title "steins gate" --path storage/data.csv
+joho export --source anilist --title "steins gate" --path storage/data.csv
 ```
 
 **Result:**
@@ -298,15 +298,15 @@ anilist,9253,Steins;Gate,Steins;Gate,89,24,"['Drama', 'Psychological', 'Sci-Fi',
 **Command:**
 
 ```bash
-python main.py export --source anilist --title "steins gate" --path storage/data.csv --entry 1
+joho export --source anilist --title "steins gate" --path storage/data.csv --entry 1
 ```
 
 **Result:**
 
 ```bash
 source,id,english_title,romaji_title,average_score,episodes,genres
-anilist,9253,Steins;Gate,Steins;Gate,89,24,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']" # <- previous data
-anilist,21127,Steins;Gate 0,Steins;Gate 0,84,23,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']" # <- appends new data
+anilist,9253,Steins;Gate,Steins;Gate,89,24,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']" # <- previous data (note)
+anilist,21127,Steins;Gate 0,Steins;Gate 0,84,23,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']" # <- appends new data (note)
 ```
 
 > - The exported data is saved to `storage/data.csv`.
@@ -317,7 +317,7 @@ anilist,21127,Steins;Gate 0,Steins;Gate 0,84,23,"['Drama', 'Psychological', 'Sci
 **Command:**
 
 ```bash
-python main.py export --source all --title "mushoku tensei" --path storage/data.csv --save-all --max-entry 5 --overwrite
+joho export --source all --title "mushoku tensei" --path storage/data.csv --save-all --max-entry 5 --overwrite
 ```
 
 **Result:**

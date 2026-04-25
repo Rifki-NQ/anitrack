@@ -7,9 +7,9 @@ from joho.core.file_handler import valid_filepath
 from joho.core.file_handler import DataIO
 from joho.core.constants import VALID_DATA_SOURCES
 
-def main_parser():
+def main_parser() -> None:
     VALID_SOURCES = {"anilist", "jikan", "all"}
-    parser = argparse.ArgumentParser(prog="anitrack")
+    parser = argparse.ArgumentParser(prog="joho")
     subparsers = parser.add_subparsers(dest="command")
 
     #subcommand fetch

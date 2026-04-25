@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 from core.models.anime_model import AnimeDataModel
 from core.normalizers.base_normalizer import BaseNormalizer
 from core.models.protocols import FetchersProtocol
@@ -34,11 +34,37 @@ class JikanNormalizer(BaseNormalizer):
     
     def _jikan_to_anime_model(self, data: dict[str, Any]) -> AnimeDataModel:
         return AnimeDataModel(
-            source="jikan",
+            data_source="jikan",
             id=data["mal_id"],
-            english_title=data["title_english"],
             romaji_title=data["title"],
-            average_score=data["score"],
+            english_title=data["title_english"],
+            format=data["type"],
             episodes=data["episodes"],
-            genres=[g["name"] for g in data["genres"]]
+            status=data["status"],
+            average_score=data["score"],
+            duration=data["duration"][:2],
+            start_date=self._get_date("start", data["aired"]),
+            end_date=self._get_date("end", data["aired"]),
+            studio=self._get_animation_studio(data["studios"]),
+            source=data["source"],
+            genres=self._get_genres(data["genres"]),
+            all_time_rank=data["rank"],
+            all_time_popularity=data["popularity"]
         )
+        
+    def _get_date(self, type: Literal["start", "end"], airing_date: dict[str, str | None]) -> str | None:
+        if airing_date["from"] is None or airing_date["to"] is None:
+            return None
+        elif type == "start":
+            return airing_date["from"][:10]
+        elif type == "end":
+            return airing_date["to"][:10]
+        return None
+    
+    def _get_animation_studio(self, studios: list[dict[str, str | int]] | None) -> str | None:
+        if not studios:
+            return None
+        return str(studios[0]["name"])
+        
+    def _get_genres(self, genres: list[dict[str, str | int]]) -> str:
+        return "|".join([str(g["name"]) for g in genres])

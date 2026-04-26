@@ -22,11 +22,21 @@ You can search anime by title or ID and export the data to a CSV file.
 
 Retrieve anime data from the API using either a title string or a numeric ID. Each result includes:
 
-- `id` — unique anime identifier
-- `english_title` / `romaji_title` — localized title variants
-- `average_score` — community rating
-- `episodes` — total episode count
-- `genres` — list of genre tags
+- `data_source`
+- `romaji_title`
+- `english_title`
+- `format`
+- `episodes`
+- `status`
+- `average_score`
+- `duration`
+- `start_date`
+- `end_date`
+- `studio`
+- `source`
+- `genres`
+- `all_time_rank`
+- `all_time_popularity`
 
 ### Export Anime Data
 
@@ -214,13 +224,22 @@ joho fetch --source jikan --title "one piece" --entry 1
 **Result:**
 
 ```bash
-source: jikan
+data_source: jikan
 id: 21
-english_title: One Piece
 romaji_title: One Piece
-average_score: 8.73
+english_title: One Piece
+format: TV
 episodes: None
-genres: ['Action', 'Adventure', 'Fantasy']
+status: Currently Airing
+average_score: 8.73
+duration: 00:24
+start_date: 1999-10-20
+end_date: None
+studio: Toei Animation
+source: Manga
+genres: Action|Adventure|Fantasy
+all_time_rank: 54
+all_time_popularity: 17
 ```
 
 ---
@@ -234,21 +253,39 @@ joho fetch --source all --title "mushoku tensei"
 **Result:**
 
 ```bash
-source: anilist
+data_source: anilist
 id: 108465
-english_title: Mushoku Tensei: Jobless Reincarnation
 romaji_title: Mushoku Tensei: Isekai Ittara Honki Dasu
+english_title: Mushoku Tensei: Jobless Reincarnation
+format: TV
+episodes: 11
+status: FINISHED
 average_score: 82
-episodes: 11
-genres: ['Adventure', 'Drama', 'Ecchi', 'Fantasy']
+duration: 00:24
+start_date: 2021-01-11
+end_date: 2021-03-22
+studio: Studio Bind
+source: LIGHT_NOVEL
+genres: Adventure|Drama|Ecchi|Fantasy
+all_time_rank: 190
+all_time_popularity: 66
 
-source: jikan
+data_source: jikan
 id: 39535
-english_title: Mushoku Tensei: Jobless Reincarnation
 romaji_title: Mushoku Tensei: Isekai Ittara Honki Dasu
-average_score: 8.33
+english_title: Mushoku Tensei: Jobless Reincarnation
+format: TV
 episodes: 11
-genres: ['Adventure', 'Drama', 'Fantasy', 'Ecchi']
+status: Finished Airing
+average_score: 8.33
+duration: 00:23
+start_date: 2021-01-11
+end_date: 2021-03-22
+studio: Studio Bind
+source: Light novel
+genres: Adventure|Drama|Fantasy|Ecchi
+all_time_rank: 293
+all_time_popularity: 84
 ```
 
 ---
@@ -287,8 +324,8 @@ joho export --source anilist --title "steins gate" --path storage/data.csv
 **Result:**
 
 ```bash
-source,id,english_title,romaji_title,average_score,episodes,genres
-anilist,9253,Steins;Gate,Steins;Gate,89,24,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']"
+data_source,id,romaji_title,english_title,format,episodes,status,average_score,duration,start_date,end_date,studio,source,genres,all_time_rank,all_time_popularity
+anilist,9253,Steins;Gate,Steins;Gate,TV,24,FINISHED,89,00:24,2011-04-06,2011-09-14,WHITE FOX,VISUAL_NOVEL,Drama|Psychological|Sci-Fi|Thriller,7,27
 ```
 
 > The exported data is saved to `storage/data.csv`.
@@ -304,9 +341,9 @@ joho export --source anilist --title "steins gate" --path storage/data.csv --ent
 **Result:**
 
 ```bash
-source,id,english_title,romaji_title,average_score,episodes,genres
-anilist,9253,Steins;Gate,Steins;Gate,89,24,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']" # <- previous data (note)
-anilist,21127,Steins;Gate 0,Steins;Gate 0,84,23,"['Drama', 'Psychological', 'Sci-Fi', 'Thriller']" # <- appends new data (note)
+data_source,id,romaji_title,english_title,format,episodes,status,average_score,duration,start_date,end_date,studio,source,genres,all_time_rank,all_time_popularity
+anilist,9253,Steins;Gate,Steins;Gate,TV,24,FINISHED,89,00:24,2011-04-06,2011-09-14,WHITE FOX,VISUAL_NOVEL,Drama|Psychological|Sci-Fi|Thriller,7,27
+anilist,21127,Steins;Gate 0,Steins;Gate 0,TV,23,FINISHED,84,00:24,2018-04-12,2018-09-27,WHITE FOX,VISUAL_NOVEL,Drama|Psychological|Sci-Fi|Thriller,102,221
 ```
 
 > - The exported data is saved to `storage/data.csv`.
@@ -323,17 +360,17 @@ joho export --source all --title "mushoku tensei" --path storage/data.csv --save
 **Result:**
 
 ```bash
-source,id,english_title,romaji_title,average_score,episodes,genres
-anilist,108465,Mushoku Tensei: Jobless Reincarnation,Mushoku Tensei: Isekai Ittara Honki Dasu,82.0,11.0,"['Adventure', 'Drama', 'Ecchi', 'Fantasy']"
-anilist,146065,Mushoku Tensei: Jobless Reincarnation Season 2,Mushoku Tensei II: Isekai Ittara Honki Dasu,81.0,13.0,"['Adventure', 'Drama', 'Ecchi', 'Fantasy']"
-anilist,178789,Mushoku Tensei: Jobless Reincarnation Season 3,Mushoku Tensei III: Isekai Ittara Honki Dasu,,,"['Adventure', 'Drama', 'Ecchi', 'Fantasy']"
-anilist,166873,Mushoku Tensei: Jobless Reincarnation Season 2 Part 2,Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2,83.0,12.0,"['Adventure', 'Drama', 'Ecchi', 'Fantasy']"
-anilist,127720,Mushoku Tensei: Jobless Reincarnation Cour 2,Mushoku Tensei: Isekai Ittara Honki Dasu Part 2,85.0,12.0,"['Adventure', 'Drama', 'Ecchi', 'Fantasy']"
-jikan,39535,Mushoku Tensei: Jobless Reincarnation,Mushoku Tensei: Isekai Ittara Honki Dasu,8.33,11.0,"['Adventure', 'Drama', 'Fantasy', 'Ecchi']"
-jikan,51179,Mushoku Tensei: Jobless Reincarnation Season 2,Mushoku Tensei II: Isekai Ittara Honki Dasu,8.2,12.0,"['Adventure', 'Drama', 'Fantasy', 'Ecchi']"
-jikan,55888,Mushoku Tensei: Jobless Reincarnation Season 2 Part 2,Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2,8.39,12.0,"['Adventure', 'Drama', 'Fantasy', 'Ecchi']"
-jikan,55818,"Mushoku Tensei: Jobless Reincarnation Season 2 - Episode 0 ""Guardian Fitz""",Mushoku Tensei II: Isekai Ittara Honki Dasu - Shugo Jutsushi Fitz,7.54,1.0,"['Adventure', 'Drama', 'Fantasy', 'Ecchi']"
-jikan,50360,Mushoku Tensei: Jobless Reincarnation - Eris the Goblin Slayer,Mushoku Tensei: Isekai Ittara Honki Dasu - Eris no Goblin Toubatsu,7.79,1.0,"['Adventure', 'Drama', 'Fantasy']"
+data_source,id,romaji_title,english_title,format,episodes,status,average_score,duration,start_date,end_date,studio,source,genres,all_time_rank,all_time_popularity
+anilist,108465,Mushoku Tensei: Isekai Ittara Honki Dasu,Mushoku Tensei: Jobless Reincarnation,TV,11.0,FINISHED,82.0,00:24,2021-01-11,2021-03-22,Studio Bind,LIGHT_NOVEL,Adventure|Drama|Ecchi|Fantasy,190.0,66.0
+anilist,146065,Mushoku Tensei II: Isekai Ittara Honki Dasu,Mushoku Tensei: Jobless Reincarnation Season 2,TV,13.0,FINISHED,81.0,00:24,2023-07-03,2023-09-25,Studio Bind,LIGHT_NOVEL,Adventure|Drama|Ecchi|Fantasy,231.0,199.0
+anilist,178789,Mushoku Tensei III: Isekai Ittara Honki Dasu,Mushoku Tensei: Jobless Reincarnation Season 3,TV,,NOT_YET_RELEASED,,,2026-07-06,,Studio Bind,LIGHT_NOVEL,Adventure|Drama|Ecchi|Fantasy,,
+anilist,166873,Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2,Mushoku Tensei: Jobless Reincarnation Season 2 Part 2,TV,12.0,FINISHED,83.0,00:24,2024-04-08,2024-07-01,Studio Bind,LIGHT_NOVEL,Adventure|Drama|Ecchi|Fantasy,133.0,282.0
+anilist,127720,Mushoku Tensei: Isekai Ittara Honki Dasu Part 2,Mushoku Tensei: Jobless Reincarnation Cour 2,TV,12.0,FINISHED,85.0,00:24,2021-10-04,2021-12-20,Studio Bind,LIGHT_NOVEL,Adventure|Drama|Ecchi|Fantasy,73.0,128.0
+jikan,39535,Mushoku Tensei: Isekai Ittara Honki Dasu,Mushoku Tensei: Jobless Reincarnation,TV,11.0,Finished Airing,8.33,00:23,2021-01-11,2021-03-22,Studio Bind,Light novel,Adventure|Drama|Fantasy|Ecchi,293.0,84.0
+jikan,51179,Mushoku Tensei II: Isekai Ittara Honki Dasu,Mushoku Tensei: Jobless Reincarnation Season 2,TV,12.0,Finished Airing,8.2,00:23,2023-07-10,2023-09-25,Studio Bind,Light novel,Adventure|Drama|Fantasy|Ecchi,448.0,308.0
+jikan,55888,Mushoku Tensei II: Isekai Ittara Honki Dasu Part 2,Mushoku Tensei: Jobless Reincarnation Season 2 Part 2,TV,12.0,Finished Airing,8.39,00:23,2024-04-08,2024-07-01,Studio Bind,Light novel,Adventure|Drama|Fantasy|Ecchi,236.0,437.0
+jikan,55818,Mushoku Tensei II: Isekai Ittara Honki Dasu - Shugo Jutsushi Fitz,"Mushoku Tensei: Jobless Reincarnation Season 2 - Episode 0 ""Guardian Fitz""",TV Special,1.0,Finished Airing,7.54,00:24,2023-07-03,,Studio Bind,Light novel,Adventure|Drama|Fantasy|Ecchi,2026.0,1144.0
+jikan,50360,Mushoku Tensei: Isekai Ittara Honki Dasu - Eris no Goblin Toubatsu,Mushoku Tensei: Jobless Reincarnation - Eris the Goblin Slayer,Special,1.0,Finished Airing,7.79,00:23,2022-03-16,,Studio Bind,Light novel,Adventure|Drama|Fantasy,1193.0,1312.0
 ```
 
 > - The exported data is saved to `storage/data.csv`.

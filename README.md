@@ -57,23 +57,28 @@ joho/
 │       ├── exceptions.py                  # Custom exception hierarchy
 │       ├── file_handler.py                # File handler for DataIO
 │       ├── models/
+│       │   ├── __init__.py
 │       │   ├── anime_model.py             # Dataclasses: AnimeDataModel
 │       │   └── protocols.py               # Protocols: FetchersProtocol, NormalizerProtocol
 │       ├── cli/
+│       │   ├── __init__.py
 │       │   ├── fetch_cli.py               # Fetch data then print
 │       │   ├── export_cli.py              # Fetch data then save
 │       │   └── cli_utils.py               # CLI Helper functions
 │       ├── fetchers/
+│       │   ├── __init__.py
 │       │   ├── base_fetcher.py            # Abstract base class for fetchers
 │       │   ├── fetcher_factory.py         # Fetchers factory
 │       │   ├── anilist_fetcher.py         # Fetcher for AniList API
 │       │   └── jikan_fetcher.py           # Fetcher for Jikan API
 │       └── normalizers/
+│       │   ├── __init__.py
 │           ├── base_normalizer.py         # Abstract base class for normalizers
 │           ├── normalizer_factory.py      # Normalizers factory
 │           ├── anilist_normalizer.py      # Normalizer for AniList API data
 │           └── jikan_normalizer.py        # Normalizer for Jikan API data
 ├── tests/
+│   ├── __init__.py
 │   ├── fetchers_mock_data.py              # Mock classes: MockAnilistFetcher, MockJikanFetcher
 │   ├── test_fetcher_anilist.py
 │   ├── test_fetcher_jikan.py

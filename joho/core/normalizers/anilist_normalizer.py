@@ -47,7 +47,7 @@ class AnilistNormalizer(BaseNormalizer):
             episodes=data["episodes"],
             status=data["status"],
             average_score=data["averageScore"],
-            duration=data["duration"],
+            duration=self._convert_duration(data["duration"]),
             start_date=self._get_date(data["startDate"]),
             end_date=self._get_date(data["endDate"]),
             studio=self._get_animation_studio(data["studios"]["nodes"]),
@@ -56,6 +56,12 @@ class AnilistNormalizer(BaseNormalizer):
             all_time_rank=self._get_ranking("RATED", data["rankings"]),
             all_time_popularity=self._get_ranking("POPULAR", data["rankings"]),
         )
+
+    def _convert_duration(self, minutes: int | None) -> str | None:
+        if minutes is None:
+            return None
+        hour, minute = divmod(minutes, 60)
+        return f"{hour:02d}:{minute:02d}"
 
     def _get_date(self, dates: dict[str, int]) -> str | None:
         try:

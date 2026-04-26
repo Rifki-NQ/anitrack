@@ -47,7 +47,7 @@ class JikanNormalizer(BaseNormalizer):
             episodes=data["episodes"],
             status=data["status"],
             average_score=data["score"],
-            duration=data["duration"][:2],
+            duration=self._get_duration(data["duration"]),
             start_date=self._get_date("start", data["aired"]),
             end_date=self._get_date("end", data["aired"]),
             studio=self._get_animation_studio(data["studios"]),
@@ -56,6 +56,22 @@ class JikanNormalizer(BaseNormalizer):
             all_time_rank=data["rank"],
             all_time_popularity=data["popularity"],
         )
+
+    # known duration formats
+    # 1 hr 46 min (kimi no nawa)
+    # 2 hr (Fate/stay night Movie)
+    # 23 min per ep (gachiakuta)
+    # 23 min (Koori no Jouheki)
+
+    def _get_duration(self, duration: str | None) -> str | None:
+        if duration is None:
+            return None
+        s_duration = duration.split()
+        if "hr" in duration:
+            if "min" in duration:
+                return f"0{s_duration[0]}:{s_duration[2]}"
+            return f"0{s_duration[0]}:00"
+        return f"00:{s_duration[0]}"
 
     def _get_date(
         self, date_type: Literal["start", "end"], airing_date: dict[str, str | None]

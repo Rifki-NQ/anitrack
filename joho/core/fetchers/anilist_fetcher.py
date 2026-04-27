@@ -75,6 +75,7 @@ class FetchAnilist(FetchData):
             studios {
                 nodes {
                     name
+                    isAnimationStudio
                 }
             }
             rankings {

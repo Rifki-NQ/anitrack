@@ -25,7 +25,7 @@ def anime_data_model_jikan(jikan_normalizer: NormalizerProtocol) -> AnimeDataMod
     return jikan_normalizer.get_anime_by_title("Attack on titan")
 
 
-def test_response_normalizer_anilist_value(anime_data_model_anilist: AnimeDataModel):
+def test_response_normalizer_anilist_value(anime_data_model_anilist: AnimeDataModel) -> None:
     assert anime_data_model_anilist.data_source == "anilist"
     assert anime_data_model_anilist.id == 16498
     assert anime_data_model_anilist.romaji_title == "Shingeki no Kyojin"
@@ -34,7 +34,7 @@ def test_response_normalizer_anilist_value(anime_data_model_anilist: AnimeDataMo
     assert anime_data_model_anilist.episodes == 25
     assert anime_data_model_anilist.status == "FINISHED"
     assert anime_data_model_anilist.average_score == 85
-    assert anime_data_model_anilist.duration == 24
+    assert anime_data_model_anilist.duration == "00:24"
     assert anime_data_model_anilist.start_date == "2013-04-07"
     assert anime_data_model_anilist.end_date == "2013-09-28"
     assert anime_data_model_anilist.studio == "WIT STUDIO"
@@ -44,7 +44,7 @@ def test_response_normalizer_anilist_value(anime_data_model_anilist: AnimeDataMo
     assert anime_data_model_anilist.all_time_popularity == 1
 
 
-def test_response_normalizer_jikan_value(anime_data_model_jikan: AnimeDataModel):
+def test_response_normalizer_jikan_value(anime_data_model_jikan: AnimeDataModel) -> None:
     assert anime_data_model_jikan.data_source == "jikan"
     assert anime_data_model_jikan.id == 16498
     assert anime_data_model_jikan.romaji_title == "Shingeki no Kyojin"
@@ -53,7 +53,7 @@ def test_response_normalizer_jikan_value(anime_data_model_jikan: AnimeDataModel)
     assert anime_data_model_jikan.episodes == 25
     assert anime_data_model_jikan.status == "Finished Airing"
     assert anime_data_model_jikan.average_score == 8.57
-    assert anime_data_model_jikan.duration == "24"
+    assert anime_data_model_jikan.duration == "00:24"
     assert anime_data_model_jikan.start_date == "2013-04-07"
     assert anime_data_model_jikan.end_date == "2013-09-29"
     assert anime_data_model_jikan.studio == "Wit Studio"

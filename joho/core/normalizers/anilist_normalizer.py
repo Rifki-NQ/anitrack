@@ -63,13 +63,11 @@ class AnilistNormalizer(BaseNormalizer):
         hour, minute = divmod(minutes, 60)
         return f"{hour:02d}:{minute:02d}"
 
-    def _get_date(self, dates: dict[str, int]) -> str | None:
-        try:
-            return f"{dates['year']}-{dates['month']:02d}-{dates['day']:02d}"
-        except KeyError:
-            return None
-        except TypeError:
-            return None
+    def _get_date(self, dates: dict[str, int] | dict[str, None]) -> str | None:
+        for date in dates.values():
+            if date is None:
+                return None
+        return f"{dates['year']}-{dates['month']:02d}-{dates['day']:02d}"
 
     def _get_animation_studio(
         self, studio_nodes: list[dict[str, bool | str]]

@@ -77,7 +77,9 @@ class AnilistNormalizer(BaseNormalizer):
                 return str(node["name"])
         return None
 
-    def _get_genres(self, genres: list[str]) -> str:
+    def _get_genres(self, genres: list[str]) -> str | None:
+        if not genres:
+            return None
         return "|".join(genres)
 
     def _get_ranking(

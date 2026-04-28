@@ -1,23 +1,7 @@
 import pandas as pd
 from pathlib import Path
 from dataclasses import fields, asdict
-from argparse import ArgumentTypeError
 from joho.core.models.anime_model import AnimeDataModel
-
-
-# filepath validation for argparse --path
-def valid_filepath(filepath: str) -> Path:
-    filepath = filepath.strip().replace(" ", "_")
-    filepath_folder = str(Path(filepath).parent)
-    if filepath_folder != "storage":
-        raise ArgumentTypeError(
-            "dataset file must be in the designated folder (example: storage/file.csv)"
-        )
-    if not filepath.lower().endswith(".csv"):
-        raise ArgumentTypeError(
-            "dataset file must be a csv file (example: storage/file.csv)"
-        )
-    return Path(filepath)
 
 
 class DataIO:

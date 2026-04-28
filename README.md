@@ -56,6 +56,7 @@ joho/
 │       ├── constants.py                   # Shared constants
 │       ├── exceptions.py                  # Custom exception hierarchy
 │       ├── file_handler.py                # File handler for DataIO
+│       ├── utils.py                       # Helper functions
 │       ├── models/
 │       │   ├── __init__.py
 │       │   ├── anime_model.py             # Dataclasses: AnimeDataModel
@@ -154,7 +155,7 @@ fetch --source <source> (--title <title> | --id <id>) [--entry <entry> | --show-
 > - `--title` and `--id` are mutually exclusive — you must provide exactly one.
 > - `--entry` and `--show-title` are only valid when `--title` is used.
 > - `--entry` and `--show-title` are mutually exclusive — provide at most one.
-> - `--max-entry` only works with `--show-title`.
+> - `--max-entry` is only valid with `--show-title`.
 
 **Examples:**
 
@@ -185,17 +186,17 @@ export --source <source> (--title <title> | --id <id>) --path <path> [--entry <e
 | `--source` | string | ✅ Yes | Data source to fetch from. Choices: `anilist`, `jikan`, `all` |
 | `--title` | string | ✅ One of | Search anime by title |
 | `--id` | int | ✅ One of | Fetch anime by ID |
-| `--path` | string | ✅ Yes | Destination file path to save the exported data |
+| `--path` | string | ❌ No | Destination file path to save the exported data (default: `title` or `id` name) |
 | `--entry` | int | ❌ No | Entry number for search result (default: `none`) |
 | `--save-all` | flag | ❌ No | Save all entries from search result (default: `false`) |
 | `--max-entry` | int | ❌ No | Max anime entries to save (default: `none`) |
 | `--overwrite` | flag | ❌ No | Overwrite the data if it's not empty (default: `false`) |
 
-> - `--path` must be inside the `storage/` folder.
+> - when `--path` is not provided, it'll use `--title` or `id` as the file name then save it in `storage/`.
 > - `--title` and `--id` are mutually exclusive — you must provide exactly one.
 > - `--entry`and `--save-all` are only valid when `--title` is used.
 > - `--entry`and `--save-all` are mutually exclusive — provide at most one.
-> - `--max-entry` only works with `--save-all`.
+> - `--max-entry` is only valid with `--save-all`.
 
 **Examples:**
 

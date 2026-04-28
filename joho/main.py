@@ -3,7 +3,7 @@ from joho.core.cli.fetch_cli import FetchCLI
 from joho.core.cli.export_cli import ExportCLI
 from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.normalizers.normalizer_factory import create_normalizer
-from joho.core.file_handler import valid_filepath
+from joho.core.utils import valid_filepath, create_defaulf_filepath
 from joho.core.file_handler import DataIO
 from joho.core.constants import VALID_DATA_SOURCES
 
@@ -35,7 +35,9 @@ def main_parser() -> None:
     export_entry_group = export_parser.add_mutually_exclusive_group(required=False)
     export_entry_group.add_argument("--entry", type=int, default=None)
     export_entry_group.add_argument("--save-all", action="store_true", default=False)
-    export_parser.add_argument("--path", type=valid_filepath, required=True)
+    export_parser.add_argument(
+        "--path", type=valid_filepath, default=None, required=False
+    )
     export_parser.add_argument("--overwrite", action="store_true", default=False)
     export_parser.add_argument("--max-entry", type=int, default=None)
 
@@ -67,6 +69,10 @@ def main_parser() -> None:
             export_parser.error("--entry and --save-all can only be used with --title")
         elif args.max_entry is not None and not args.save_all:
             export_parser.error("--max-entry can only be used with --save-all")
+        if args.path is None:
+            args.path = create_defaulf_filepath(
+                args.title if args.title is not None else args.id
+            )
 
         export_cli = ExportCLI(DataIO())
         if args.source == "all":

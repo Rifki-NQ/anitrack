@@ -52,7 +52,7 @@ class FetchCLI:
             for data_list in data_collection:
                 if isinstance(data_list, BaseException):
                     self._show_error(data_list)
-                    break
+                    continue
                 if args.show_title:
                     self._show_title(data_list)
                 else:
@@ -94,6 +94,7 @@ class FetchCLI:
 
     def _show_error(self, error: BaseException) -> None:
         print(error)
+        print("")
 
     def _show_fetch_status(self, success: int, total_export: int) -> None:
         print(f"{success} / {total_export} fetched successfully")

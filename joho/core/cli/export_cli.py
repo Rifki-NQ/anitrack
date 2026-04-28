@@ -59,7 +59,7 @@ class ExportCLI:
             for data_list in data_collection:
                 if isinstance(data_list, BaseException):
                     self._show_error(data_list)
-                    break
+                    continue
                 if args.save_all:
                     self._save_data_list(args, data_list)
                 else:
@@ -103,6 +103,7 @@ class ExportCLI:
 
     def _show_error(self, error: BaseException) -> None:
         print(error)
+        print("")
 
     def _show_export_status(self, success: int, total_export: int) -> None:
         print(f"{success} / {total_export} exported successfully")

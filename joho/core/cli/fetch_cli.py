@@ -76,6 +76,7 @@ class FetchCLI:
                     self._show_error(data)
                     break
                 self._show_entry(data)
+                success_query += 1
             self._show_fetch_status(success_query, len(data_list))
 
     def _show_entry(self, entry_data: AnimeDataModel) -> None:

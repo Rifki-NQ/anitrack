@@ -1,9 +1,14 @@
 import argparse
 from joho.core.cli.fetch_cli import FetchCLI
 from joho.core.cli.export_cli import ExportCLI
+from joho.core.cli.cli_utils import (
+    validate_args_fetch,
+    validate_args_export,
+    validate_export_path,
+)
 from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.normalizers.normalizer_factory import create_normalizer
-from joho.core.utils import valid_filepath, create_defaulf_filepath
+from joho.core.utils import valid_filepath
 from joho.core.file_handler import DataIO
 from joho.core.constants import VALID_DATA_SOURCES
 
@@ -44,10 +49,7 @@ def main_parser() -> None:
     args = parser.parse_args()
 
     if args.command == "fetch":
-        if args.title is None and (args.entry is not None or args.show_title):
-            fetch_parser.error("--entry and --show-title can only be used with --title")
-        elif args.max_entry is not None and not args.show_title:
-            fetch_parser.error("--max-entry can only be used with --show-title")
+        validate_args_fetch(fetch_parser, args)
 
         fetch_cli = FetchCLI()
         if args.source == "all":
@@ -65,16 +67,12 @@ def main_parser() -> None:
         )
 
     elif args.command == "export":
-        if args.title is None and (args.entry is not None or args.save_all):
-            export_parser.error("--entry and --save-all can only be used with --title")
-        elif args.max_entry is not None and not args.save_all:
-            export_parser.error("--max-entry can only be used with --save-all")
-        if args.path is None:
-            args.path = create_defaulf_filepath(
-                args.title if args.title is not None else args.id
-            )
+        validate_args_export(export_parser, args)
+        path = validate_export_path(
+            args.path, args.title if args.id is None else args.id
+        )
 
-        export_cli = ExportCLI(DataIO(args.path))
+        export_cli = ExportCLI(DataIO(path))
         if args.source == "all":
             export_cli.handle_export_cli(
                 args,

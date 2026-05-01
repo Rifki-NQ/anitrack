@@ -11,7 +11,7 @@ class AnimeDataModel:
     format: str | None
     episodes: int | None
     status: str | None
-    average_score: int | float | None
+    average_score: float | None
     duration: str | None
     start_date: str | None
     end_date: str | None

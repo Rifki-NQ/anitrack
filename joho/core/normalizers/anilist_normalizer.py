@@ -46,7 +46,7 @@ class AnilistNormalizer(BaseNormalizer):
             format=data["format"],
             episodes=data["episodes"],
             status=data["status"],
-            average_score=data["averageScore"],
+            average_score=self._convert_to_float(data["averageScore"]),
             duration=self._convert_duration(data["duration"]),
             start_date=self._get_date(data["startDate"]),
             end_date=self._get_date(data["endDate"]),
@@ -56,6 +56,11 @@ class AnilistNormalizer(BaseNormalizer):
             all_time_rank=self._get_ranking("RATED", data["rankings"]),
             all_time_popularity=self._get_ranking("POPULAR", data["rankings"]),
         )
+        
+    def _convert_to_float(self, score: int | None) -> float | None:
+        if score is None:
+            return None
+        return float(score)
 
     def _convert_duration(self, minutes: int | None) -> str | None:
         if minutes is None:

@@ -38,3 +38,21 @@ class EntryIndexError(AppError):
     """Raised when the entry index is out of bound"""
 
     pass
+
+
+class FileHandlerError(AppError):
+    """Raised when there is file handler related error"""
+
+    pass
+
+
+class FileNotExistError(FileHandlerError):
+    """Raised when the file does not exist"""
+
+    pass
+
+
+class FileEmptyError(FileHandlerError):
+    """Raised when the file contains empty data"""
+
+    pass

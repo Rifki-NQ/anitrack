@@ -3,7 +3,7 @@ from argparse import Namespace, ArgumentParser
 from pathlib import Path
 from joho.core.models.anime_model import AnimeDataModel
 from joho.core.models.protocols import NormalizerProtocol
-from joho.core.utils import create_defaulf_filepath
+from joho.core.utils import create_default_filepath
 
 
 def validate_args_fetch(parser: ArgumentParser, args: Namespace) -> None:
@@ -22,7 +22,7 @@ def validate_args_export(parser: ArgumentParser, args: Namespace) -> None:
 
 def validate_export_path(path: Path | None, default_name: str | int) -> Path:
     if path is None:
-        return create_defaulf_filepath(default_name)
+        return create_default_filepath(default_name)
     return path
 
 

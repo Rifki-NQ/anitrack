@@ -26,17 +26,17 @@ class DataIO:
                 writer.writeheader()
             writer.writerow(asdict(data))
 
-    def read_data(self) -> list[dict[str, str]]:
+    def read_data(self) -> list[dict[str, str | None]]:
         if not self._file_exist():
             raise FileNotExistError("Error: file does not exist")
         elif self._file_empty():
             self._raise_file_empty_error()
-        entries: list[dict[str, str]] = []
+        entries: list[dict[str, str | None]] = []
         with open(self.filepath, mode="r", newline="") as f:
             reader = csv.DictReader(f)
             for row in reader:
                 self._validate_headers(row)
-                entries.append(row)
+                entries.append(self._convert_to_none(row))
         if not entries:
             self._raise_file_empty_error()
         return entries
@@ -61,3 +61,13 @@ class DataIO:
             )
         if extra_keys:
             raise InvalidHeaderError(f"Error: invalid header: {extra_keys}")
+
+    def _convert_to_none(self, entry_data: dict[str, str]) -> dict[str, str | None]:
+        """Convert empty string into None"""
+        new_entry_data: dict[str, str | None] = {}
+        for key, value in entry_data.items():
+            if not value.strip():
+                new_entry_data[key] = None
+            else:
+                new_entry_data[key] = value
+        return new_entry_data

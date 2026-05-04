@@ -22,11 +22,11 @@ class ReadCLI:
             return
         self._show_entries(all_data)
 
-    def _show_entry(self, entry_data: dict[str, str]) -> None:
+    def _show_entry(self, entry_data: dict[str, str | None]) -> None:
         for key, value in entry_data.items():
             print(f"{key}: {value}")
 
-    def _show_entries(self, data_list: list[dict[str, str]]) -> None:
+    def _show_entries(self, data_list: list[dict[str, str | None]]) -> None:
         for entry in data_list:
             self._show_entry(entry)
             print()

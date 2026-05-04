@@ -62,16 +62,22 @@ class JikanNormalizer(BaseNormalizer):
     # 2 hr (Fate/stay night Movie)
     # 23 min per ep (gachiakuta)
     # 23 min (Koori no Jouheki)
+    # 4 min per ep (chuunibyou demo koi ga shitai! ren lite)
+    # Unknown (not yet aired entry)
 
     def _get_duration(self, duration: str | None) -> str | None:
-        if duration is None:
+        def pad(s: str) -> str:
+            return f"{int(s):02d}"
+
+        if duration is None or duration.lower() == "unknown":
             return None
         s_duration = duration.split()
         if "hr" in duration:
+            hours = pad(s_duration[0])
             if "min" in duration:
-                return f"0{s_duration[0]}:{s_duration[2]}"
-            return f"0{s_duration[0]}:00"
-        return f"00:{s_duration[0]}"
+                return f"{hours}:{pad(s_duration[2])}"
+            return f"{hours}:00"
+        return f"00:{pad(s_duration[0])}"
 
     def _get_date(
         self, date_type: Literal["start", "end"], airing_date: dict[str, str | None]

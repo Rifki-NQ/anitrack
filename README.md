@@ -234,22 +234,30 @@ read --path <path> [--entry <entry>]
 | ---- | ---- | -------- | ----------- |
 | `--path` | string | ✅ Yes | Destination file path to read the exported data |
 | `--entry` | int | ❌ No | Entry number to display only that entry (default: `none`) |
-| `--show-title` | flag | ❌ No | display only the entry titles (default: `false`) |
+| `--show-title` | flag | ❌ No | Display only the entry titles (default: `false`) |
+| `--limit` | int | ❌ No | Maximum number of entries to display (default: `10`) |
 
-> - if the `--entry` value is not provided, all entries from the file will be shown.
-> - `--entry` and `--show-title` are mutually exclusive — provide at most one.
+> - `--entry`, `--show-title` and `--limit` are mutually exclusive — provide at most one.
+> - if the `--limit` value is not provided, it'll display up to 10 entries
+> - set `--limit` to `0` to display all entries
 
 **Examples:**
 
 ```bash
-# Read all data
+# Read data, display up to 10 entries
 joho read --path "storage/data.csv"
 
 # Read data, only entry number 2
 joho read --path "storage/data.csv" --entry 2
 
 # Read data, display only the titles
-joho read --path "storage/data.csv" --show-entry
+joho read --path "storage/data.csv" --show-title
+
+# Read data, display up to 5 entries
+joho read --path "storage/data.csv" --limit 5
+
+# Read data, display all entries
+joho read --path "storage/data.csv" --limit 0
 
 # Show read subcommand help
 joho read --help

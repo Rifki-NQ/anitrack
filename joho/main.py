@@ -53,6 +53,7 @@ def main_parser() -> None:
     read_entry_group = read_parser.add_mutually_exclusive_group(required=False)
     read_entry_group.add_argument("--entry", type=int, default=None)
     read_entry_group.add_argument("--show-title", action="store_true", default=False)
+    read_entry_group.add_argument("--limit", type=int, default=None)
 
     args = parser.parse_args()
 

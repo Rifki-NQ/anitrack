@@ -233,9 +233,11 @@ read --path <path> [--entry <entry>]
 | Flag | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
 | `--path` | string | ✅ Yes | Destination file path to read the exported data |
-| `--entry` | int | ❌ No | Entry number to read only that entry (default: `none`) |
+| `--entry` | int | ❌ No | Entry number to display only that entry (default: `none`) |
+| `--show-title` | flag | ❌ No | display only the entry titles (default: `false`) |
 
-> - if the `--entry` value is not provided, all entries from the file will be shown
+> - if the `--entry` value is not provided, all entries from the file will be shown.
+> - `--entry` and `--show-title` are mutually exclusive — provide at most one.
 
 **Examples:**
 
@@ -245,6 +247,9 @@ joho read --path "storage/data.csv"
 
 # Read data, only entry number 2
 joho read --path "storage/data.csv" --entry 2
+
+# Read data, display only the titles
+joho read --path "storage/data.csv" --show-entry
 
 # Show read subcommand help
 joho read --help

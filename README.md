@@ -23,6 +23,7 @@ You can search anime by title or ID and export the data to a CSV file.
 Retrieve anime data from the API using either a title string or a numeric ID. Each result includes:
 
 - `data_source`
+- `id`
 - `romaji_title`
 - `english_title`
 - `format`
@@ -88,7 +89,8 @@ joho/
 │   ├── fetchers_mock_data.py              # Mock classes: MockAnilistFetcher, MockJikanFetcher
 │   ├── test_fetcher_anilist.py
 │   ├── test_fetcher_jikan.py
-│   └── test_normalizer.py
+│   ├── test_normalizer.py
+│   └── test_file_handler.py
 ├── storage/
 │   └── *.csv                              # Saved data outputs
 ├── pyproject.toml                         # Project metadata and dependencies
@@ -444,5 +446,6 @@ The test suite covers:
 - `test_fetcher_anilist.py` - verifies that the `FetchAnilist` return expected data values and type from the `API`
 - `test_fetcher_jikan.py` - verifies that the `FetchJikan` return expected data values and type from the `API`
 - `test_normalizer.py` - verifies the normalization flow using mocked fetcher data
+- `test_file_handler.py` - verifies DataIO save and read data correctly using mocked Anilist data and tmp_path
 
 ---

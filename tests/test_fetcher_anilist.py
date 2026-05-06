@@ -5,6 +5,7 @@ from joho.core.models.protocols import FetchersProtocol
 
 pytestmark = pytest.mark.integration
 
+
 @pytest.fixture(scope="module")
 def anilist_fetcher() -> FetchersProtocol:
     return create_fetcher("anilist")

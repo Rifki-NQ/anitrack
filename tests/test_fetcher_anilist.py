@@ -3,6 +3,7 @@ from typing import Any
 from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.models.protocols import FetchersProtocol
 
+pytestmark = pytest.mark.integration
 
 @pytest.fixture(scope="module")
 def anilist_fetcher() -> FetchersProtocol:

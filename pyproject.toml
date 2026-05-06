@@ -24,3 +24,8 @@ joho = "joho.main:main_parser"
 
 [tool.hatch.build.targets.wheel]
 packages = ["joho"]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: mark test as integration test",
+]

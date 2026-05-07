@@ -25,7 +25,7 @@ class ReadCLI:
                 )
             return
         elif args.show_title:
-            self._show_title(all_data)
+            self._show_title(all_data, args.limit)
             return
         self._show_entries(all_data, limit=args.limit)
 
@@ -43,9 +43,14 @@ class ReadCLI:
             if effective_limit > 0 and i >= effective_limit:
                 break
 
-    def _show_title(self, data_list: list[dict[str, str | None]]) -> None:
-        print("Data source | Romaji title | English title")
+    def _show_title(
+        self, data_list: list[dict[str, str | None]], limit: int | None
+    ) -> None:
+        effective_limit = limit if limit is not None else self.MAXIMUM_ENTRIES_PER_PAGE
+        print("Entry_num | Data source | Romaji title | English title")
         for i, entry in enumerate(data_list):
             print(
                 f"{i}. {entry['data_source']} | {entry['romaji_title']} | {entry['english_title']}"
             )
+            if effective_limit > 0 and i >= effective_limit:
+                break

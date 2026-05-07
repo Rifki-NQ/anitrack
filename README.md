@@ -239,26 +239,23 @@ read --path <path> [--entry <entry>]
 | `--show-title` | flag | ❌ No | Display only the entry titles (default: `false`) |
 | `--limit` | int | ❌ No | Maximum number of entries to display (default: `10`) |
 
-> - `--entry`, `--show-title` and `--limit` are mutually exclusive — provide at most one.
+> - `--entry` and `--show-title` are mutually exclusive — provide at most one.
 > - if the `--limit` value is not provided, it'll display up to 10 entries
 > - set `--limit` to `0` to display all entries
 
 **Examples:**
 
 ```bash
-# Read data, display up to 10 entries
+# Display up to 10 entries (default)
 joho read --path "storage/data.csv"
 
-# Read data, only entry number 2
+# Display a single entry
 joho read --path "storage/data.csv" --entry 2
 
-# Read data, display only the titles
-joho read --path "storage/data.csv" --show-title
+# Display only titles, limited to 5
+joho read --path "storage/data.csv" --show-title --limit 5
 
-# Read data, display up to 5 entries
-joho read --path "storage/data.csv" --limit 5
-
-# Read data, display all entries
+# Display all entries
 joho read --path "storage/data.csv" --limit 0
 
 # Show read subcommand help

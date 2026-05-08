@@ -1,10 +1,11 @@
+from typing import Iterator
 from argparse import Namespace
 from joho.core.file_handler import DataIO
 from joho.core.exceptions import FileHandlerError
 
 
 class ReadCLI:
-    MAXIMUM_ENTRIES_PER_PAGE = 10
+    DEFAULT_ENTRIES_LIMIT = 10
 
     def __init__(self, file_handler: DataIO) -> None:
         self.file_handler = file_handler
@@ -36,21 +37,23 @@ class ReadCLI:
     def _show_entries(
         self, data_list: list[dict[str, str | None]], limit: int | None
     ) -> None:
-        effective_limit = limit if limit is not None else self.MAXIMUM_ENTRIES_PER_PAGE
-        for i, entry in enumerate(data_list, 1):
-            self._show_entry(entry)
-            print()
-            if effective_limit > 0 and i >= effective_limit:
-                break
+        for i in self._limit(limit, max_iter=len(data_list)):
+            self._show_entry(data_list[i])
+            print("")
 
     def _show_title(
         self, data_list: list[dict[str, str | None]], limit: int | None
     ) -> None:
-        effective_limit = limit if limit is not None else self.MAXIMUM_ENTRIES_PER_PAGE
         print("Entry_num | Data source | Romaji title | English title")
-        for i, entry in enumerate(data_list):
+        for i in self._limit(limit, max_iter=len(data_list)):
+            entry = data_list[i]
             print(
                 f"{i}. {entry['data_source']} | {entry['romaji_title']} | {entry['english_title']}"
             )
+
+    def _limit(self, limit: int | None, max_iter: int) -> Iterator[int]:
+        effective_limit = limit if limit is not None else self.DEFAULT_ENTRIES_LIMIT
+        for i in range(max_iter):
             if effective_limit > 0 and i >= effective_limit:
                 break
+            yield i

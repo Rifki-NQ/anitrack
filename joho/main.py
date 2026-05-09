@@ -24,7 +24,9 @@ def main_parser() -> None:
     fetch_parser = subparsers.add_parser("fetch", description="fetch anime data")
     fetch_parser.add_argument("--source", choices=VALID_SOURCES, required=True)
     fetch_parser.add_argument("--max-entry", type=int, default=None)
-    fetch_parser.add_argument("--sort", choices=VALID_SORT, required=False, default=None)
+    fetch_parser.add_argument(
+        "--sort", choices=VALID_SORT, required=False, default=None
+    )
     fetch_entry_group = fetch_parser.add_mutually_exclusive_group(required=False)
     fetch_entry_group.add_argument("--entry", type=int, default=None)
     fetch_entry_group.add_argument("--show-title", action="store_true", default=False)
@@ -37,7 +39,9 @@ def main_parser() -> None:
         "export", description="fetch then save anime data"
     )
     export_parser.add_argument("--source", choices=VALID_SOURCES, required=True)
-    export_parser.add_argument("--sort", choices=VALID_SORT, required=False, default=None)
+    export_parser.add_argument(
+        "--sort", choices=VALID_SORT, required=False, default=None
+    )
     search_by_group = export_parser.add_mutually_exclusive_group(required=True)
     search_by_group.add_argument("--title", type=str)
     search_by_group.add_argument("--id", type=int)

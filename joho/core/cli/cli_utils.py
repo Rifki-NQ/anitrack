@@ -46,7 +46,7 @@ async def _get_all_by_title(
     args: Namespace, *normalizers: NormalizerProtocol
 ) -> list[list[AnimeDataModel] | BaseException]:
     all_thread = [
-        asyncio.to_thread(normalizer.get_all_anime_by_title, args.title, args.max_entry)
+        asyncio.to_thread(normalizer.get_all_anime_by_title, args.title, args.sort, args.max_entry)
         for normalizer in normalizers
     ]
     all_data = await asyncio.gather(*all_thread, return_exceptions=True)

@@ -33,11 +33,11 @@ class FetchCLI:
         if args.title:
             if args.show_title:
                 data_list = normalizer.get_all_anime_by_title(
-                    args.title, args.max_entry
+                    args.title, args.sort, args.max_entry
                 )
                 self._show_title(data_list)
                 return
-            data = normalizer.get_anime_by_title(args.title, args.entry)
+            data = normalizer.get_anime_by_title(args.title, args.sort, args.entry)
             self._show_entry(data)
         elif args.id:
             data = normalizer.get_anime_by_id(args.id)

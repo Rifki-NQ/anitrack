@@ -38,11 +38,11 @@ class ExportCLI:
         if args.title:
             if args.save_all:
                 data_list = normalizer.get_all_anime_by_title(
-                    args.title, args.max_entry
+                    args.title, args.sort, args.max_entry
                 )
                 self._save_data_list(args.overwrite, data_list)
                 return
-            data = normalizer.get_anime_by_title(args.title, args.entry)
+            data = normalizer.get_anime_by_title(args.title, args.sort, args.entry)
             self._save_entry(args.overwrite, data)
         elif args.id:
             data = normalizer.get_anime_by_id(args.id)

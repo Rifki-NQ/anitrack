@@ -5,7 +5,7 @@ from joho.core.models.anime_model import AnimeDataModel
 class BaseNormalizer(ABC):
     @abstractmethod
     def get_anime_by_title(
-        self, anime_title: str, entry_index: int | None = None
+        self, anime_title: str, sort: str | None, entry_index: int | None = None
     ) -> AnimeDataModel:
         pass
 
@@ -18,6 +18,6 @@ class BaseNormalizer(ABC):
 
     @abstractmethod
     def get_all_anime_by_title(
-        self, anime_title: str, max_entry: int | None = None
+        self, anime_title: str, sort: str | None, max_entry: int | None = None
     ) -> list[AnimeDataModel]:
         pass

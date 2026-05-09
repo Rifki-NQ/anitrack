@@ -11,11 +11,12 @@ from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.utils import valid_filepath
 from joho.core.file_handler import DataIO
-from joho.core.constants import VALID_DATA_SOURCES
+from joho.core.constants import VALID_DATA_SOURCES, FETCH_SORT_MAP
 
 
 def main_parser() -> None:
     VALID_SOURCES = (*VALID_DATA_SOURCES, "all")
+    VALID_SORT = FETCH_SORT_MAP.keys()
     parser = argparse.ArgumentParser(prog="joho")
     subparsers = parser.add_subparsers(dest="command")
 
@@ -23,6 +24,7 @@ def main_parser() -> None:
     fetch_parser = subparsers.add_parser("fetch", description="fetch anime data")
     fetch_parser.add_argument("--source", choices=VALID_SOURCES, required=True)
     fetch_parser.add_argument("--max-entry", type=int, default=None)
+    fetch_parser.add_argument("--sort", choices=VALID_SORT, required=False, default=None)
     fetch_entry_group = fetch_parser.add_mutually_exclusive_group(required=False)
     fetch_entry_group.add_argument("--entry", type=int, default=None)
     fetch_entry_group.add_argument("--show-title", action="store_true", default=False)
@@ -35,6 +37,7 @@ def main_parser() -> None:
         "export", description="fetch then save anime data"
     )
     export_parser.add_argument("--source", choices=VALID_SOURCES, required=True)
+    export_parser.add_argument("--sort", choices=VALID_SORT, required=False, default=None)
     search_by_group = export_parser.add_mutually_exclusive_group(required=True)
     search_by_group.add_argument("--title", type=str)
     search_by_group.add_argument("--id", type=int)

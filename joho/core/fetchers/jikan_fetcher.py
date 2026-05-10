@@ -1,6 +1,6 @@
-import requests
+import httpx
 from typing import Any
-from joho.core.fetchers.base_fetcher import FetchData, check_internet
+from joho.core.fetchers.base_fetcher import FetchData
 from joho.core.exceptions import AppConnectionError, JikanError
 
 
@@ -16,7 +16,7 @@ class FetchJikan(FetchData):
         "oldest": "end_date",
     }
 
-    def fetch_data_by_title(
+    async def fetch_data_by_title(
         self, anime_title: str, sort: str
     ) -> list[dict[str, Any]]:
         params: dict[str, str | int | None] = {
@@ -25,26 +25,29 @@ class FetchJikan(FetchData):
             "order_by": self.SORT_MAP[sort],
             "sort": "desc",
         }
-        data = self._query_anime(self.BASE_URL, params)
+        data = await self._query_anime(self.BASE_URL, params)
         json_data = data.json()["data"]
         if not json_data:
             raise JikanError("Error: requested anime not found!")
         return json_data
 
-    def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
+    async def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
         base_url = f"{self.BASE_URL}/{anime_id}"
-        data = self._query_anime(base_url)
+        data = await self._query_anime(base_url)
         json_data = data.json()["data"]
         if not json_data:
             raise JikanError("Error: requested anime not found!")
         return json_data
 
-    @check_internet
-    def _query_anime(
+    async def _query_anime(
         self, base_url: str, params: dict[str, str | int | None] | None = None
-    ) -> requests.Response:
+    ) -> httpx.Response:
         try:
-            response = requests.get(base_url, params=params)
-        except requests.ConnectionError as e:
-            raise AppConnectionError(f"Connection error occured: {e}")
-        return response
+            async with httpx.AsyncClient() as client:
+                response = await client.get(base_url, params=params)
+                response.raise_for_status()
+                return response
+        except httpx.RequestError as e:
+            raise AppConnectionError(f"Connection error occurred: {e}") from e
+        except httpx.HTTPStatusError as e:
+            raise AppConnectionError(f"API returned: {e.response.status_code}") from e

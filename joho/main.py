@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 from joho.core.cli.fetch_cli import FetchCLI
 from joho.core.cli.export_cli import ExportCLI
 from joho.core.cli.read_cli import ReadCLI
@@ -14,7 +15,7 @@ from joho.core.file_handler import DataIO
 from joho.core.constants import VALID_DATA_SOURCES, SORT_CHOICES, DEFAULT_SORT_CHOICE
 
 
-def main_parser() -> None:
+async def main_parser() -> None:
     VALID_SOURCES = (*VALID_DATA_SOURCES, "all")
     parser = argparse.ArgumentParser(prog="joho")
     subparsers = parser.add_subparsers(dest="command")
@@ -39,7 +40,7 @@ def main_parser() -> None:
     )
     export_parser.add_argument("--source", choices=VALID_SOURCES, required=True)
     export_parser.add_argument(
-        "--sort", choices=SORT_CHOICES, required=False, default=None
+        "--sort", choices=SORT_CHOICES, required=False, default=DEFAULT_SORT_CHOICE
     )
     search_by_group = export_parser.add_mutually_exclusive_group(required=True)
     search_by_group.add_argument("--title", type=str)
@@ -48,7 +49,7 @@ def main_parser() -> None:
     export_entry_group.add_argument("--entry", type=int, default=None)
     export_entry_group.add_argument("--save-all", action="store_true", default=False)
     export_parser.add_argument(
-        "--path", type=valid_filepath, required=False, default=DEFAULT_SORT_CHOICE
+        "--path", type=valid_filepath, required=False, default=None
     )
     export_parser.add_argument("--overwrite", action="store_true", default=False)
     export_parser.add_argument("--max-entry", type=int, default=None)
@@ -68,7 +69,7 @@ def main_parser() -> None:
 
         fetch_cli = FetchCLI()
         if args.source == "all":
-            fetch_cli.handle_fetch_cli(
+            await fetch_cli.handle_fetch_cli(
                 args,
                 True,
                 [
@@ -77,7 +78,7 @@ def main_parser() -> None:
                 ],
             )
             return
-        fetch_cli.handle_fetch_cli(
+        await fetch_cli.handle_fetch_cli(
             args, False, [create_normalizer(args.source, create_fetcher(args.source))]
         )
 
@@ -89,7 +90,7 @@ def main_parser() -> None:
 
         export_cli = ExportCLI(DataIO(path))
         if args.source == "all":
-            export_cli.handle_export_cli(
+            await export_cli.handle_export_cli(
                 args,
                 True,
                 [
@@ -98,7 +99,7 @@ def main_parser() -> None:
                 ],
             )
             return
-        export_cli.handle_export_cli(
+        await export_cli.handle_export_cli(
             args, False, [create_normalizer(args.source, create_fetcher(args.source))]
         )
 
@@ -110,5 +111,9 @@ def main_parser() -> None:
         parser.print_help()
 
 
+def main() -> None:
+    asyncio.run(main_parser())
+
+
 if __name__ == "__main__":
-    main_parser()
+    main()

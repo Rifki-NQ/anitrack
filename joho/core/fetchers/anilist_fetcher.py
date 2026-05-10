@@ -1,6 +1,6 @@
-import requests
+import httpx
 from typing import Any
-from joho.core.fetchers.base_fetcher import FetchData, check_internet
+from joho.core.fetchers.base_fetcher import FetchData
 from joho.core.exceptions import AnilistError, AppConnectionError
 
 
@@ -94,21 +94,21 @@ class FetchAnilist(FetchData):
     }
     """
 
-    def fetch_data_by_title(
+    async def fetch_data_by_title(
         self, anime_title: str, sort: str
     ) -> list[dict[str, Any]]:
-        data = self._request(
+        data = await self._request(
             url=self.BASE_URL,
             query=self.QUERY_BY_TITLE,
-            variables={"search": anime_title, "sort": self.SORT_MAP[sort]},
+            variables={"search": anime_title, "sort": [self.SORT_MAP[sort]]},
         )
         media_data = data.json()["data"]["Page"]["media"]
         if not media_data:
             raise AnilistError("Error: requested anime not found!")
         return media_data
 
-    def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
-        data = self._request(
+    async def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
+        data = await self._request(
             url=self.BASE_URL, query=self.QUERY_BY_ID, variables={"id": anime_id}
         )
         media_data = data.json()["data"]["Media"]
@@ -116,14 +116,17 @@ class FetchAnilist(FetchData):
             raise AnilistError("Error: requested anime not found!")
         return media_data
 
-    @check_internet
-    def _request(
-        self, url: str, query: str, variables: dict[str, str | int]
-    ) -> requests.Response:
+    async def _request(
+        self, url: str, query: str, variables: dict[str, str | int | list[str]]
+    ) -> httpx.Response:
         try:
-            response = requests.post(
-                url, json={"query": query, "variables": variables}, timeout=3.0
-            )
-        except requests.ConnectionError as e:
-            raise AppConnectionError(f"Connection error occured: {e}")
-        return response
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    url, json={"query": query, "variables": variables}, timeout=3.0
+                )
+                response.raise_for_status()
+                return response
+        except httpx.RequestError as e:
+            raise AppConnectionError(f"Connection error occurred: {e}") from e
+        except httpx.HTTPStatusError as e:
+            raise AppConnectionError(f"API returned: {e.response.status_code}") from e

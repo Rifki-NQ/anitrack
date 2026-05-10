@@ -10,25 +10,25 @@ class JikanNormalizer(BaseNormalizer):
     def __init__(self, jikan_fetcher: FetchersProtocol) -> None:
         self.jikan_fetcher = jikan_fetcher
 
-    def get_anime_by_title(
+    async def get_anime_by_title(
         self, anime_title: str, sort: str, entry_index: int | None = None
     ) -> AnimeDataModel:
         if entry_index is None:
             entry_index = DEFAULT_ENTRY_INDEX
-        raw_data_list = self.jikan_fetcher.fetch_data_by_title(anime_title, sort)
+        raw_data_list = await self.jikan_fetcher.fetch_data_by_title(anime_title, sort)
         try:
             return self._jikan_to_anime_model(raw_data_list[entry_index])
         except IndexError as e:
             raise EntryIndexError from e
 
-    def get_anime_by_id(self, anime_id: int) -> AnimeDataModel:
-        raw_data = self.jikan_fetcher.fetch_data_by_id(anime_id)
+    async def get_anime_by_id(self, anime_id: int) -> AnimeDataModel:
+        raw_data = await self.jikan_fetcher.fetch_data_by_id(anime_id)
         return self._jikan_to_anime_model(raw_data)
 
-    def get_all_anime_by_title(
+    async def get_all_anime_by_title(
         self, anime_title: str, sort: str, max_entry: int | None = None
     ) -> list[AnimeDataModel]:
-        raw_data_list = self.jikan_fetcher.fetch_data_by_title(anime_title, sort)
+        raw_data_list = await self.jikan_fetcher.fetch_data_by_title(anime_title, sort)
         return self._batch_to_anime_model(raw_data_list, max_entry)
 
     def _batch_to_anime_model(

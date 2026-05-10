@@ -1,35 +1,14 @@
-import socket
 from abc import ABC, abstractmethod
-from typing import Any, Callable, TypeVar, ParamSpec
-from functools import wraps
-from joho.core.exceptions import AppConnectionError
-
-P = ParamSpec("P")
-R = TypeVar("R")
-
-
-def check_internet(func: Callable[P, R]) -> Callable[P, R]:
-    @wraps(func)
-    def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-        try:
-            with socket.create_connection(("8.8.8.8", 53), timeout=3.0):
-                pass
-        except OSError:
-            raise AppConnectionError(
-                "Failed to send requests because no internet available"
-            )
-        return func(*args, **kwargs)
-
-    return wrapper
+from typing import Any
 
 
 class FetchData(ABC):
     @abstractmethod
-    def fetch_data_by_title(
+    async def fetch_data_by_title(
         self, anime_title: str, sort: str
     ) -> list[dict[Any, Any]]:
         pass
 
     @abstractmethod
-    def fetch_data_by_id(self, anime_id: int) -> dict[Any, Any]:
+    async def fetch_data_by_id(self, anime_id: int) -> dict[Any, Any]:
         pass

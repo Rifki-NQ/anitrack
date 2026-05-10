@@ -17,12 +17,12 @@ def jikan_normalizer() -> NormalizerProtocol:
 
 @pytest.fixture
 def anime_data_model_anilist(anilist_normalizer: NormalizerProtocol) -> AnimeDataModel:
-    return anilist_normalizer.get_anime_by_title("Attack on titan")
+    return anilist_normalizer.get_anime_by_title("Attack on titan", "relevance")
 
 
 @pytest.fixture
 def anime_data_model_jikan(jikan_normalizer: NormalizerProtocol) -> AnimeDataModel:
-    return jikan_normalizer.get_anime_by_title("Attack on titan")
+    return jikan_normalizer.get_anime_by_title("Attack on titan", "relevance")
 
 
 def test_response_normalizer_anilist_value(

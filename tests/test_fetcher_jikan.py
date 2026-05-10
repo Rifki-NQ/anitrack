@@ -13,7 +13,7 @@ def jikan_fetcher() -> FetchersProtocol:
 
 @pytest.fixture(scope="module")
 def jikan_data(jikan_fetcher: FetchersProtocol) -> dict[str, Any]:
-    data = jikan_fetcher.fetch_data_by_title("Attack on titan")[0]
+    data = jikan_fetcher.fetch_data_by_title("Attack on titan", "relevance")[1]
     return {
         "english_title": data["title_english"],
         "romaji_title": data["title"],

@@ -3,7 +3,7 @@ from typing import Any
 
 class MockJikanFetcher:
     def fetch_data_by_title(
-        self, anime_title: str = "Attack on titan", entry_number: int = 0
+        self, anime_title: str = "Attack on titan", sort: str = "relevance"
     ) -> list[dict[str, Any]]:
         return [
             {
@@ -700,7 +700,7 @@ class MockJikanFetcher:
 
 class MockAnilistFetcher:
     def fetch_data_by_title(
-        self, anime_title: str = "Attack on titan"
+        self, anime_title: str = "Attack on titan", sort: str = "relevance"
     ) -> list[dict[str, Any]]:
         return [
             {

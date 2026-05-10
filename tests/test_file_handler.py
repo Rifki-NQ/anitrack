@@ -17,7 +17,7 @@ def anilist_normalizer() -> NormalizerProtocol:
 def anilist_anime_data_model(
     anilist_normalizer: NormalizerProtocol,
 ) -> list[AnimeDataModel]:
-    return anilist_normalizer.get_all_anime_by_title("Attack on titan")
+    return anilist_normalizer.get_all_anime_by_title("Attack on titan", "relevance")
 
 
 @pytest.fixture

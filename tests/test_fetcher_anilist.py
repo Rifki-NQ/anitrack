@@ -13,7 +13,7 @@ def anilist_fetcher() -> FetchersProtocol:
 
 @pytest.fixture(scope="module")
 def anilist_data(anilist_fetcher: FetchersProtocol) -> dict[str, Any]:
-    data = anilist_fetcher.fetch_data_by_title("Attack on titan")[0]
+    data = anilist_fetcher.fetch_data_by_title("Attack on titan", "relevance")[0]
     return {
         "english_title": data["title"]["english"],
         "romaji_title": data["title"]["romaji"],

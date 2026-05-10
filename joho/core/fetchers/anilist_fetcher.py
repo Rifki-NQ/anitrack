@@ -13,7 +13,6 @@ class FetchAnilist(FetchData):
         "newest": "START_DATE_DESC",
         "oldest": "START_DATE",
     }
-    DEFAULT_SORT = "relevance"
     QUERY_BY_TITLE = """
     query ($search: String, $sort: [MediaSort]) {
         Page (page: 1, perPage: 50) {
@@ -96,9 +95,8 @@ class FetchAnilist(FetchData):
     """
 
     def fetch_data_by_title(
-        self, anime_title: str, sort: str | None
+        self, anime_title: str, sort: str
     ) -> list[dict[str, Any]]:
-        sort = sort if sort is not None else self.DEFAULT_SORT
         data = self._request(
             url=self.BASE_URL,
             query=self.QUERY_BY_TITLE,

@@ -26,7 +26,7 @@ def check_internet(func: Callable[P, R]) -> Callable[P, R]:
 class FetchData(ABC):
     @abstractmethod
     def fetch_data_by_title(
-        self, anime_title: str, sort: str | None
+        self, anime_title: str, sort: str
     ) -> list[dict[Any, Any]]:
         pass
 

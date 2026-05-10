@@ -11,7 +11,7 @@ class JikanNormalizer(BaseNormalizer):
         self.jikan_fetcher = jikan_fetcher
 
     def get_anime_by_title(
-        self, anime_title: str, sort: str | None, entry_index: int | None = None
+        self, anime_title: str, sort: str, entry_index: int | None = None
     ) -> AnimeDataModel:
         if entry_index is None:
             entry_index = DEFAULT_ENTRY_INDEX
@@ -26,7 +26,7 @@ class JikanNormalizer(BaseNormalizer):
         return self._jikan_to_anime_model(raw_data)
 
     def get_all_anime_by_title(
-        self, anime_title: str, sort: str | None, max_entry: int | None = None
+        self, anime_title: str, sort: str, max_entry: int | None = None
     ) -> list[AnimeDataModel]:
         raw_data_list = self.jikan_fetcher.fetch_data_by_title(anime_title, sort)
         return self._batch_to_anime_model(raw_data_list, max_entry)

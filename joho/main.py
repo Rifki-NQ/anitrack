@@ -11,7 +11,7 @@ from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.utils import valid_filepath
 from joho.core.file_handler import DataIO
-from joho.core.constants import VALID_DATA_SOURCES, SORT_CHOICES
+from joho.core.constants import VALID_DATA_SOURCES, SORT_CHOICES, DEFAULT_SORT_CHOICE
 
 
 def main_parser() -> None:
@@ -24,7 +24,7 @@ def main_parser() -> None:
     fetch_parser.add_argument("--source", choices=VALID_SOURCES, required=True)
     fetch_parser.add_argument("--max-entry", type=int, default=None)
     fetch_parser.add_argument(
-        "--sort", choices=SORT_CHOICES, required=False, default=None
+        "--sort", choices=SORT_CHOICES, required=False, default=DEFAULT_SORT_CHOICE
     )
     fetch_entry_group = fetch_parser.add_mutually_exclusive_group(required=False)
     fetch_entry_group.add_argument("--entry", type=int, default=None)
@@ -48,7 +48,7 @@ def main_parser() -> None:
     export_entry_group.add_argument("--entry", type=int, default=None)
     export_entry_group.add_argument("--save-all", action="store_true", default=False)
     export_parser.add_argument(
-        "--path", type=valid_filepath, default=None, required=False
+        "--path", type=valid_filepath, required=False, default=DEFAULT_SORT_CHOICE
     )
     export_parser.add_argument("--overwrite", action="store_true", default=False)
     export_parser.add_argument("--max-entry", type=int, default=None)

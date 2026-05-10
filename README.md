@@ -13,6 +13,7 @@ You can search anime by title or ID and export the data to a CSV file.
 - [Usage](#usage)
 - [Result Examples](#result-examples)
 - [Running Tests](#running-tests)
+- [Knowns Bugs](#known-bugs)
 
 ---
 
@@ -155,10 +156,12 @@ fetch --source <source> (--title <title> | --id <id>) [--entry <entry> | --show-
 | `--source` | string | ✅ Yes | Data source to fetch from. Choices: `anilist`, `jikan`, `all` |
 | `--title` | string | ✅ One of | Search anime by title |
 | `--id` | int | ✅ One of | Fetch anime by ID |
+| `--sort` | str | ❌ No | Sort entry by (default: `relevance`) |
 | `--entry` | int | ❌ No | Entry number for search result (default: `none`) |
 | `--show-title` | flag | ❌ No | display the matched entry's title (default: `false`) |
 | `--max-entry` | int | ❌ No | Max anime titles to display (default: `none`) |
 
+> - `--sort` is only valid with `--title`
 > - `--title` and `--id` are mutually exclusive — you must provide exactly one.
 > - `--entry` and `--show-title` are only valid when `--title` is used.
 > - `--entry` and `--show-title` are mutually exclusive — provide at most one.
@@ -193,12 +196,14 @@ export --source <source> (--title <title> | --id <id>) --path <path> [--entry <e
 | `--source` | string | ✅ Yes | Data source to fetch from. Choices: `anilist`, `jikan`, `all` |
 | `--title` | string | ✅ One of | Search anime by title |
 | `--id` | int | ✅ One of | Fetch anime by ID |
+| `--sort` | str | ❌ No | Sort entry by (default: `relevance`) |
 | `--path` | string | ❌ No | Destination file path to save the exported data (default: `title` or `id` name) |
 | `--entry` | int | ❌ No | Entry number for search result (default: `none`) |
 | `--save-all` | flag | ❌ No | Save all entries from search result (default: `false`) |
 | `--max-entry` | int | ❌ No | Max anime entries to save (default: `none`) |
 | `--overwrite` | flag | ❌ No | Overwrite the data if it's not empty (default: `false`) |
 
+> - `--sort` is only valid with `--title`
 > - when `--path` is not provided, it'll use `--title` or `id` as the file name then save it in `storage/`.
 > - `--title` and `--id` are mutually exclusive — you must provide exactly one.
 > - `--entry`and `--save-all` are only valid when `--title` is used.
@@ -444,5 +449,13 @@ The test suite covers:
 - `test_fetcher_jikan.py` - verifies that the `FetchJikan` return expected data values and type from the `API`
 - `test_normalizer.py` - verifies the normalization flow using mocked fetcher data
 - `test_file_handler.py` - verifies DataIO save and read data correctly using mocked Anilist data and tmp_path
+
+---
+
+## Known Bugs
+
+- When `--source jikan`, `--sort` may produce unexpected ordering. This is a known Jikan API
+limitation with no fix on their end. Omit `--sort` or set it to `relevance` to use default
+ordering. Client-side sorting is planned as a workaround.
 
 ---

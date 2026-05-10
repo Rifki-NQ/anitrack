@@ -1,7 +1,7 @@
 import requests
 from typing import Any
 from joho.core.fetchers.base_fetcher import FetchData, check_internet
-from joho.core.exceptions import AppConnectionError
+from joho.core.exceptions import AppConnectionError, JikanError
 
 
 class FetchJikan(FetchData):
@@ -26,12 +26,18 @@ class FetchJikan(FetchData):
             "sort": "desc",
         }
         data = self._query_anime(self.BASE_URL, params)
-        return data.json()["data"]
+        json_data = data.json()["data"]
+        if not json_data:
+            raise JikanError("Error: requested anime not found!")
+        return json_data
 
     def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
         base_url = f"{self.BASE_URL}/{anime_id}"
         data = self._query_anime(base_url)
-        return data.json()["data"]
+        json_data = data.json()["data"]
+        if not json_data:
+            raise JikanError("Error: requested anime not found!")
+        return json_data
 
     @check_internet
     def _query_anime(

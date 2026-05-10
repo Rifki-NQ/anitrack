@@ -1,12 +1,18 @@
 import requests
 from typing import Any
 from joho.core.fetchers.base_fetcher import FetchData, check_internet
-from joho.core.constants import FETCH_SORT_MAP
 from joho.core.exceptions import AnilistError, AppConnectionError
 
 
 class FetchAnilist(FetchData):
     BASE_URL = "https://graphql.anilist.co"
+    SORT_MAP = {
+        "rating": "SCORE_DESC",
+        "popularity": "POPULARITY_DESC",
+        "relevance": "SEARCH_MATCH",
+        "newest": "START_DATE_DESC",
+        "oldest": "START_DATE",
+    }
     DEFAULT_SORT = "relevance"
     QUERY_BY_TITLE = """
     query ($search: String, $sort: [MediaSort]) {
@@ -96,7 +102,7 @@ class FetchAnilist(FetchData):
         data = self._request(
             url=self.BASE_URL,
             query=self.QUERY_BY_TITLE,
-            variables={"search": anime_title, "sort": FETCH_SORT_MAP[sort]},
+            variables={"search": anime_title, "sort": self.SORT_MAP[sort]},
         )
         media_data = data.json()["data"]["Page"]["media"]
         if not media_data:

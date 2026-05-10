@@ -9,7 +9,6 @@ requires-python = ">=3.10"
 
 dependencies = [
     "requests",
-    "jikanpy-v4",
 ]
 
 [project.optional-dependencies]

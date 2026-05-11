@@ -1,6 +1,6 @@
 from typing import Any, Literal
 from joho.core.models.anime_model import AnimeDataModel
-from joho.core.normalizers.base_normalizer import BaseNormalizer
+from joho.core.normalizers.base_normalizer import BaseNormalizer, batch_to_anime_model
 from joho.core.models.protocols import FetchersProtocol
 from joho.core.constants import DEFAULT_ENTRY_INDEX
 from joho.core.exceptions import EntryIndexError
@@ -29,19 +29,9 @@ class JikanNormalizer(BaseNormalizer):
         self, anime_title: str, sort: str, max_entry: int | None = None
     ) -> list[AnimeDataModel]:
         raw_data_list = await self.jikan_fetcher.fetch_data_by_title(anime_title, sort)
-        return self._batch_to_anime_model(raw_data_list, max_entry)
-
-    def _batch_to_anime_model(
-        self, raw_data_list: list[dict[str, Any]], max_entry: int | None
-    ) -> list[AnimeDataModel]:
-        """convert list of raw entry data dict into list of AnimeDataModel"""
-        model_data_list: list[AnimeDataModel] = []
-        for entry_num, data in enumerate(raw_data_list, 1):
-            # inclusive for max_entry value
-            if max_entry is not None and entry_num > max_entry:
-                break
-            model_data_list.append(self._jikan_to_anime_model(data))
-        return model_data_list
+        return batch_to_anime_model(
+            raw_data_list, max_entry, self._jikan_to_anime_model
+        )
 
     def _jikan_to_anime_model(self, data: dict[str, Any]) -> AnimeDataModel:
         return AnimeDataModel(

@@ -1,5 +1,21 @@
+from typing import Any, Callable
 from abc import ABC, abstractmethod
 from joho.core.models.anime_model import AnimeDataModel
+
+
+def batch_to_anime_model(
+    raw_data_list: list[dict[str, Any]],
+    max_entry: int | None,
+    anime_model_converter: Callable[[dict[str, Any]], AnimeDataModel],
+) -> list[AnimeDataModel]:
+    """convert list of raw entry data dict into list of AnimeDataModel"""
+    model_data_list: list[AnimeDataModel] = []
+    for entry_num, data in enumerate(raw_data_list, 1):
+        # inclusive for max_entry value
+        if max_entry is not None and entry_num > max_entry:
+            break
+        model_data_list.append(anime_model_converter(data))
+    return model_data_list
 
 
 class BaseNormalizer(ABC):

@@ -1,6 +1,7 @@
 import asyncio
 from argparse import Namespace
 from typing import Iterable, Sequence
+from joho.core.cli.cli_utils import resolve_sort
 from joho.core.file_handler import DataIO
 from joho.core.models.anime_model import AnimeDataModel
 from joho.core.models.protocols import NormalizerProtocol
@@ -35,16 +36,15 @@ class ExportCLI:
         args: Namespace,
         normalizer: NormalizerProtocol,
     ) -> None:
+        sort = resolve_sort(args.sort)
         if args.title:
             if args.save_all:
                 data_list = await normalizer.get_all_anime_by_title(
-                    args.title, args.sort, args.max_entry
+                    args.title, sort, args.max_entry
                 )
                 self._save_data_list(args.overwrite, data_list)
                 return
-            data = await normalizer.get_anime_by_title(
-                args.title, args.sort, args.entry
-            )
+            data = await normalizer.get_anime_by_title(args.title, sort, args.entry)
             self._save_entry(args.overwrite, data)
         elif args.id:
             data = await normalizer.get_anime_by_id(args.id)
@@ -57,7 +57,9 @@ class ExportCLI:
     ) -> None:
         if args.title:
             coroutines = [
-                n.get_all_anime_by_title(args.title, args.sort, args.max_entry)
+                n.get_all_anime_by_title(
+                    args.title, resolve_sort(args.sort), args.max_entry
+                )
                 for n in normalizers
             ]
             data_collection = await asyncio.gather(*coroutines, return_exceptions=True)

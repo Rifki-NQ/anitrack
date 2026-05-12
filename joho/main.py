@@ -12,7 +12,7 @@ from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.utils import valid_filepath
 from joho.core.file_handler import DataIO
-from joho.core.constants import VALID_DATA_SOURCES, SORT_CHOICES, DEFAULT_SORT_CHOICE
+from joho.core.constants import VALID_DATA_SOURCES, SORT_CHOICES
 
 
 async def main_parser() -> None:
@@ -25,7 +25,7 @@ async def main_parser() -> None:
     fetch_parser.add_argument("--source", choices=VALID_SOURCES, required=True)
     fetch_parser.add_argument("--max-entry", type=int, default=None)
     fetch_parser.add_argument(
-        "--sort", choices=SORT_CHOICES, required=False, default=DEFAULT_SORT_CHOICE
+        "--sort", choices=SORT_CHOICES, required=False, default=None
     )
     fetch_entry_group = fetch_parser.add_mutually_exclusive_group(required=False)
     fetch_entry_group.add_argument("--entry", type=int, default=None)
@@ -40,7 +40,7 @@ async def main_parser() -> None:
     )
     export_parser.add_argument("--source", choices=VALID_SOURCES, required=True)
     export_parser.add_argument(
-        "--sort", choices=SORT_CHOICES, required=False, default=DEFAULT_SORT_CHOICE
+        "--sort", choices=SORT_CHOICES, required=False, default=None
     )
     search_by_group = export_parser.add_mutually_exclusive_group(required=True)
     search_by_group.add_argument("--title", type=str)

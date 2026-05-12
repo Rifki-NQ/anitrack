@@ -1,4 +1,5 @@
 import pytest
+import pytest_asyncio
 from tests.fetchers_mock_data import MockAnilistFetcher, MockJikanFetcher
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.models.anime_model import AnimeDataModel
@@ -15,14 +16,18 @@ def jikan_normalizer() -> NormalizerProtocol:
     return create_normalizer("jikan", MockJikanFetcher())
 
 
-@pytest.fixture
-def anime_data_model_anilist(anilist_normalizer: NormalizerProtocol) -> AnimeDataModel:
-    return anilist_normalizer.get_anime_by_title("Attack on titan", "relevance")
+@pytest_asyncio.fixture
+async def anime_data_model_anilist(
+    anilist_normalizer: NormalizerProtocol,
+) -> AnimeDataModel:
+    return await anilist_normalizer.get_anime_by_title("Attack on titan", "relevance")
 
 
-@pytest.fixture
-def anime_data_model_jikan(jikan_normalizer: NormalizerProtocol) -> AnimeDataModel:
-    return jikan_normalizer.get_anime_by_title("Attack on titan", "relevance")
+@pytest_asyncio.fixture
+async def anime_data_model_jikan(
+    jikan_normalizer: NormalizerProtocol,
+) -> AnimeDataModel:
+    return await jikan_normalizer.get_anime_by_title("Attack on titan", "relevance")
 
 
 def test_response_normalizer_anilist_value(

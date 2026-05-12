@@ -2,7 +2,7 @@ from typing import Any
 
 
 class MockJikanFetcher:
-    def fetch_data_by_title(
+    async def fetch_data_by_title(
         self, anime_title: str = "Attack on titan", sort: str = "relevance"
     ) -> list[dict[str, Any]]:
         return [
@@ -487,7 +487,7 @@ class MockJikanFetcher:
             },
         ]
 
-    def fetch_data_by_id(self, anime_id: int = 16498) -> dict[str, Any]:
+    async def fetch_data_by_id(self, anime_id: int = 16498) -> dict[str, Any]:
         return {
             "aired": {
                 "from": "2013-04-07T00:00:00+00:00",
@@ -699,7 +699,7 @@ class MockJikanFetcher:
 
 
 class MockAnilistFetcher:
-    def fetch_data_by_title(
+    async def fetch_data_by_title(
         self, anime_title: str = "Attack on titan", sort: str = "relevance"
     ) -> list[dict[str, Any]]:
         return [
@@ -1301,7 +1301,7 @@ class MockAnilistFetcher:
             },
         ]
 
-    def fetch_data_by_id(self, anime_id: int = 16498) -> dict[str, Any]:
+    async def fetch_data_by_id(self, anime_id: int = 16498) -> dict[str, Any]:
         return {
             "averageScore": 85,
             "duration": 24,

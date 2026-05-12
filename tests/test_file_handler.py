@@ -1,4 +1,5 @@
 import pytest
+import pytest_asyncio
 from pathlib import Path
 from dataclasses import fields
 from tests.fetchers_mock_data import MockAnilistFetcher
@@ -13,11 +14,13 @@ def anilist_normalizer() -> NormalizerProtocol:
     return create_normalizer("anilist", MockAnilistFetcher())
 
 
-@pytest.fixture
-def anilist_anime_data_model(
+@pytest_asyncio.fixture
+async def anilist_anime_data_model(
     anilist_normalizer: NormalizerProtocol,
 ) -> list[AnimeDataModel]:
-    return anilist_normalizer.get_all_anime_by_title("Attack on titan", "relevance")
+    return await anilist_normalizer.get_all_anime_by_title(
+        "Attack on titan", "relevance"
+    )
 
 
 @pytest.fixture

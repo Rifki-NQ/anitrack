@@ -1,4 +1,5 @@
 import pytest
+import pytest_asyncio
 from typing import Any
 from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.models.protocols import FetchersProtocol
@@ -11,9 +12,10 @@ def anilist_fetcher() -> FetchersProtocol:
     return create_fetcher("anilist")
 
 
-@pytest.fixture(scope="module")
-def anilist_data(anilist_fetcher: FetchersProtocol) -> dict[str, Any]:
-    data = anilist_fetcher.fetch_data_by_title("Attack on titan", "relevance")[0]
+@pytest_asyncio.fixture(scope="module")
+async def anilist_data(anilist_fetcher: FetchersProtocol) -> dict[str, Any]:
+    results = await anilist_fetcher.fetch_data_by_title("Attack on titan", "relevance")
+    data = results[0]
     return {
         "english_title": data["title"]["english"],
         "romaji_title": data["title"]["romaji"],

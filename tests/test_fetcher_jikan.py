@@ -1,4 +1,5 @@
 import pytest
+import pytest_asyncio
 from typing import Any
 from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.models.protocols import FetchersProtocol
@@ -11,9 +12,10 @@ def jikan_fetcher() -> FetchersProtocol:
     return create_fetcher("jikan")
 
 
-@pytest.fixture(scope="module")
-def jikan_data(jikan_fetcher: FetchersProtocol) -> dict[str, Any]:
-    data = jikan_fetcher.fetch_data_by_title("Attack on titan", "relevance")[1]
+@pytest_asyncio.fixture(scope="module")
+async def jikan_data(jikan_fetcher: FetchersProtocol) -> dict[str, Any]:
+    results = await jikan_fetcher.fetch_data_by_title("Attack on titan", "relevance")
+    data = results[1]
     return {
         "english_title": data["title_english"],
         "romaji_title": data["title"],

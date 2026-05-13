@@ -1,15 +1,22 @@
 import pytest
 import pytest_asyncio
-from typing import Any
+from httpx import AsyncClient
+from typing import Any, AsyncIterator
 from joho.core.fetchers.fetcher_factory import create_fetcher
 from joho.core.models.protocols import FetchersProtocol
 
 pytestmark = pytest.mark.integration
 
 
+@pytest_asyncio.fixture(scope="module")
+async def client() -> AsyncIterator[AsyncClient]:
+    async with AsyncClient() as client:
+        yield client
+
+
 @pytest.fixture(scope="module")
-def jikan_fetcher() -> FetchersProtocol:
-    return create_fetcher("jikan")
+def jikan_fetcher(client: AsyncClient) -> FetchersProtocol:
+    return create_fetcher("jikan", client)
 
 
 @pytest_asyncio.fixture(scope="module")

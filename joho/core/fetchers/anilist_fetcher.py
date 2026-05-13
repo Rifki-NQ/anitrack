@@ -5,6 +5,9 @@ from joho.core.exceptions import AnilistError, AppConnectionError
 
 
 class FetchAnilist(FetchData):
+    def __init__(self, client: httpx.AsyncClient) -> None:
+        super().__init__(client)
+
     BASE_URL = "https://graphql.anilist.co"
     SORT_MAP = {
         "rating": "SCORE_DESC",
@@ -120,12 +123,11 @@ class FetchAnilist(FetchData):
         self, url: str, query: str, variables: dict[str, str | int | list[str]]
     ) -> httpx.Response:
         try:
-            async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    url, json={"query": query, "variables": variables}, timeout=3.0
-                )
-                response.raise_for_status()
-                return response
+            response = await self.client.post(
+                url, json={"query": query, "variables": variables}, timeout=3.0
+            )
+            response.raise_for_status()
+            return response
         except httpx.RequestError as e:
             raise AppConnectionError(f"Connection error occurred: {e}") from e
         except httpx.HTTPStatusError as e:

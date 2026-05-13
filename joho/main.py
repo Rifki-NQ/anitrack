@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+from httpx import AsyncClient
 from joho.core.cli.fetch_cli import FetchCLI
 from joho.core.cli.export_cli import ExportCLI
 from joho.core.cli.read_cli import ReadCLI
@@ -64,51 +65,56 @@ async def main_parser() -> None:
 
     args = parser.parse_args()
 
-    if args.command == "fetch":
-        validate_args_fetch(fetch_parser, args)
+    async with AsyncClient() as client:
+        if args.command == "fetch":
+            validate_args_fetch(fetch_parser, args)
 
-        fetch_cli = FetchCLI()
-        if args.source == "all":
+            fetch_cli = FetchCLI()
+            if args.source == "all":
+                await fetch_cli.handle_fetch_cli(
+                    args,
+                    True,
+                    [
+                        create_normalizer(source, create_fetcher(source, client))
+                        for source in VALID_DATA_SOURCES
+                    ],
+                )
+                return
             await fetch_cli.handle_fetch_cli(
                 args,
-                True,
-                [
-                    create_normalizer(source, create_fetcher(source))
-                    for source in VALID_DATA_SOURCES
-                ],
+                False,
+                [create_normalizer(args.source, create_fetcher(args.source, client))],
             )
-            return
-        await fetch_cli.handle_fetch_cli(
-            args, False, [create_normalizer(args.source, create_fetcher(args.source))]
-        )
 
-    elif args.command == "export":
-        validate_args_export(export_parser, args)
-        path = validate_export_path(
-            args.path, args.title if args.id is None else args.id
-        )
+        elif args.command == "export":
+            validate_args_export(export_parser, args)
+            path = validate_export_path(
+                args.path, args.title if args.id is None else args.id
+            )
 
-        export_cli = ExportCLI(DataIO(path))
-        if args.source == "all":
+            export_cli = ExportCLI(DataIO(path))
+            if args.source == "all":
+                await export_cli.handle_export_cli(
+                    args,
+                    True,
+                    [
+                        create_normalizer(source, create_fetcher(source, client))
+                        for source in VALID_DATA_SOURCES
+                    ],
+                )
+                return
             await export_cli.handle_export_cli(
                 args,
-                True,
-                [
-                    create_normalizer(source, create_fetcher(source))
-                    for source in VALID_DATA_SOURCES
-                ],
+                False,
+                [create_normalizer(args.source, create_fetcher(args.source, client))],
             )
-            return
-        await export_cli.handle_export_cli(
-            args, False, [create_normalizer(args.source, create_fetcher(args.source))]
-        )
 
-    elif args.command == "read":
-        read_cli = ReadCLI(DataIO(args.path))
-        read_cli.handle_read_cli(args)
+        elif args.command == "read":
+            read_cli = ReadCLI(DataIO(args.path))
+            read_cli.handle_read_cli(args)
 
-    else:
-        parser.print_help()
+        else:
+            parser.print_help()
 
 
 def main() -> None:

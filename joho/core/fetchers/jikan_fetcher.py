@@ -5,6 +5,9 @@ from joho.core.exceptions import AppConnectionError, JikanError
 
 
 class FetchJikan(FetchData):
+    def __init__(self, client: httpx.AsyncClient) -> None:
+        super().__init__(client)
+
     BASE_URL = "https://api.jikan.moe/v4/anime"
     # default sort is relevance (based on constants.py value)
     # relevance = None, since jikan order_by is not working properly currently
@@ -43,10 +46,9 @@ class FetchJikan(FetchData):
         self, base_url: str, params: dict[str, str | int | None] | None = None
     ) -> httpx.Response:
         try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(base_url, params=params)
-                response.raise_for_status()
-                return response
+            response = await self.client.get(base_url, params=params)
+            response.raise_for_status()
+            return response
         except httpx.RequestError as e:
             raise AppConnectionError(f"Connection error occurred: {e}") from e
         except httpx.HTTPStatusError as e:

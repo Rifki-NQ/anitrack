@@ -28,3 +28,4 @@ packages = ["joho"]
 markers = [
     "integration: mark test as integration test",
 ]
+asyncio_mode = "auto"

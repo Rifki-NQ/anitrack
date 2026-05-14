@@ -16,7 +16,7 @@ from joho.core.file_handler import DataIO
 from joho.core.constants import VALID_DATA_SOURCES, SORT_CHOICES
 
 
-async def main_parser() -> None:
+def build_parser() -> argparse.ArgumentParser:
     VALID_SOURCES = (*VALID_DATA_SOURCES, "all")
     parser = argparse.ArgumentParser(prog="joho")
     subparsers = parser.add_subparsers(dest="command")
@@ -63,11 +63,16 @@ async def main_parser() -> None:
     read_entry_group.add_argument("--entry", type=int, default=None)
     read_entry_group.add_argument("--show-title", action="store_true", default=False)
 
+    return parser
+
+
+async def parse_args(parser: argparse.ArgumentParser) -> None:
+
     args = parser.parse_args()
 
     async with AsyncClient() as client:
         if args.command == "fetch":
-            validate_args_fetch(fetch_parser, args)
+            validate_args_fetch(parser, args)
 
             fetch_cli = FetchCLI()
             if args.source == "all":
@@ -87,7 +92,7 @@ async def main_parser() -> None:
             )
 
         elif args.command == "export":
-            validate_args_export(export_parser, args)
+            validate_args_export(parser, args)
             path = validate_export_path(
                 args.path, args.title if args.id is None else args.id
             )
@@ -118,7 +123,7 @@ async def main_parser() -> None:
 
 
 def main() -> None:
-    asyncio.run(main_parser())
+    asyncio.run(parse_args(build_parser()))
 
 
 if __name__ == "__main__":

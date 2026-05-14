@@ -55,7 +55,7 @@ async def main_parser() -> None:
     export_parser.add_argument("--overwrite", action="store_true", default=False)
     export_parser.add_argument("--max-entry", type=int, default=None)
 
-    # subcommand list
+    # subcommand read
     read_parser = subparsers.add_parser("read", description="read exported anime data")
     read_parser.add_argument("--path", type=valid_filepath, required=True)
     read_parser.add_argument("--limit", type=int, default=None)

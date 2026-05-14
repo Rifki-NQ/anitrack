@@ -91,5 +91,7 @@ class JikanNormalizer(BaseNormalizer):
             return None
         return str(studios[0]["name"])
 
-    def _get_genres(self, genres: list[dict[str, str | int]]) -> str:
+    def _get_genres(self, genres: list[dict[str, str | int]]) -> str | None:
+        if not genres:
+            return None
         return "|".join([str(g["name"]) for g in genres])

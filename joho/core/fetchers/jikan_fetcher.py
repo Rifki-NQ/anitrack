@@ -1,5 +1,5 @@
 import httpx
-from typing import Any
+from typing import Any, cast
 from joho.core.fetchers.base_fetcher import FetchData
 from joho.core.exceptions import AppConnectionError, JikanError
 
@@ -32,7 +32,7 @@ class FetchJikan(FetchData):
         json_data = data.json()["data"]
         if not json_data:
             raise JikanError("Error: requested anime not found!")
-        return json_data
+        return cast(list[dict[str, Any]], json_data)
 
     async def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
         base_url = f"{self.BASE_URL}/{anime_id}"
@@ -40,7 +40,7 @@ class FetchJikan(FetchData):
         json_data = data.json()["data"]
         if not json_data:
             raise JikanError("Error: requested anime not found!")
-        return json_data
+        return cast(dict[str, Any], json_data)
 
     async def _query_anime(
         self, base_url: str, params: dict[str, str | int | None] | None = None

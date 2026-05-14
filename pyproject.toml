@@ -29,3 +29,6 @@ markers = [
     "integration: mark test as integration test",
 ]
 asyncio_mode = "auto"
+
+[tool.mypy]
+strict = true

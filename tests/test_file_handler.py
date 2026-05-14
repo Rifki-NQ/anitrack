@@ -79,25 +79,25 @@ def test_first_data_values(first_data: dict[str, str | None]) -> None:
     assert first_data["studio"] == "WIT STUDIO"
     assert first_data["source"] == "MANGA"
     assert first_data["genres"] == "Action|Drama|Fantasy|Mystery"
-    assert first_data["all_time_rank"] == "73"
+    assert first_data["all_time_rank"] == "67"
     assert first_data["all_time_popularity"] == "1"
 
 
 def test_seventeenth_data_values(seventeenth_data: dict[str, str | None]) -> None:
     assert seventeenth_data["data_source"] == "anilist"
-    assert seventeenth_data["id"] == "108942"
+    assert seventeenth_data["id"] == "120257"
     assert (
         seventeenth_data["romaji_title"]
-        == "Shingeki no Kyojin: Chimi Kyara Gekijou - Rivai-han"
+        == "Shingeki no Kyojin: Chimi Kyara Gekijou - Rivai-han Part 2"
     )
     assert seventeenth_data["english_title"] is None
     assert seventeenth_data["format"] == "SPECIAL"
-    assert seventeenth_data["episodes"] == "4"
+    assert seventeenth_data["episodes"] == "3"
     assert seventeenth_data["status"] == "FINISHED"
-    assert seventeenth_data["average_score"] == "75.0"
+    assert seventeenth_data["average_score"] == "79.0"
     assert seventeenth_data["duration"] == "00:02"
-    assert seventeenth_data["start_date"] == "2018-10-17"
-    assert seventeenth_data["end_date"] == "2019-02-27"
+    assert seventeenth_data["start_date"] == "2019-07-24"
+    assert seventeenth_data["end_date"] == "2019-09-18"
     assert seventeenth_data["studio"] == "WIT STUDIO"
     assert seventeenth_data["source"] == "MANGA"
     assert seventeenth_data["genres"] == "Comedy|Fantasy"

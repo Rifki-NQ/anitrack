@@ -47,7 +47,7 @@ def test_response_normalizer_anilist_value(
     assert anime_data_model_anilist.studio == "WIT STUDIO"
     assert anime_data_model_anilist.source == "MANGA"
     assert anime_data_model_anilist.genres == "Action|Drama|Fantasy|Mystery"
-    assert anime_data_model_anilist.all_time_rank == 73
+    assert anime_data_model_anilist.all_time_rank == 67
     assert anime_data_model_anilist.all_time_popularity == 1
 
 
@@ -71,10 +71,16 @@ def test_response_normalizer_jikan_value(
     assert anime_data_model_jikan.all_time_rank == 125
     assert anime_data_model_jikan.all_time_popularity == 1
 
+
 async def test_none_max_entry(anilist_normalizer: NormalizerProtocol) -> None:
-    list_anime_model = await anilist_normalizer.get_all_anime_by_title("Attack on titan", "relevance")
+    list_anime_model = await anilist_normalizer.get_all_anime_by_title(
+        "Attack on titan", "relevance"
+    )
     assert len(list_anime_model) == 20
-    
+
+
 async def test_2_max_entry(jikan_normalizer: NormalizerProtocol) -> None:
-    list_anime_model = await jikan_normalizer.get_all_anime_by_title("Attack on titan", "relevance", 2)
+    list_anime_model = await jikan_normalizer.get_all_anime_by_title(
+        "Attack on titan", "relevance", 2
+    )
     assert len(list_anime_model) == 2

@@ -93,7 +93,8 @@ joho/
 │   ├── test_normalizer.py
 │   ├── test_file_handler.py
 │   ├── test_fetch_cli.py
-│   └── test_export_cli_single_source.py
+│   ├── test_export_cli_single_source.py
+│   └── test_export_cli_multi_source.py
 ├── storage/
 │   └── *.csv                              # Saved data outputs
 ├── pyproject.toml                         # Project metadata and dependencies
@@ -453,6 +454,7 @@ The test suite covers:
 - `test_file_handler.py` - verifies DataIO save and read data correctly using mocked Anilist data and tmp_path
 - `test_fetch_cli.py` - verifies FetchCLI terminal output for all fetch subcommand variations (single/multi source, by title/id, --entry, --show-title, --max-entry)
 - `test_export_cli_single_source.py` verifies ExportCLI file output for all export subcommand variations (single source, by title/id, --entry, --path, --save-all, --max-entry, --overwrite)
+- `test_export_cli_multi_source.py` verifies ExportCLI file and terminal output for all export subcommand variations (source all, by title/id, --entry, --path, --save-all, --max-entry, --overwrite)
 
 ---
 

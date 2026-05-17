@@ -9,8 +9,8 @@ from joho.core.models.protocols import NormalizerProtocol
 from joho.core.file_handler import DataIO
 from tests.fetchers_mock_data import MockJikanFetcher
 
-# detailed file content / values tests are skipped in this tests
-# since test_file_handler.py already handle it
+# detailed file content / values tests are skipped in this test
+# since test_file_handler.py already handles it
 
 
 @pytest.fixture
@@ -61,9 +61,7 @@ def export_single_by_id(
 
 
 @pytest.fixture
-def export_single_no_path(
-    parser: argparse.ArgumentParser, temporary_path: Path
-) -> argparse.Namespace:
+def export_single_no_path(parser: argparse.ArgumentParser) -> argparse.Namespace:
     return parser.parse_args(
         [
             "export",
@@ -179,12 +177,11 @@ async def test_export_single_no_path(
     single_normalizer: list[NormalizerProtocol],
 ) -> None:
     """
-    file is expected to be two line, which is header and one row of anime entry.
-
     test logic: validate_export_path, when no --path is provided,
     it will create a new file with the name of either --title or --id inside storage/ folder
 
-    file will be deleted after this test
+    file is expected to be two line, which is header and one row of anime entry.
+    file will be deleted after this test.
     """
     path: Path = validate_export_path(
         export_single_no_path.path, default_name=export_single_no_path.title
@@ -240,7 +237,7 @@ async def test_export_single_max_entry(
     """
     test flag: --max-entry combined with --save-all and --title
 
-    file is expected to be three line, which is header and three row of anime entry
+    file is expected to be three line, which is header and two row of anime entry
     """
     path: Path = export_single_max_entry.path
     export_cli = ExportCLI(DataIO(path))

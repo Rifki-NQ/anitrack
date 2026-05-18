@@ -2,6 +2,7 @@ import httpx
 from typing import Any, cast
 from joho.core.fetchers.base_fetcher import FetchData
 from joho.core.exceptions import AppConnectionError, JikanError
+from joho.core.constants import GLOBAL_TIMEOUT
 
 
 class FetchJikan(FetchData):
@@ -46,7 +47,9 @@ class FetchJikan(FetchData):
         self, base_url: str, params: dict[str, str | int | None] | None = None
     ) -> httpx.Response:
         try:
-            response = await self.client.get(base_url, params=params)
+            response = await self.client.get(
+                base_url, params=params, timeout=GLOBAL_TIMEOUT
+            )
             response.raise_for_status()
             return response
         except httpx.RequestError as e:

@@ -2,6 +2,7 @@ import httpx
 from typing import Any, cast
 from joho.core.fetchers.base_fetcher import FetchData
 from joho.core.exceptions import AnilistError, AppConnectionError
+from joho.core.constants import GLOBAL_TIMEOUT
 
 
 class FetchAnilist(FetchData):
@@ -124,7 +125,9 @@ class FetchAnilist(FetchData):
     ) -> httpx.Response:
         try:
             response = await self.client.post(
-                url, json={"query": query, "variables": variables}, timeout=3.0
+                url,
+                json={"query": query, "variables": variables},
+                timeout=GLOBAL_TIMEOUT,
             )
             response.raise_for_status()
             return response

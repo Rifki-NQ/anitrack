@@ -8,3 +8,5 @@ DEFAULT_ENTRY_INDEX = 0
 SORT_CHOICES = ("rating", "popularity", "relevance", "newest", "oldest")
 # default sort is passed inside helper: resolve_sort() in cli_utils
 DEFAULT_SORT_CHOICE = "relevance"
+
+GLOBAL_TIMEOUT = 3.0

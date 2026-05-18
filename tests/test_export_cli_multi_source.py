@@ -134,7 +134,7 @@ def export_multi_max_entry(
 
 
 @pytest.fixture
-def export_multi_overwrite(
+def export_multi_overwrite_by_title(
     parser: argparse.ArgumentParser, temporary_path: Path
 ) -> argparse.Namespace:
     return parser.parse_args(
@@ -144,6 +144,24 @@ def export_multi_overwrite(
             "all",
             "--title",
             "attack on titan",
+            "--path",
+            str(temporary_path),
+            "--overwrite",
+        ]
+    )
+
+
+@pytest.fixture
+def export_multi_overwrite_by_id(
+    parser: argparse.ArgumentParser, temporary_path: Path
+) -> argparse.Namespace:
+    return parser.parse_args(
+        [
+            "export",
+            "--source",
+            "all",
+            "--id",
+            "16498",
             "--path",
             str(temporary_path),
             "--overwrite",
@@ -275,8 +293,8 @@ async def test_export_multi_max_entry(
 
 
 # uses jikan mocked data
-async def test_export_multi_with_overwrite(
-    export_multi_overwrite: argparse.Namespace,
+async def test_export_multi_with_overwrite_by_title(
+    export_multi_overwrite_by_title: argparse.Namespace,
     multiple_normalizers: list[NormalizerProtocol],
     capsys: pytest.CaptureFixture[str],
 ) -> None:
@@ -286,11 +304,11 @@ async def test_export_multi_with_overwrite(
 
     file is expected to be three line for each iteration, which is header and two row of anime entry
     """
-    path: Path = export_multi_overwrite.path
+    path: Path = export_multi_overwrite_by_title.path
     export_cli = ExportCLI(DataIO(path))
     for _ in range(3):
         await export_cli.handle_export_cli(
-            export_multi_overwrite, True, multiple_normalizers
+            export_multi_overwrite_by_title, True, multiple_normalizers
         )
         captured = capsys.readouterr()
         assert count_lines(path) == 3
@@ -298,7 +316,7 @@ async def test_export_multi_with_overwrite(
 
 
 # uses jikan mocked data
-async def test_export_multi_without_overwrite(
+async def test_export_multi_without_overwrite_by_title(
     export_multi_by_title: argparse.Namespace,
     multiple_normalizers: list[NormalizerProtocol],
     capsys: pytest.CaptureFixture[str],
@@ -313,6 +331,51 @@ async def test_export_multi_without_overwrite(
     for i in [3, 5]:
         await export_cli.handle_export_cli(
             export_multi_by_title, True, multiple_normalizers
+        )
+        captured = capsys.readouterr()
+        assert count_lines(path) == i
+        assert captured.out == "2 / 2 exported successfully\n"
+
+
+# uses jikan mocked data
+async def test_export_multi_with_overwrite_by_id(
+    export_multi_overwrite_by_id: argparse.Namespace,
+    multiple_normalizers: list[NormalizerProtocol],
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """
+    test flag: --overwrite with --id
+    test logic: export three times, file content is expected to be overwritten for each export
+
+    file is expected to be three line for each iteration, which is header and two row of anime entry
+    """
+    path: Path = export_multi_overwrite_by_id.path
+    export_cli = ExportCLI(DataIO(path))
+    for _ in range(3):
+        await export_cli.handle_export_cli(
+            export_multi_overwrite_by_id, True, multiple_normalizers
+        )
+        captured = capsys.readouterr()
+        assert count_lines(path) == 3
+        assert captured.out == "2 / 2 exported successfully\n"
+
+
+# uses jikan mocked data
+async def test_export_multi_without_overwrite_by_id(
+    export_multi_by_id: argparse.Namespace,
+    multiple_normalizers: list[NormalizerProtocol],
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """
+    test logic: export two times, new data is expected to be appended to existing data
+
+    file is expected to be three lines on first iteration, five lines on second iteration
+    """
+    path: Path = export_multi_by_id.path
+    export_cli = ExportCLI(DataIO(path))
+    for i in [3, 5]:
+        await export_cli.handle_export_cli(
+            export_multi_by_id, True, multiple_normalizers
         )
         captured = capsys.readouterr()
         assert count_lines(path) == i

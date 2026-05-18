@@ -91,12 +91,14 @@ class ExportCLI:
             data_list_by_id = await asyncio.gather(
                 *coroutines_by_id, return_exceptions=True
             )
+            overwrite: bool = args.overwrite
             success_query = 0
             for data in data_list_by_id:
                 if isinstance(data, BaseException):
                     self._show_error(data)
                     continue
-                self._save_entry(args.overwrite, data)
+                self._save_entry(overwrite, data)
+                overwrite = False
                 success_query += 1
             self._show_export_status(success_query, len(data_list_by_id))
 

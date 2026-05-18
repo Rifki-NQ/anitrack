@@ -3,8 +3,9 @@ import argparse
 from joho.main import build_parser
 from joho.core.cli.fetch_cli import FetchCLI
 from joho.core.normalizers.normalizer_factory import create_normalizer
-from tests.fetchers_mock_data import MockAnilistFetcher, MockJikanFetcher
 from joho.core.models.protocols import NormalizerProtocol
+from tests.mock_classes.mock_anilist_fetcher import MockAnilistFetcherNormal
+from tests.mock_classes.mock_jikan_fetcher import MockJikanFetcherNormal
 
 
 @pytest.fixture
@@ -120,14 +121,14 @@ def fetch_cli() -> FetchCLI:
 
 @pytest.fixture
 def single_normalizer() -> list[NormalizerProtocol]:
-    return [create_normalizer("jikan", MockJikanFetcher())]
+    return [create_normalizer("jikan", MockJikanFetcherNormal())]
 
 
 @pytest.fixture
 def multiple_normalizers() -> list[NormalizerProtocol]:
     return [
-        create_normalizer("anilist", MockAnilistFetcher()),
-        create_normalizer("jikan", MockJikanFetcher()),
+        create_normalizer("anilist", MockAnilistFetcherNormal()),
+        create_normalizer("jikan", MockJikanFetcherNormal()),
     ]
 
 

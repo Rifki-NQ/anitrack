@@ -7,7 +7,7 @@ from joho.core.cli.cli_utils import validate_export_path
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.models.protocols import NormalizerProtocol
 from joho.core.file_handler import DataIO
-from tests.fetchers_mock_data import MockJikanFetcher
+from tests.mock_classes.mock_jikan_fetcher import MockJikanFetcherNormal
 
 # detailed file content / values tests are skipped in this test
 # since test_file_handler.py already handles it
@@ -25,7 +25,7 @@ def temporary_path(tmp_path: Path) -> Path:
 
 @pytest.fixture
 def single_normalizer() -> list[NormalizerProtocol]:
-    return [create_normalizer("jikan", MockJikanFetcher())]
+    return [create_normalizer("jikan", MockJikanFetcherNormal())]
 
 
 def count_lines(path: Path) -> int:

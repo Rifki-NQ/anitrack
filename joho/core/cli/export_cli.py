@@ -55,6 +55,7 @@ class ExportCLI:
         args: Namespace,
         normalizers: Iterable[NormalizerProtocol],
     ) -> None:
+        overwrite: bool = args.overwrite
         if args.title:
             coroutines = [
                 n.get_all_anime_by_title(
@@ -63,7 +64,6 @@ class ExportCLI:
                 for n in normalizers
             ]
             data_collection = await asyncio.gather(*coroutines, return_exceptions=True)
-            overwrite: bool = args.overwrite
             success_query = 0
             for data_list in data_collection:
                 if isinstance(data_list, BaseException):
@@ -91,7 +91,6 @@ class ExportCLI:
             data_list_by_id = await asyncio.gather(
                 *coroutines_by_id, return_exceptions=True
             )
-            overwrite: bool = args.overwrite
             success_query = 0
             for data in data_list_by_id:
                 if isinstance(data, BaseException):

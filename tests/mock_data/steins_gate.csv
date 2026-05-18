@@ -1,0 +1,33 @@
+data_source,id,romaji_title,english_title,format,episodes,status,average_score,duration,start_date,end_date,studio,source,genres,all_time_rank,all_time_popularity
+anilist,9253,Steins;Gate,Steins;Gate,TV,24,FINISHED,89.0,00:24,2011-04-06,2011-09-14,WHITE FOX,VISUAL_NOVEL,Drama|Psychological|Sci-Fi|Thriller,8,27
+anilist,21127,Steins;Gate 0,Steins;Gate 0,TV,23,FINISHED,84.0,00:24,2018-04-12,2018-09-27,WHITE FOX,VISUAL_NOVEL,Drama|Psychological|Sci-Fi|Thriller,101,225
+anilist,104174,Steins;Gate 0: Kesshou Takei no Valentine - Bittersweet Day,Steins;Gate 0: Valentine's of Crystal Polymorphism -Bittersweet Intermedio-,OVA,1,FINISHED,71.0,00:24,2018-12-21,2018-12-21,WHITE FOX,ORIGINAL,Comedy|Sci-Fi,,91
+anilist,10863,Steins;Gate: Oukoubakko no Poriomania,Steins;Gate: Egoistic Poriomania,OVA,1,FINISHED,81.0,00:25,2012-02-22,2012-02-22,WHITE FOX,VISUAL_NOVEL,Comedy|Romance|Sci-Fi,16,7
+anilist,21624,Steins;Gate: Kyoukaimenjou no Missing Link - Divide By Zero,Steins;Gate 0: 23β -Divide by Zero-,OVA,1,FINISHED,81.0,00:24,2015-12-03,2015-12-03,WHITE FOX,VISUAL_NOVEL,Drama|Psychological|Sci-Fi|Thriller,12,21
+anilist,20907,Steins;Gate: Soumei Eichi no Cognitive Computing,,ONA,4,FINISHED,72.0,00:04,2014-10-14,2014-11-11,WHITE FOX,ORIGINAL,Comedy|Sci-Fi,,
+anilist,11577,Steins;Gate: Fuka Ryouiki no Déjà vu,Steins;Gate The Movie – Load Region of Déjà Vu,MOVIE,1,FINISHED,82.0,01:30,2013-04-20,2013-04-20,WHITE FOX,ORIGINAL,Drama|Romance|Sci-Fi|Thriller,60,46
+jikan,9253,Steins;Gate,Steins;Gate,TV,24,Finished Airing,9.07,00:24,2011-04-06,2011-09-14,White Fox,Visual novel,Drama|Sci-Fi|Suspense,5,14
+jikan,27957,Steins;Gate: Soumei Eichi no Cognitive Computing,Steins;Gate: The Sagacious Wisdom of Cognitive Computing,ONA,4,Finished Airing,7.44,00:03,2014-10-15,2014-11-12,White Fox,Visual novel,Comedy|Sci-Fi,2578,2123
+jikan,32188,Steins;Gate: Kyoukaimenjou no Missing Link - Divide By Zero,Steins;Gate: Open the Missing Link - Divide By Zero,TV Special,1,Finished Airing,8.27,00:24,2015-12-03,,White Fox,Visual novel,Sci-Fi|Suspense,361,971
+jikan,10863,Steins;Gate: Oukoubakko no Poriomania,Steins;Gate: Egoistic Poriomania,Special,1,Finished Airing,8.29,00:24,2012-02-22,,White Fox,Visual novel,Comedy|Sci-Fi,339,553
+jikan,11577,Steins;Gate Movie: Fuka Ryouiki no Déjà vu,Steins;Gate: The Movie - Load Region of Déjà Vu,Movie,1,Finished Airing,8.45,01:30,2013-04-20,,White Fox,Visual novel,Drama|Sci-Fi,193,384
+jikan,37492,Steins;Gate 0: Kesshou Takei no Valentine - Bittersweet Intermedio,Steins;Gate 0: Valentine's of Crystal Polymorphism -Bittersweet Intermedio-,Special,1,Finished Airing,7.28,00:23,2018-12-21,,White Fox,Visual novel,Comedy,3485,2103
+jikan,30484,Steins;Gate 0,Steins;Gate 0,TV,23,Finished Airing,8.55,00:23,2018-04-12,2018-09-27,White Fox,Visual novel,Drama|Sci-Fi|Suspense,138,208
+jikan,28907,"Gate: Jieitai Kanochi nite, Kaku Tatakaeri",GATE,TV,12,Finished Airing,7.68,00:23,2015-07-04,2015-09-19,A-1 Pictures,Light novel,Action|Adventure|Fantasy,1525,238
+jikan,6624,Kara no Kyoukai Remix: Gate of Seventh Heaven,The Garden of Sinners Remix: Gate of Seventh Heaven,Movie,1,Finished Airing,7.54,01:01,2009-03-14,,ufotable,Light novel,Action|Fantasy|Mystery|Romance|Suspense,2081,3554
+jikan,31637,"Gate: Jieitai Kanochi nite, Kaku Tatakaeri Part 2",GATE Part 2,TV,12,Finished Airing,7.71,00:23,2016-01-09,2016-03-26,A-1 Pictures,Light novel,Action|Adventure|Fantasy,1435,413
+jikan,57100,The New Gate,The New Gate,TV,12,Finished Airing,6.47,00:23,2024-04-14,2024-06-30,Yokohama Animation Lab,Light novel,Action|Adventure|Fantasy,8396,1749
+jikan,61973,"Gate Season 2: Jieitai Kanoumi nite, Kaku Tatakaeri",Gate 2: Tides of Conflict,TV,,Not yet aired,,,2027-01-01,,Studio M2,Light novel,Action|Adventure|Fantasy,,4412
+jikan,8241,Rio: Rainbow Gate!,Rio - Rainbow Gate!: Reshuffle,TV,13,Finished Airing,5.87,00:23,2011-01-04,2011-03-29,Xebec,Game,Comedy|Ecchi,11674,3852
+jikan,32802,Cardfight!! Vanguard G: Stride Gate-hen,Cardfight!! Vanguard G Stride Gate,TV,24,Finished Airing,6.85,00:24,2016-04-17,2016-09-25,TMS Entertainment,Card game,Action,5999,6796
+jikan,40359,Ikebukuro West Gate Park,Ikebukuro West Gate Park,TV,12,Finished Airing,6.87,00:23,2020-10-06,2020-12-22,Doga Kobo,Novel,Drama|Mystery,5889,2007
+jikan,31710,Divine Gate,Divine Gate,TV,12,Finished Airing,5.53,00:23,2016-01-08,2016-03-25,Studio Pierrot,Game,Action|Fantasy|Sci-Fi,13137,1581
+jikan,2145,Black Gate: Kanin no Gakuen,,OVA,2,Finished Airing,5.81,00:28,2004-07-25,2004-12-25,Studio Jam,Visual novel,Fantasy|Hentai,,8957
+jikan,10301,Rio: Rainbow Gate! Special,,Special,1,Finished Airing,6.02,00:23,2011-10-19,,Xebec,Game,Comedy|Ecchi,10940,8831
+jikan,128,Gate Keepers 21,,OVA,6,Finished Airing,6.79,00:25,2002-04-24,2003-01-08,Gonzo,Game,Drama|Sci-Fi,6384,6856
+jikan,127,Gate Keepers,,TV,24,Finished Airing,7,00:25,2000-04-03,2000-09-18,Gonzo,Game,Comedy|Fantasy|Sci-Fi,5178,5092
+jikan,2842,Pokemon Fushigi no Dungeon: Shutsudou Pokemon Kyuujotai Ganbaruzu!,Pokémon Mystery Dungeon: Team Go-Getters Out of the Gate!,TV Special,1,Finished Airing,6.5,00:20,2006-09-08,,OLM,Game,Adventure|Fantasy,8204,6019
+jikan,60580,Xuan Jie Zhi Men,The Gate of Mystical Realm,ONA,26,Finished Airing,7,00:20,2025-11-26,2026-05-06,BYMENT,Web novel,Action|Adventure|Fantasy,5204,15134
+jikan,32888,Sinbad: Mahiru no Yoru to Fushigi no Mon,Sinbad: Night at High Noon and the Wonder Gate,Movie,1,Finished Airing,6.3,00:51,2016-05-14,,Nippon Animation,Original,Adventure,9401,12958
+jikan,48791,Luo Xiaohei Zhanji: Zhongsheng Zhi Men,The Legend of Luoxiaohei: The Gate of All Living Beings,ONA,12,Finished Airing,7.49,00:08,2021-04-24,2021-07-17,HMCH,Original,Comedy|Supernatural,2314,12085
+jikan,32410,Dimension W: W no Tobira Online - Rose no Onayami Soudanshitsu,Dimension W: W Gate Online - Rose's Counseling Room,Special,5,Finished Airing,5.72,00:03,2016-03-25,2016-08-26,Studio 3Hz,Manga,Sci-Fi,12358,6729

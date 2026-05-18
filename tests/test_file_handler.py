@@ -2,16 +2,16 @@ import pytest
 import pytest_asyncio
 from pathlib import Path
 from dataclasses import fields
-from tests.fetchers_mock_data import MockAnilistFetcher
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.file_handler import DataIO
 from joho.core.models.protocols import NormalizerProtocol
 from joho.core.models.anime_model import AnimeDataModel
+from tests.mock_classes.mock_anilist_fetcher import MockAnilistFetcherNormal
 
 
 @pytest.fixture
 def anilist_normalizer() -> NormalizerProtocol:
-    return create_normalizer("anilist", MockAnilistFetcher())
+    return create_normalizer("anilist", MockAnilistFetcherNormal())
 
 
 @pytest_asyncio.fixture

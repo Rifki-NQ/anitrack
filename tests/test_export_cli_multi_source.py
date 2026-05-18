@@ -7,7 +7,8 @@ from joho.core.cli.cli_utils import validate_export_path
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.models.protocols import NormalizerProtocol
 from joho.core.file_handler import DataIO
-from tests.fetchers_mock_data import MockAnilistFetcher, MockJikanFetcher
+from tests.mock_classes.mock_anilist_fetcher import MockAnilistFetcherNormal
+from tests.mock_classes.mock_jikan_fetcher import MockJikanFetcherNormal
 
 # detailed file content / values tests are skipped in this test
 # since test_file_handler.py already handles it
@@ -26,8 +27,8 @@ def temporary_path(tmp_path: Path) -> Path:
 @pytest.fixture
 def multiple_normalizers() -> list[NormalizerProtocol]:
     return [
-        create_normalizer("anilist", MockAnilistFetcher()),
-        create_normalizer("jikan", MockJikanFetcher()),
+        create_normalizer("anilist", MockAnilistFetcherNormal()),
+        create_normalizer("jikan", MockJikanFetcherNormal()),
     ]
 
 

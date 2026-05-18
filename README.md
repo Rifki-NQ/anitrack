@@ -87,14 +87,19 @@ joho/
 │           └── jikan_normalizer.py        # Normalizer for Jikan API data
 ├── tests/
 │   ├── __init__.py
-│   ├── fetchers_mock_data.py              # Mock classes: MockAnilistFetcher, MockJikanFetcher
 │   ├── test_fetcher_anilist.py
 │   ├── test_fetcher_jikan.py
 │   ├── test_normalizer.py
 │   ├── test_file_handler.py
 │   ├── test_fetch_cli.py
 │   ├── test_export_cli_single_source.py
-│   └── test_export_cli_multi_source.py
+│   ├── test_export_cli_multi_source.py
+│   ├── mock_classes/
+│   │   ├── __init__.py
+│   │   ├── mock_anilist_fetcher.py
+│   │   └── mock_jikan_fetcher.py
+│   └── mock_data/
+│       └── steins_gate.csv
 ├── storage/
 │   └── *.csv                              # Saved data outputs
 ├── pyproject.toml                         # Project metadata and dependencies

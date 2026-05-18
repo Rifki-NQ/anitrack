@@ -1,19 +1,20 @@
 import pytest
 import pytest_asyncio
-from tests.fetchers_mock_data import MockAnilistFetcher, MockJikanFetcher
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.models.anime_model import AnimeDataModel
 from joho.core.models.protocols import NormalizerProtocol
+from tests.mock_classes.mock_anilist_fetcher import MockAnilistFetcherNormal
+from tests.mock_classes.mock_jikan_fetcher import MockJikanFetcherNormal
 
 
 @pytest.fixture
 def anilist_normalizer() -> NormalizerProtocol:
-    return create_normalizer("anilist", MockAnilistFetcher())
+    return create_normalizer("anilist", MockAnilistFetcherNormal())
 
 
 @pytest.fixture
 def jikan_normalizer() -> NormalizerProtocol:
-    return create_normalizer("jikan", MockJikanFetcher())
+    return create_normalizer("jikan", MockJikanFetcherNormal())
 
 
 @pytest_asyncio.fixture

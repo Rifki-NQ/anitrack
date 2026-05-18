@@ -131,7 +131,7 @@ def export_single_max_entry(
 
 
 @pytest.fixture
-def export_single_overwrite(
+def export_single_overwrite_by_title(
     parser: argparse.ArgumentParser, temporary_path: Path
 ) -> argparse.Namespace:
     return parser.parse_args(
@@ -141,6 +141,24 @@ def export_single_overwrite(
             "jikan",
             "--title",
             "attack on titan",
+            "--path",
+            str(temporary_path),
+            "--overwrite",
+        ]
+    )
+
+
+@pytest.fixture
+def export_single_overwrite_by_id(
+    parser: argparse.ArgumentParser, temporary_path: Path
+) -> argparse.Namespace:
+    return parser.parse_args(
+        [
+            "export",
+            "--source",
+            "jikan",
+            "--id",
+            "16498",
             "--path",
             str(temporary_path),
             "--overwrite",
@@ -248,8 +266,8 @@ async def test_export_single_max_entry(
 
 
 # uses jikan mocked data
-async def test_export_single_with_overwrite(
-    export_single_overwrite: argparse.Namespace,
+async def test_export_single_with_overwrite_by_title(
+    export_single_overwrite_by_title: argparse.Namespace,
     single_normalizer: list[NormalizerProtocol],
 ) -> None:
     """
@@ -258,17 +276,17 @@ async def test_export_single_with_overwrite(
 
     file is expected to be two line for each iteration, which is header and one row of anime entry
     """
-    path: Path = export_single_overwrite.path
+    path: Path = export_single_overwrite_by_title.path
     export_cli = ExportCLI(DataIO(path))
     for _ in range(3):
         await export_cli.handle_export_cli(
-            export_single_overwrite, False, single_normalizer
+            export_single_overwrite_by_title, False, single_normalizer
         )
         assert count_lines(path) == 2
 
 
 # uses jikan mocked data
-async def test_export_single_without_overwrite(
+async def test_export_single_without_overwrite_by_title(
     export_single_by_title: argparse.Namespace,
     single_normalizer: list[NormalizerProtocol],
 ) -> None:
@@ -282,5 +300,44 @@ async def test_export_single_without_overwrite(
     for i in [2, 3]:
         await export_cli.handle_export_cli(
             export_single_by_title, False, single_normalizer
+        )
+        assert count_lines(path) == i
+
+
+# uses jikan mocked data
+async def test_export_single_with_overwrite_by_id(
+    export_single_overwrite_by_id: argparse.Namespace,
+    single_normalizer: list[NormalizerProtocol],
+) -> None:
+    """
+    test flag: --overwrite with --id
+    test logic: export three times, file content is expected to be overwritten for each export
+
+    file is expected to be two line for each iteration, which is header and one row of anime entry
+    """
+    path: Path = export_single_overwrite_by_id.path
+    export_cli = ExportCLI(DataIO(path))
+    for _ in range(3):
+        await export_cli.handle_export_cli(
+            export_single_overwrite_by_id, False, single_normalizer
+        )
+        assert count_lines(path) == 2
+
+
+# uses jikan mocked data
+async def test_export_single_without_overwrite_by_id(
+    export_single_by_id: argparse.Namespace,
+    single_normalizer: list[NormalizerProtocol],
+) -> None:
+    """
+    test logic: export two times, new data is expected to be appended to existing data
+
+    file is expected to be two lines on first iteration, three lines on second iteration
+    """
+    path: Path = export_single_by_id.path
+    export_cli = ExportCLI(DataIO(path))
+    for i in [2, 3]:
+        await export_cli.handle_export_cli(
+            export_single_by_id, False, single_normalizer
         )
         assert count_lines(path) == i

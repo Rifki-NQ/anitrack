@@ -94,6 +94,7 @@ joho/
 │   ├── test_fetch_cli.py
 │   ├── test_export_cli_single_source.py
 │   ├── test_export_cli_multi_source.py
+│   ├── test_read_cli.py
 │   ├── mock_classes/
 │   │   ├── __init__.py
 │   │   ├── mock_anilist_fetcher.py
@@ -460,6 +461,7 @@ The test suite covers:
 - `test_fetch_cli.py` - verifies FetchCLI terminal output for all fetch subcommand variations (single/multi source, by title/id, --entry, --show-title, --max-entry)
 - `test_export_cli_single_source.py` verifies ExportCLI file output for all export subcommand variations (single source, by title/id, --entry, --path, --save-all, --max-entry, --overwrite)
 - `test_export_cli_multi_source.py` verifies ExportCLI file and terminal output for all export subcommand variations (source all, by title/id, --entry, --path, --save-all, --max-entry, --overwrite)
+- `test_read_cli.py` verifies ReadCLI terminal output using mocked data for all read subcommand variations (--path, --entry, --show-title, --limit)
 
 ---
 

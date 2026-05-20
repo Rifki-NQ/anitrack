@@ -30,3 +30,9 @@ def validate_export_path(path: Path | None, default_name: str | int) -> Path:
 
 def resolve_sort(sort: str | None) -> str:
     return sort if sort is not None else DEFAULT_SORT_CHOICE
+
+
+def all_task_failed(success: int) -> bool:
+    if success < 1:
+        return True
+    return False

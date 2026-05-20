@@ -2,7 +2,7 @@ import sys
 import asyncio
 from argparse import Namespace
 from typing import Iterable, Sequence
-from joho.core.cli.cli_utils import resolve_sort
+from joho.core.cli.cli_utils import resolve_sort, all_task_failed
 from joho.core.file_handler import DataIO
 from joho.core.models.anime_model import AnimeDataModel
 from joho.core.models.protocols import NormalizerProtocol
@@ -60,6 +60,8 @@ class ExportCLI:
         normalizers: Iterable[NormalizerProtocol],
     ) -> None:
         overwrite: bool = args.overwrite
+        success_query = 0
+
         if args.title:
             coroutines = [
                 n.get_all_anime_by_title(
@@ -68,7 +70,6 @@ class ExportCLI:
                 for n in normalizers
             ]
             data_collection = await asyncio.gather(*coroutines, return_exceptions=True)
-            success_query = 0
             for data_list in data_collection:
                 if isinstance(data_list, BaseException):
                     self._show_error(data_list)
@@ -95,7 +96,6 @@ class ExportCLI:
             data_list_by_id = await asyncio.gather(
                 *coroutines_by_id, return_exceptions=True
             )
-            success_query = 0
             for data in data_list_by_id:
                 if isinstance(data, BaseException):
                     self._show_error(data)
@@ -104,6 +104,9 @@ class ExportCLI:
                 overwrite = False
                 success_query += 1
             self._show_export_status(success_query, len(data_list_by_id))
+
+        if all_task_failed(success_query):
+            sys.exit(1)
 
     def _save_entry(
         self,
@@ -120,8 +123,7 @@ class ExportCLI:
             overwrite = False
 
     def _show_error(self, error: BaseException) -> None:
-        print(error)
-        print("")
+        print(error, file=sys.stderr, end="\n\n")
 
     def _show_export_status(self, success: int, total_export: int) -> None:
         print(f"{success} / {total_export} exported successfully")

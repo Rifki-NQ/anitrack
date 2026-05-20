@@ -55,4 +55,6 @@ class FetchJikan(FetchData):
         except httpx.RequestError as e:
             raise AppConnectionError(f"Connection error occurred: {e}") from e
         except httpx.HTTPStatusError as e:
-            raise AppConnectionError(f"API returned: {e.response.status_code}") from e
+            raise AppConnectionError(
+                f"API returned: {e.response.status_code} ({e})"
+            ) from e

@@ -3,7 +3,7 @@ import asyncio
 from argparse import Namespace
 from dataclasses import fields
 from typing import Iterable, Sequence
-from joho.core.cli.cli_utils import resolve_sort
+from joho.core.cli.cli_utils import resolve_sort, all_task_failed
 from joho.core.models.anime_model import AnimeDataModel
 from joho.core.models.protocols import NormalizerProtocol
 from joho.core.constants import DEFAULT_ENTRY_INDEX
@@ -52,6 +52,8 @@ class FetchCLI:
     async def _handle_fetch_multiple(
         self, args: Namespace, normalizers: Iterable[NormalizerProtocol]
     ) -> None:
+        success_query = 0
+
         if args.title:
             coroutines = [
                 n.get_all_anime_by_title(
@@ -60,7 +62,6 @@ class FetchCLI:
                 for n in normalizers
             ]
             data_collection = await asyncio.gather(*coroutines, return_exceptions=True)
-            success_query = 0
             for data_list in data_collection:
                 if isinstance(data_list, BaseException):
                     self._show_error(data_list)
@@ -85,7 +86,6 @@ class FetchCLI:
             data_list_by_id = await asyncio.gather(
                 *coroutines_by_id, return_exceptions=True
             )
-            success_query = 0
             for data in data_list_by_id:
                 if isinstance(data, BaseException):
                     self._show_error(data)
@@ -93,6 +93,9 @@ class FetchCLI:
                 self._show_entry(data)
                 success_query += 1
             self._show_fetch_status(success_query, len(data_list_by_id))
+
+        if all_task_failed(success_query):
+            sys.exit(1)
 
     def _show_entry(self, entry_data: AnimeDataModel) -> None:
         for f in fields(entry_data):
@@ -108,8 +111,7 @@ class FetchCLI:
         print("")
 
     def _show_error(self, error: BaseException) -> None:
-        print(error)
-        print("")
+        print(error, file=sys.stderr, end="\n\n")
 
     def _show_fetch_status(self, success: int, total_export: int) -> None:
         print(f"{success} / {total_export} fetched successfully")

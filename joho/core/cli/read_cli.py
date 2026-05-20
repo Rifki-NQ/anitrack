@@ -1,3 +1,4 @@
+import sys
 from typing import Iterator
 from argparse import Namespace
 from joho.core.file_handler import DataIO
@@ -14,8 +15,8 @@ class ReadCLI:
         try:
             all_data = self.file_handler.read_data()
         except FileHandlerError as e:
-            print(e)
-            return
+            print(e, file=sys.stderr)
+            sys.exit(1)
         if args.entry is not None:
             entry_num: int = args.entry
             try:

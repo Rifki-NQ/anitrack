@@ -1,3 +1,4 @@
+import sys
 import asyncio
 from argparse import Namespace
 from dataclasses import fields
@@ -22,11 +23,14 @@ class FetchCLI:
                 return
             await self._handle_fetch_multiple(args, normalizers)
         except FetcherError as e:
-            print(e)
+            print(e, file=sys.stderr)
+            sys.exit(1)
         except EntryIndexError:
             print(
-                f"Error: out of bound entry index: {args.entry}, for title: {args.title}"
+                f"Error: out of bound entry index: {args.entry}, for title: {args.title}",
+                file=sys.stderr,
             )
+            sys.exit(1)
 
     async def _handle_fetch_single(
         self, args: Namespace, normalizer: NormalizerProtocol

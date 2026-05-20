@@ -14,10 +14,16 @@ def parser() -> argparse.ArgumentParser:
 
 
 @pytest.fixture
-def fetch_single_by_title(parser: argparse.ArgumentParser) -> argparse.Namespace:
-    return parser.parse_args(
-        ["fetch", "--source", "jikan", "--title", "attack on titan"]
-    )
+def fetch_cli() -> FetchCLI:
+    return FetchCLI()
+
+
+@pytest.fixture
+def multiple_normalizers() -> list[NormalizerProtocol]:
+    return [
+        create_normalizer("anilist", MockAnilistFetcherNormal()),
+        create_normalizer("jikan", MockJikanFetcherNormal()),
+    ]
 
 
 @pytest.fixture
@@ -26,40 +32,21 @@ def fetch_multi_by_title(parser: argparse.ArgumentParser) -> argparse.Namespace:
 
 
 @pytest.fixture
-def fetch_single_by_id(parser: argparse.ArgumentParser) -> argparse.Namespace:
-    return parser.parse_args(["fetch", "--source", "jikan", "--id", "16498"])
-
-
-@pytest.fixture
 def fetch_multi_by_id(parser: argparse.ArgumentParser) -> argparse.Namespace:
     return parser.parse_args(["fetch", "--source", "all", "--id", "16498"])
 
 
 @pytest.fixture
-def fetch_single_flag_entry(parser: argparse.ArgumentParser) -> argparse.Namespace:
+def fetch_multi_flag_entry(parser: argparse.ArgumentParser) -> argparse.Namespace:
     return parser.parse_args(
         [
             "fetch",
             "--source",
-            "jikan",
+            "all",
             "--title",
             "attack on titan",
             "--entry",
             "2",
-        ]
-    )
-
-
-@pytest.fixture
-def fetch_single_show_title(parser: argparse.ArgumentParser) -> argparse.Namespace:
-    return parser.parse_args(
-        [
-            "fetch",
-            "--source",
-            "jikan",
-            "--title",
-            "attack on titan",
-            "--show-title",
         ]
     )
 
@@ -79,24 +66,6 @@ def fetch_multi_show_title(parser: argparse.ArgumentParser) -> argparse.Namespac
 
 
 @pytest.fixture
-def fetch_single_show_title_max_entry(
-    parser: argparse.ArgumentParser,
-) -> argparse.Namespace:
-    return parser.parse_args(
-        [
-            "fetch",
-            "--source",
-            "jikan",
-            "--title",
-            "attack on titan",
-            "--show-title",
-            "--max-entry",
-            "2",
-        ]
-    )
-
-
-@pytest.fixture
 def fetch_multi_show_title_max_entry(
     parser: argparse.ArgumentParser,
 ) -> argparse.Namespace:
@@ -111,56 +80,6 @@ def fetch_multi_show_title_max_entry(
             "--max-entry",
             "2",
         ]
-    )
-
-
-@pytest.fixture
-def fetch_cli() -> FetchCLI:
-    return FetchCLI()
-
-
-@pytest.fixture
-def single_normalizer() -> list[NormalizerProtocol]:
-    return [create_normalizer("jikan", MockJikanFetcherNormal())]
-
-
-@pytest.fixture
-def multiple_normalizers() -> list[NormalizerProtocol]:
-    return [
-        create_normalizer("anilist", MockAnilistFetcherNormal()),
-        create_normalizer("jikan", MockJikanFetcherNormal()),
-    ]
-
-
-# uses jikan mocked data
-async def test_fetch_single_by_title(
-    capsys: pytest.CaptureFixture[str],
-    fetch_single_by_title: argparse.Namespace,
-    fetch_cli: FetchCLI,
-    single_normalizer: list[NormalizerProtocol],
-) -> None:
-    await fetch_cli.handle_fetch_cli(fetch_single_by_title, False, single_normalizer)
-    captured = capsys.readouterr()
-    assert (
-        captured.out
-        == """data_source: jikan
-id: 16498
-romaji_title: Shingeki no Kyojin
-english_title: Attack on Titan
-format: TV
-episodes: 25
-status: Finished Airing
-average_score: 8.57
-duration: 00:24
-start_date: 2013-04-07
-end_date: 2013-09-29
-studio: Wit Studio
-source: Manga
-genres: Action|Award Winning|Drama|Suspense
-all_time_rank: 125
-all_time_popularity: 1
-
-"""
     )
 
 
@@ -210,38 +129,6 @@ all_time_rank: 125
 all_time_popularity: 1
 
 2 / 2 fetched successfully
-"""
-    )
-
-
-# uses jikan mocked data
-async def test_fetch_single_by_id(
-    capsys: pytest.CaptureFixture[str],
-    fetch_single_by_id: argparse.Namespace,
-    fetch_cli: FetchCLI,
-    single_normalizer: list[NormalizerProtocol],
-) -> None:
-    await fetch_cli.handle_fetch_cli(fetch_single_by_id, False, single_normalizer)
-    captured = capsys.readouterr()
-    assert (
-        captured.out
-        == """data_source: jikan
-id: 16498
-romaji_title: Shingeki no Kyojin
-english_title: Attack on Titan
-format: TV
-episodes: 25
-status: Finished Airing
-average_score: 8.57
-duration: 00:24
-start_date: 2013-04-07
-end_date: 2013-09-29
-studio: Wit Studio
-source: Manga
-genres: Action|Award Winning|Drama|Suspense
-all_time_rank: 125
-all_time_popularity: 1
-
 """
     )
 
@@ -297,17 +184,34 @@ all_time_popularity: 1
 
 
 # uses jikan mocked data
-async def test_fetch_single_flag_entry(
+async def test_fetch_multi_flag_entry(
     capsys: pytest.CaptureFixture[str],
-    fetch_single_flag_entry: argparse.Namespace,
+    fetch_multi_flag_entry: argparse.Namespace,
     fetch_cli: FetchCLI,
-    single_normalizer: list[NormalizerProtocol],
+    multiple_normalizers: list[NormalizerProtocol],
 ) -> None:
-    await fetch_cli.handle_fetch_cli(fetch_single_flag_entry, False, single_normalizer)
+    await fetch_cli.handle_fetch_cli(fetch_multi_flag_entry, True, multiple_normalizers)
     captured = capsys.readouterr()
     assert (
         captured.out
-        == """data_source: jikan
+        == """data_source: anilist
+id: 18397
+romaji_title: Shingeki no Kyojin OVA
+english_title: Attack on Titan OVA
+format: OVA
+episodes: 3
+status: FINISHED
+average_score: 77.0
+duration: 00:25
+start_date: 2013-12-09
+end_date: 2014-08-08
+studio: WIT STUDIO
+source: MANGA
+genres: Action|Drama|Fantasy|Mystery
+all_time_rank: 64
+all_time_popularity: 4
+
+data_source: jikan
 id: 59571
 romaji_title: Shingeki no Kyojin Movie: Kanketsu-hen - The Last Attack
 english_title: Attack on Titan: The Last Attack
@@ -324,27 +228,7 @@ genres: Action|Drama|Suspense
 all_time_rank: 32
 all_time_popularity: 2639
 
-"""
-    )
-
-
-# uses jikan mocked data
-async def test_fetch_single_show_title(
-    capsys: pytest.CaptureFixture[str],
-    fetch_single_show_title: argparse.Namespace,
-    fetch_cli: FetchCLI,
-    single_normalizer: list[NormalizerProtocol],
-) -> None:
-    await fetch_cli.handle_fetch_cli(fetch_single_show_title, False, single_normalizer)
-    captured = capsys.readouterr()
-    assert (
-        captured.out
-        == """Source: jikan
-Romaji title | English title
-0. Shingeki no Kyojin | Attack on Titan
-1. Shingeki no Kyotou | Attack on Skytree
-2. Shingeki no Kyojin Movie: Kanketsu-hen - The Last Attack | Attack on Titan: The Last Attack
-
+2 / 2 fetched successfully
 """
     )
 
@@ -390,28 +274,6 @@ Romaji title | English title
 2. Shingeki no Kyojin Movie: Kanketsu-hen - The Last Attack | Attack on Titan: The Last Attack
 
 2 / 2 fetched successfully
-"""
-    )
-
-
-# uses jikan mocked data
-async def test_fetch_single_show_title_max_entry(
-    capsys: pytest.CaptureFixture[str],
-    fetch_single_show_title_max_entry: argparse.Namespace,
-    fetch_cli: FetchCLI,
-    single_normalizer: list[NormalizerProtocol],
-) -> None:
-    await fetch_cli.handle_fetch_cli(
-        fetch_single_show_title_max_entry, False, single_normalizer
-    )
-    captured = capsys.readouterr()
-    assert (
-        captured.out
-        == """Source: jikan
-Romaji title | English title
-0. Shingeki no Kyojin | Attack on Titan
-1. Shingeki no Kyotou | Attack on Skytree
-
 """
     )
 

@@ -13,7 +13,7 @@ You can search anime by title or ID and export the data to a CSV file.
 - [Usage](#usage)
 - [Result Examples](#result-examples)
 - [Running Tests](#running-tests)
-- [Knowns Bugs](#known-bugs)
+- [Knowns Bug](#known-bug)
 
 ---
 
@@ -91,7 +91,8 @@ joho/
 │   ├── test_fetcher_jikan.py
 │   ├── test_normalizer.py
 │   ├── test_file_handler.py
-│   ├── test_fetch_cli.py
+│   ├── test_fetch_cli_single_source.py
+│   ├── test_fetch_cli_multi_source.py
 │   ├── test_export_cli_single_source.py
 │   ├── test_export_cli_multi_source.py
 │   ├── test_read_cli.py
@@ -458,17 +459,18 @@ The test suite covers:
 - `test_fetcher_jikan.py` - verifies that the `FetchJikan` return expected data values and type from the `API`
 - `test_normalizer.py` - verifies the normalization flow using mocked fetcher data
 - `test_file_handler.py` - verifies DataIO save and read data correctly using mocked Anilist data and tmp_path
-- `test_fetch_cli.py` - verifies FetchCLI terminal output for all fetch subcommand variations (single/multi source, by title/id, --entry, --show-title, --max-entry)
+- `test_fetch_cli_single_source.py` - verifies FetchCLI terminal output for all fetch subcommand variations (single source, by title/id, --entry, --show-title, --max-entry)
+- `test_fetch_cli_multi_source.py` - verifies FetchCLI terminal output for all fetch subcommand variations (source all, by title/id, --entry, --show-title, --max-entry)
 - `test_export_cli_single_source.py` verifies ExportCLI file output for all export subcommand variations (single source, by title/id, --entry, --path, --save-all, --max-entry, --overwrite)
 - `test_export_cli_multi_source.py` verifies ExportCLI file and terminal output for all export subcommand variations (source all, by title/id, --entry, --path, --save-all, --max-entry, --overwrite)
 - `test_read_cli.py` verifies ReadCLI terminal output using mocked data for all read subcommand variations (--path, --entry, --show-title, --limit)
 
 ---
 
-## Known Bugs
+## Known Bug
 
 - When `--source jikan`, `--sort` may produce unexpected ordering. This is a known Jikan API
 limitation with no fix on their end. Omit `--sort` or set it to `relevance` to use default
-ordering. Client-side sorting is planned as a workaround.
+ordering.
 
 ---

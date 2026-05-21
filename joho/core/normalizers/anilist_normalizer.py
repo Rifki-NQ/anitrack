@@ -21,7 +21,7 @@ class AnilistNormalizer(BaseNormalizer):
         try:
             return self._anilist_to_anime_model(raw_data_list[entry_index])
         except IndexError as e:
-            raise EntryIndexError from e
+            raise EntryIndexError(entry_index, anime_title) from e
 
     async def get_anime_by_id(self, anime_id: int) -> AnimeDataModel:
         raw_data = await self.anilist_fetcher.fetch_data_by_id(anime_id)

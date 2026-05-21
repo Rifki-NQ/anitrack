@@ -1,6 +1,6 @@
 from argparse import Namespace, ArgumentParser
 from pathlib import Path
-from joho.core.constants import DEFAULT_SORT_CHOICE
+from joho.core.constants import DEFAULT_ENTRY_INDEX, DEFAULT_SORT_CHOICE
 from joho.core.utils import create_default_filepath
 
 
@@ -26,6 +26,10 @@ def validate_export_path(path: Path | None, default_name: str | int) -> Path:
     if path is None:
         return create_default_filepath(default_name)
     return path
+
+
+def resolve_index(entry_index: int | None) -> int:
+    return entry_index if entry_index is not None else DEFAULT_ENTRY_INDEX
 
 
 def resolve_sort(sort: str | None) -> str:

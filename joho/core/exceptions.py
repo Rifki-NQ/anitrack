@@ -35,6 +35,13 @@ class AnimeNotFoundError(FetcherError):
 class EntryIndexError(AppError):
     """Raised when the entry index is out of bound"""
 
+    def __init__(self, entry_index: int, anime_title: str) -> None:
+        self.entry_index = entry_index
+        self.anime_title = anime_title
+        super().__init__(
+            f"Error: out of bound entry index: {entry_index}, for title: {anime_title}"
+        )
+
     pass
 
 

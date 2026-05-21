@@ -2,11 +2,10 @@ import sys
 import asyncio
 from argparse import Namespace
 from dataclasses import fields
-from typing import Iterable, Sequence
-from joho.core.cli.cli_utils import resolve_sort, all_task_failed
+from typing import Sequence
+from joho.core.cli.cli_utils import resolve_index, resolve_sort, all_task_failed
 from joho.core.models.anime_model import AnimeDataModel
 from joho.core.models.protocols import NormalizerProtocol
-from joho.core.constants import DEFAULT_ENTRY_INDEX
 from joho.core.exceptions import FetcherError, EntryIndexError
 
 
@@ -25,11 +24,8 @@ class FetchCLI:
         except FetcherError as e:
             print(e, file=sys.stderr)
             sys.exit(1)
-        except EntryIndexError:
-            print(
-                f"Error: out of bound entry index: {args.entry}, for title: {args.title}",
-                file=sys.stderr,
-            )
+        except EntryIndexError as e:
+            print(e, file=sys.stderr)
             sys.exit(1)
 
     async def _handle_fetch_single(
@@ -50,49 +46,56 @@ class FetchCLI:
             self._show_entry(data)
 
     async def _handle_fetch_multiple(
-        self, args: Namespace, normalizers: Iterable[NormalizerProtocol]
+        self, args: Namespace, normalizers: Sequence[NormalizerProtocol]
     ) -> None:
         success_query = 0
 
         if args.title:
-            coroutines = [
-                n.get_all_anime_by_title(
-                    args.title, resolve_sort(args.sort), args.max_entry
+            if args.show_title:
+                show_title_coroutines = [
+                    n.get_all_anime_by_title(
+                        args.title, resolve_sort(args.sort), args.max_entry
+                    )
+                    for n in normalizers
+                ]
+                show_title_data_collection = await asyncio.gather(
+                    *show_title_coroutines, return_exceptions=True
                 )
-                for n in normalizers
-            ]
-            data_collection = await asyncio.gather(*coroutines, return_exceptions=True)
-            for data_list in data_collection:
-                if isinstance(data_list, BaseException):
-                    self._show_error(data_list)
-                    continue
-                if args.show_title:
-                    self._show_title(data_list)
-                else:
-                    try:
-                        self._show_entry(
-                            data_list[
-                                DEFAULT_ENTRY_INDEX
-                                if args.entry is None
-                                else args.entry
-                            ]
-                        )
-                    except IndexError as e:
-                        raise EntryIndexError from e
-                success_query += 1
-            self._show_fetch_status(success_query, len(data_collection))
+                for show_title_data_list in show_title_data_collection:
+                    if isinstance(show_title_data_list, BaseException):
+                        self._show_error(show_title_data_list)
+                        continue
+                    self._show_title(show_title_data_list)
+                    success_query += 1
+            else:
+                show_entry_coroutines = [
+                    n.get_anime_by_title(
+                        args.title, resolve_sort(args.sort), resolve_index(args.entry)
+                    )
+                    for n in normalizers
+                ]
+                show_entry_data_list = await asyncio.gather(
+                    *show_entry_coroutines, return_exceptions=True
+                )
+                for show_entry_data in show_entry_data_list:
+                    if isinstance(show_entry_data, BaseException):
+                        self._show_error(show_entry_data)
+                        continue
+                    self._show_entry(show_entry_data)
+                    success_query += 1
+            self._show_fetch_status(success_query, len(normalizers))
         elif args.id:
-            coroutines_by_id = [n.get_anime_by_id(args.id) for n in normalizers]
-            data_list_by_id = await asyncio.gather(
-                *coroutines_by_id, return_exceptions=True
+            by_id_coroutines = [n.get_anime_by_id(args.id) for n in normalizers]
+            by_id_data_list = await asyncio.gather(
+                *by_id_coroutines, return_exceptions=True
             )
-            for data in data_list_by_id:
-                if isinstance(data, BaseException):
-                    self._show_error(data)
+            for by_id_data in by_id_data_list:
+                if isinstance(by_id_data, BaseException):
+                    self._show_error(by_id_data)
                     continue
-                self._show_entry(data)
+                self._show_entry(by_id_data)
                 success_query += 1
-            self._show_fetch_status(success_query, len(data_list_by_id))
+            self._show_fetch_status(success_query, len(by_id_data_list))
 
         if all_task_failed(success_query):
             sys.exit(1)

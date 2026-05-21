@@ -1,7 +1,7 @@
 import httpx
 from typing import Any, cast
 from joho.core.fetchers.base_fetcher import FetchData
-from joho.core.exceptions import AnilistError, AppConnectionError
+from joho.core.exceptions import AnimeNotFoundError, AppConnectionError
 from joho.core.constants import GLOBAL_TIMEOUT
 
 
@@ -108,7 +108,7 @@ class FetchAnilist(FetchData):
         )
         media_data = data.json()["data"]["Page"]["media"]
         if not media_data:
-            raise AnilistError("Error: requested anime not found!")
+            raise AnimeNotFoundError(anime_title)
         return cast(list[dict[str, Any]], media_data)
 
     async def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
@@ -117,7 +117,7 @@ class FetchAnilist(FetchData):
         )
         media_data = data.json()["data"]["Media"]
         if not media_data:
-            raise AnilistError("Error: requested anime not found!")
+            raise AnimeNotFoundError(anime_id)
         return cast(dict[str, Any], media_data)
 
     async def _request(

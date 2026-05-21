@@ -22,14 +22,12 @@ class AppConnectionError(FetcherError):
     pass
 
 
-class AnilistError(FetcherError):
-    """Raised when Anilist error occured"""
+class AnimeNotFoundError(FetcherError):
+    """Raised when the queried anime is not found"""
 
-    pass
-
-
-class JikanError(FetcherError):
-    """Raised when Jikan error occured"""
+    def __init__(self, query: str | int) -> None:
+        self.query = query
+        super().__init__(f"Error: searched anime ({query}) not found")
 
     pass
 

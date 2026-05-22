@@ -32,7 +32,7 @@ class FetchJikan(FetchData):
         data = await self._query_anime(self.BASE_URL, params)
         json_data = data.json()["data"]
         if not json_data:
-            raise AnimeNotFoundError(anime_title)
+            raise AnimeNotFoundError("jikan", anime_title)
         return cast(list[dict[str, Any]], json_data)
 
     async def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
@@ -40,7 +40,7 @@ class FetchJikan(FetchData):
         data = await self._query_anime(base_url)
         json_data = data.json()["data"]
         if not json_data:
-            raise AnimeNotFoundError(anime_id)
+            raise AnimeNotFoundError("jikan", anime_id)
         return cast(dict[str, Any], json_data)
 
     async def _query_anime(

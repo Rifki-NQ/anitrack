@@ -19,7 +19,7 @@ class JikanNormalizer(BaseNormalizer):
         try:
             return self._jikan_to_anime_model(raw_data_list[entry_index])
         except IndexError as e:
-            raise EntryIndexError(entry_index, anime_title) from e
+            raise EntryIndexError("jikan", entry_index, anime_title) from e
 
     async def get_anime_by_id(self, anime_id: int) -> AnimeDataModel:
         raw_data = await self.jikan_fetcher.fetch_data_by_id(anime_id)

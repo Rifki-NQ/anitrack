@@ -108,7 +108,7 @@ class FetchAnilist(FetchData):
         )
         media_data = data.json()["data"]["Page"]["media"]
         if not media_data:
-            raise AnimeNotFoundError(anime_title)
+            raise AnimeNotFoundError("anilist", anime_title)
         return cast(list[dict[str, Any]], media_data)
 
     async def fetch_data_by_id(self, anime_id: int) -> dict[str, Any]:
@@ -117,7 +117,7 @@ class FetchAnilist(FetchData):
         )
         media_data = data.json()["data"]["Media"]
         if not media_data:
-            raise AnimeNotFoundError(anime_id)
+            raise AnimeNotFoundError("anilist", anime_id)
         return cast(dict[str, Any], media_data)
 
     async def _request(

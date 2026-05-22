@@ -25,9 +25,12 @@ class AppConnectionError(FetcherError):
 class AnimeNotFoundError(FetcherError):
     """Raised when the queried anime is not found"""
 
-    def __init__(self, query: str | int) -> None:
+    def __init__(self, source: str, query: str | int) -> None:
+        self.source = source
         self.query = query
-        super().__init__(f"Error: searched anime ({query}) not found")
+        super().__init__(
+            f"data_source: {source}\nError: searched anime ({query}) not found"
+        )
 
     pass
 
@@ -35,11 +38,12 @@ class AnimeNotFoundError(FetcherError):
 class EntryIndexError(AppError):
     """Raised when the entry index is out of bound"""
 
-    def __init__(self, entry_index: int, anime_title: str) -> None:
+    def __init__(self, source: str, entry_index: int, anime_title: str) -> None:
+        self.source = source
         self.entry_index = entry_index
         self.anime_title = anime_title
         super().__init__(
-            f"Error: out of bound entry index: {entry_index}, for title: {anime_title}"
+            f"data_source: {source}\nError: out of bound entry index: {entry_index}, for title: {anime_title}"
         )
 
     pass

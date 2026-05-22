@@ -1,4 +1,5 @@
 from typing import Any
+from joho.core.exceptions import AnimeNotFoundError
 
 
 class MockAnilistFetcherNormal:
@@ -640,3 +641,13 @@ class MockAnilistFetcherNormal:
             },
             "title": {"english": "Attack on Titan", "romaji": "Shingeki no Kyojin"},
         }
+
+
+class MockAnilistFetcherAnimeNotFoundError:
+    async def fetch_data_by_title(
+        self, anime_title: str = "Attack on titan", sort: str = "relevance"
+    ) -> list[dict[str, Any]]:
+        raise AnimeNotFoundError("anilist", anime_title)
+
+    async def fetch_data_by_id(self, anime_id: int = 16498) -> dict[str, Any]:
+        raise AnimeNotFoundError("anilist", anime_id)

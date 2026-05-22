@@ -1,4 +1,5 @@
 from typing import Any
+from joho.core.exceptions import AnimeNotFoundError
 
 
 class MockJikanFetcherNormal:
@@ -696,3 +697,13 @@ class MockJikanFetcherNormal:
             "url": "https://myanimelist.net/anime/16498/Shingeki_no_Kyojin",
             "year": 2013,
         }
+
+
+class MockJikanFetcherAnimeNotFoundError:
+    async def fetch_data_by_title(
+        self, anime_title: str = "Attack on titan", sort: str = "relevance"
+    ) -> list[dict[str, Any]]:
+        raise AnimeNotFoundError("jikan", anime_title)
+
+    async def fetch_data_by_id(self, anime_id: int = 16498) -> dict[str, Any]:
+        raise AnimeNotFoundError("jikan", anime_id)

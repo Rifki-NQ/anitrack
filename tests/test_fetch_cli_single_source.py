@@ -4,7 +4,10 @@ from joho.main import build_parser
 from joho.core.cli.fetch_cli import FetchCLI
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.models.protocols import NormalizerProtocol
-from tests.mock_classes.mock_jikan_fetcher import MockJikanFetcherNormal
+from tests.mock_classes.mock_jikan_fetcher import (
+    MockJikanFetcherNormal,
+    MockJikanFetcherAnimeNotFoundError,
+)
 
 
 @pytest.fixture
@@ -77,6 +80,23 @@ def fetch_single_show_title_max_entry(
             "--show-title",
             "--max-entry",
             "2",
+        ]
+    )
+
+
+@pytest.fixture
+def fetch_single_flag_entry_out_of_bound(
+    parser: argparse.ArgumentParser,
+) -> argparse.Namespace:
+    return parser.parse_args(
+        [
+            "fetch",
+            "--source",
+            "jikan",
+            "--title",
+            "attack on titan",
+            "--entry",
+            "10",
         ]
     )
 
@@ -217,4 +237,43 @@ Romaji title | English title
 1. Shingeki no Kyotou | Attack on Skytree
 
 """
+    )
+
+
+# uses jikan mocked data
+async def test_fetch_single_anime_not_found_by_title(
+    capsys: pytest.CaptureFixture[str],
+    fetch_single_by_title: argparse.Namespace,
+    fetch_cli: FetchCLI,
+) -> None:
+    with pytest.raises(SystemExit) as exit_info:
+        await fetch_cli.handle_fetch_cli(
+            fetch_single_by_title,
+            False,
+            [create_normalizer("jikan", MockJikanFetcherAnimeNotFoundError())],
+        )
+    assert exit_info.value.code == 1
+    captured = capsys.readouterr()
+    assert (
+        captured.err
+        == "data_source: jikan\nError: searched anime (attack on titan) not found\n"
+    )
+
+
+# uses jikan mocked data
+async def test_fetch_single_out_of_bound_index(
+    capsys: pytest.CaptureFixture[str],
+    fetch_single_flag_entry_out_of_bound: argparse.Namespace,
+    fetch_cli: FetchCLI,
+    single_normalizer: list[NormalizerProtocol],
+) -> None:
+    with pytest.raises(SystemExit) as exit_info:
+        await fetch_cli.handle_fetch_cli(
+            fetch_single_flag_entry_out_of_bound, False, single_normalizer
+        )
+    assert exit_info.value.code == 1
+    captured = capsys.readouterr()
+    assert (
+        captured.err
+        == "data_source: jikan\nError: out of bound entry index: 10, for title: attack on titan\n"
     )

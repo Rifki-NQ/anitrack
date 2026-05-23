@@ -7,8 +7,14 @@ from joho.core.cli.cli_utils import validate_export_path
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.models.protocols import NormalizerProtocol
 from joho.core.file_handler import DataIO
-from tests.mock_classes.mock_anilist_fetcher import MockAnilistFetcherNormal
-from tests.mock_classes.mock_jikan_fetcher import MockJikanFetcherNormal
+from tests.mock_classes.mock_anilist_fetcher import (
+    MockAnilistFetcherNormal,
+    MockAnilistFetcherAnimeNotFoundError,
+)
+from tests.mock_classes.mock_jikan_fetcher import (
+    MockJikanFetcherNormal,
+    MockJikanFetcherAnimeNotFoundError,
+)
 
 # detailed file content / values tests are skipped in this test
 # since test_file_handler.py already handles it
@@ -166,6 +172,28 @@ def export_multi_overwrite_by_id(
             "--path",
             str(temporary_path),
             "--overwrite",
+        ]
+    )
+
+
+@pytest.fixture
+def export_multi_flag_entry_out_of_bound(
+    request: pytest.FixtureRequest,
+    temporary_path: Path,
+    parser: argparse.ArgumentParser,
+) -> argparse.Namespace:
+    entry_num: str = request.param
+    return parser.parse_args(
+        [
+            "export",
+            "--source",
+            "all",
+            "--title",
+            "attack on titan",
+            "--path",
+            str(temporary_path),
+            "--entry",
+            entry_num,
         ]
     )
 
@@ -381,3 +409,144 @@ async def test_export_multi_without_overwrite_by_id(
         captured = capsys.readouterr()
         assert count_lines(path) == i
         assert captured.out == "2 / 2 exported successfully\n"
+
+
+# uses jikan with AnimeNotFoundError raised and anilist mocked data
+async def test_export_multi_anime_not_found_by_title_on_one_source(
+    export_multi_by_title: argparse.Namespace,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """
+    test flag: --title where anime is not found on jikan
+
+    test logic: jikan fetcher is expected to raise AnimeNotFoundError, export_cli will catch it,
+                then print the message to sys.stderr.
+                meanwhile anilist fetcher will return data successfully
+
+    file is expected to be two line, which is header and one row of anime entry, from anilist fetcher
+    """
+    path: Path = export_multi_by_title.path
+    export_cli = ExportCLI(DataIO(path))
+    await export_cli.handle_export_cli(
+        export_multi_by_title,
+        True,
+        [
+            create_normalizer("anilist", MockAnilistFetcherNormal()),
+            create_normalizer("jikan", MockJikanFetcherAnimeNotFoundError()),
+        ],
+    )
+    captured = capsys.readouterr()
+    assert count_lines(path) == 2
+    assert (
+        captured.err
+        == "data_source: jikan\nError: searched anime (attack on titan) not found\n\n"
+    )
+    assert captured.out == "1 / 2 exported successfully\n"
+
+
+# uses jikan and anilist with AnimeNotFoundError raised
+async def test_export_multi_anime_not_found_by_title_on_all_source(
+    export_multi_by_title: argparse.Namespace,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """
+    test flag: --title where anime is not found on all fetchers
+
+    test logic: fetchers are expected to raise AnimeNotFoundError, export_cli will catch it,
+                then print the message to sys.stderr and exit with code 1
+    """
+    path: Path = export_multi_by_title.path
+    export_cli = ExportCLI(DataIO(path))
+    with pytest.raises(SystemExit) as exit_info:
+        await export_cli.handle_export_cli(
+            export_multi_by_title,
+            True,
+            [
+                create_normalizer("anilist", MockAnilistFetcherAnimeNotFoundError()),
+                create_normalizer("jikan", MockJikanFetcherAnimeNotFoundError()),
+            ],
+        )
+    captured = capsys.readouterr()
+    assert exit_info.value.code == 1
+    assert not path.exists()
+    assert (
+        captured.err
+        == """data_source: anilist
+Error: searched anime (attack on titan) not found
+
+data_source: jikan
+Error: searched anime (attack on titan) not found
+
+"""
+    )
+    assert captured.out == "0 / 2 exported successfully\n"
+
+
+# uses anilist and jikan mocked data
+@pytest.mark.parametrize("export_multi_flag_entry_out_of_bound", ["10"], indirect=True)
+async def test_export_multi_out_of_bound_index_on_one_source(
+    export_multi_flag_entry_out_of_bound: argparse.Namespace,
+    multiple_normalizers: list[NormalizerProtocol],
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """
+    test flag: --title with --entry, where jikan raised out of bound entry index
+
+    test logic: jikan source is expected to raise EntryIndexError, export_cli will catch it,
+                then print the message to sys.stderr.
+                meanwhile anilist fetcher will return data successfully
+
+    file is expected to be two line, which is header and one row of anime entry, from anilist fetcher
+    """
+    path: Path = export_multi_flag_entry_out_of_bound.path
+    export_cli = ExportCLI(DataIO(path))
+    await export_cli.handle_export_cli(
+        export_multi_flag_entry_out_of_bound,
+        True,
+        multiple_normalizers,
+    )
+    captured = capsys.readouterr()
+    assert count_lines(path) == 2
+    assert (
+        captured.err
+        == "data_source: jikan\nError: out of bound entry index: 10, for title: attack on titan\n\n"
+    )
+    assert captured.out == "1 / 2 exported successfully\n"
+
+
+# uses anilist and jikan mocked data
+@pytest.mark.parametrize("export_multi_flag_entry_out_of_bound", ["100"], indirect=True)
+async def test_export_multi_out_of_bound_index_on_all_source(
+    export_multi_flag_entry_out_of_bound: argparse.Namespace,
+    multiple_normalizers: list[NormalizerProtocol],
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    """
+    test flag: --title with --entry, where all source raised out of bound entry index
+
+    test logic: all source is expected to raise EntryIndexError, export_cli will catch it,
+                then print the message to sys.stderr and exit with code 1.
+                meanwhile anilist fetcher will return data successfully
+    """
+    path: Path = export_multi_flag_entry_out_of_bound.path
+    export_cli = ExportCLI(DataIO(path))
+    with pytest.raises(SystemExit) as exit_info:
+        await export_cli.handle_export_cli(
+            export_multi_flag_entry_out_of_bound,
+            True,
+            multiple_normalizers,
+        )
+    captured = capsys.readouterr()
+    assert exit_info.value.code == 1
+    assert not path.exists()
+    assert (
+        captured.err
+        == """data_source: anilist
+Error: out of bound entry index: 100, for title: attack on titan
+
+data_source: jikan
+Error: out of bound entry index: 100, for title: attack on titan
+
+"""
+    )
+    assert captured.out == "0 / 2 exported successfully\n"

@@ -240,7 +240,7 @@ Romaji title | English title
     )
 
 
-# uses jikan mocked data
+# uses jikan with AnimeNotFoundError raised
 async def test_fetch_single_anime_not_found_by_title(
     capsys: pytest.CaptureFixture[str],
     fetch_single_by_title: argparse.Namespace,

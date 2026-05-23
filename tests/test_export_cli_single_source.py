@@ -7,7 +7,10 @@ from joho.core.cli.cli_utils import validate_export_path
 from joho.core.normalizers.normalizer_factory import create_normalizer
 from joho.core.models.protocols import NormalizerProtocol
 from joho.core.file_handler import DataIO
-from tests.mock_classes.mock_jikan_fetcher import MockJikanFetcherNormal
+from tests.mock_classes.mock_jikan_fetcher import (
+    MockJikanFetcherNormal,
+    MockJikanFetcherAnimeNotFoundError,
+)
 
 # detailed file content / values tests are skipped in this test
 # since test_file_handler.py already handles it
@@ -162,6 +165,26 @@ def export_single_overwrite_by_id(
             "--path",
             str(temporary_path),
             "--overwrite",
+        ]
+    )
+
+
+@pytest.fixture
+def export_single_flag_entry_out_of_bound(
+    parser: argparse.ArgumentParser,
+    temporary_path: Path,
+) -> argparse.Namespace:
+    return parser.parse_args(
+        [
+            "export",
+            "--source",
+            "jikan",
+            "--title",
+            "attack on titan",
+            "--path",
+            str(temporary_path),
+            "--entry",
+            "10",
         ]
     )
 
@@ -341,3 +364,58 @@ async def test_export_single_without_overwrite_by_id(
             export_single_by_id, False, single_normalizer
         )
         assert count_lines(path) == i
+
+
+# uses jikan with AnimeNotFoundError raised
+async def test_export_single_anime_not_found_by_title(
+    capsys: pytest.CaptureFixture[str],
+    export_single_by_title: argparse.Namespace,
+) -> None:
+    """
+    test flag: --title where the anime is not found
+
+    fetcher is expected to raise AnimeNotFoundError, export_cli will catch it
+    then print the message to sys.stderr and exit with code 1
+    """
+    path: Path = export_single_by_title.path
+    export_cli = ExportCLI(DataIO(path))
+    with pytest.raises(SystemExit) as exit_info:
+        await export_cli.handle_export_cli(
+            export_single_by_title,
+            False,
+            [create_normalizer("jikan", MockJikanFetcherAnimeNotFoundError())],
+        )
+    assert exit_info.value.code == 1
+    assert not path.exists()
+    captured = capsys.readouterr()
+    assert (
+        captured.err
+        == "data_source: jikan\nError: searched anime (attack on titan) not found\n"
+    )
+
+
+# uses jikan mocked data
+async def test_export_single_out_of_bound_index(
+    capsys: pytest.CaptureFixture[str],
+    export_single_flag_entry_out_of_bound: argparse.Namespace,
+    single_normalizer: list[NormalizerProtocol],
+) -> None:
+    """
+    test flag: --title with --entry, where the --entry index is out of bound
+
+    normalizer is expected to raise EntryIndexError, export_cli will catch it
+    then print the message to sys.stderr and exit with code 1
+    """
+    path: Path = export_single_flag_entry_out_of_bound.path
+    export_cli = ExportCLI(DataIO(path))
+    with pytest.raises(SystemExit) as exit_info:
+        await export_cli.handle_export_cli(
+            export_single_flag_entry_out_of_bound, False, single_normalizer
+        )
+    assert exit_info.value.code == 1
+    assert not path.exists()
+    captured = capsys.readouterr()
+    assert (
+        captured.err
+        == "data_source: jikan\nError: out of bound entry index: 10, for title: attack on titan\n"
+    )

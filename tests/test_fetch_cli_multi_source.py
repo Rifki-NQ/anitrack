@@ -332,7 +332,7 @@ Romaji title | English title
 
 
 # uses jikan with AnimeNotFoundError raised and anilist mocked data
-async def test_multi_single_anime_not_found_by_title_on_one_source(
+async def test_fetch_multi_anime_not_found_by_title_on_one_source(
     capsys: pytest.CaptureFixture[str],
     fetch_multi_by_title: argparse.Namespace,
     fetch_cli: FetchCLI,
@@ -375,7 +375,7 @@ all_time_popularity: 1
 
 
 # uses jikan and anilist with AnimeNotFoundError raised
-async def test_multi_single_anime_not_found_by_title_on_all_source(
+async def test_fetch_multi_anime_not_found_by_title_on_all_source(
     capsys: pytest.CaptureFixture[str],
     fetch_multi_by_title: argparse.Namespace,
     fetch_cli: FetchCLI,

@@ -23,8 +23,10 @@ class ReadCLI:
                 self._show_entry(all_data[entry_num])
             except IndexError:
                 print(
-                    f"Error: out of bound entry index: {args.entry}, for file: {self.file_handler.filepath}"
+                    f"Error: out of bound entry index: {args.entry}, for file: {self.file_handler.filepath}",
+                    file=sys.stderr,
                 )
+                sys.exit(1)
             return
         elif args.show_title:
             self._show_title(all_data, args.limit)

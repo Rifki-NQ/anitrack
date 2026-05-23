@@ -96,12 +96,13 @@ joho/
 │   ├── test_export_cli_single_source.py
 │   ├── test_export_cli_multi_source.py
 │   ├── test_read_cli.py
+│   ├── test_read_cli_errors.py
 │   ├── mock_classes/
 │   │   ├── __init__.py
 │   │   ├── mock_anilist_fetcher.py
 │   │   └── mock_jikan_fetcher.py
 │   └── mock_data/
-│       └── steins_gate.csv
+│       └── *.csv
 ├── storage/
 │   └── *.csv                              # Saved data outputs
 ├── pyproject.toml                         # Project metadata and dependencies
@@ -464,6 +465,7 @@ The test suite covers:
 - `test_export_cli_single_source.py` verifies ExportCLI file output for all export subcommand variations (single source, by title/id, --entry, --path, --save-all, --max-entry, --overwrite)
 - `test_export_cli_multi_source.py` verifies ExportCLI file and terminal output for all export subcommand variations (source all, by title/id, --entry, --path, --save-all, --max-entry, --overwrite)
 - `test_read_cli.py` verifies ReadCLI terminal output using mocked data for all read subcommand variations (--path, --entry, --show-title, --limit)
+- `test_read_cli_errors.py` verifies ReadCLI terminal output using mocked data for all known errors
 
 ---
 

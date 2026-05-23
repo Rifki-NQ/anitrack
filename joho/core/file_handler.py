@@ -1,4 +1,5 @@
 import csv
+from typing import TextIO
 from pathlib import Path
 from dataclasses import fields, asdict
 from joho.core.models.anime_model import AnimeDataModel
@@ -33,6 +34,9 @@ class DataIO:
             self._raise_file_empty_error()
         entries: list[dict[str, str | None]] = []
         with open(self.filepath, mode="r", newline="") as f:
+            if self._is_only_whitespace(f):
+                self._raise_file_empty_error()
+            f.seek(0)
             reader = csv.DictReader(f)
             for row in reader:
                 self._validate_headers(row)
@@ -71,3 +75,6 @@ class DataIO:
             else:
                 new_entry_data[key] = value
         return new_entry_data
+
+    def _is_only_whitespace(self, file: TextIO) -> bool:
+        return not file.read().strip()

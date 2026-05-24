@@ -17,4 +17,4 @@ def valid_filepath(filepath: str) -> Path:
     path = Path(filepath)
     if path.suffix.lower() != ".csv":
         raise ArgumentTypeError("dataset file must be a csv file (example: data.csv)")
-    return path.with_stem(path.stem.replace(" ", "_"))
+    return path.with_name(path.stem.replace(" ", "_") + path.suffix.lower())
